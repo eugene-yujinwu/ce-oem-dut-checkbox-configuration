@@ -1,11 +1,12 @@
 ## Purpose
 This repository is a place to stored the checkbox configuration for all enablement devices
 
-## The structure
+## The directory structure for this repository
 ```bash
-cids
-├── cid1
-│    ├── manifest.json
-│    └── extra_checkbox.conf
-├── cid2
+├── pc
+│   ├── 201212-12345 (example)
+│   │   ├── extra_checkbox.conf
+│   │   └── manifest.json
+│   └── default
+│       └── manifest.json
 ```
