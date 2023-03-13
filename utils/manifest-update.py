@@ -168,7 +168,8 @@ def main():
     get_repo(args.download, args.branch)
 
     for sub_dir in [args.project_type, args.cid]:
-        path = os.path.join(path, sub_dir) if sub_dir not in path else path
+        p_list = os.path.split(path)
+        path = os.path.join(path, sub_dir) if sub_dir not in p_list else path
 
     if not os.path.exists(path):
         print("## CID folder not exists, creating {} folder".format(args.cid))
