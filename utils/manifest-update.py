@@ -12,6 +12,20 @@ GIT_URL="https://git.launchpad.net/~oem-qa/+git"
 GIT_REPO="ce-oem-dut-checkbox-configuration"
 
 
+def _issue_command(cmd):
+    proc = subprocess.Popen(
+        cmd,
+        stdout = subprocess.PIPE,
+        stderr = subprocess.PIPE,
+        shell = True
+    )
+    stdout, stderr = proc.communicate()
+    if proc.returncode != 0:
+        print(stderr.decode("utf-8"))
+
+    return proc.returncode, stdout.decode("utf-8")
+
+
 def checkbox_conf_update(checkbox_env, checkbox_file):
     print("## Check and merge checkbox config")
     config=configparser.ConfigParser()
@@ -54,24 +68,21 @@ def manifest_update(manifest_env, manifest_file, default_file):
 
 def update_repo(cid, branch):
     print("## Check difference via git status")
-    ret = subprocess.run("git status -s", shell=True, capture_output=True)
-    if ret.returncode != 0:
+    returncode, output = _issue_command("git status -s")
+    if returncode != 0:
         raise SystemExit("Error: Failed to sync with git repo")
-
-    output = ret.stdout.decode("utf-8").split("\n")
+    output = output.split("\n")
     commit_files = " ".join([tmp[3:] for tmp in output if cid in tmp])
+
     if commit_files:
         print("## Update git repo to latest version")
         commit_msg = "Update content for CID {}".format(cid)
         cmd = "git add {}; git commit -m '{}'; git push origin {}".format(
             commit_files, commit_msg, branch
         )
-        ret = subprocess.run(cmd, shell=True, capture_output=True)
-        if ret.returncode != 0:
-            raise SystemExit(
-                "Error: Failed to sync with git repo\n"
-                "Output: {}".format(ret.stderr)
-            )
+        returncode, output = _issue_command(cmd)
+        if returncode != 0:
+            raise SystemExit("Error: Failed to sync with git repo")
         else:
             print("Commit latest changes to {} branch".format(branch))
     else:
@@ -82,19 +93,20 @@ def get_repo(download, branch):
     if download:
         full_url = "{}/{}".format(GIT_URL, GIT_REPO)
         print("## Clone code from {}".format(full_url))
-        ret = subprocess.run(
-            "git clone {} -b {} --depth 1".format(full_url, branch),
-            shell=True
+        returncode, output = _issue_command(
+            "git clone {} -b {} --depth 1".format(full_url, branch)
         )
-        if ret.returncode != 0:
+        print(output)
+        if returncode != 0:
             raise SystemExit(
                 ("Error: Failed to clone code from {}!".format(full_url),
                  "Please check your connections")
             )
 
     print("## Update git repo to latest version")
-    ret = subprocess.run("git pull origin {}".format(branch), shell=True)
-    if ret.returncode != 0:
+    returncode, output = _issue_command("git pull origin {}".format(branch))
+    print(output)
+    if returncode != 0:
         raise SystemExit("Error: Failed to update git repo!")
 
 
