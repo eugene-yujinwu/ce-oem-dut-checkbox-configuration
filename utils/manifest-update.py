@@ -26,10 +26,15 @@ def _issue_command(cmd):
     return proc.returncode, stdout.decode("utf-8")
 
 
-def checkbox_conf_update(checkbox_env, checkbox_file):
+def checkbox_conf_update(checkbox_env, checkbox_file, default_file):
     print("## Check and merge checkbox config")
     config=configparser.ConfigParser()
     config.optionxform = lambda option: option
+
+    # Use default checkbox config as base
+    config.read(default_file)
+
+    # Merge checkbox config from DUT conf
     if os.path.exists(checkbox_file):
         config.read(checkbox_file)
 
@@ -179,9 +184,10 @@ def main():
     os.chdir(path)
 
     default_manifest = path.replace(args.cid, "default/manifest.json")
+    default_checkbox_conf = path.replace(args.cid, "default/checkbox.conf")
     manifest_update(args.manifest_data, "manifest.json", default_manifest)
-    if args.checkbox_conf_data:
-        checkbox_conf_update(args.checkbox_conf_data, "checkbox.conf")
+    checkbox_conf_update(
+        args.checkbox_conf_data, "checkbox.conf", default_checkbox_conf)
 
     print("## Switching to {}".format(root_path))
     os.chdir(root_path)
