@@ -161,6 +161,12 @@ def parse_arguments():
         choices=["pc", "iot"],
         help="The type of enablement project, default is pc"
     )
+    parser.add_argument(
+        "--upload",
+        default=False,
+        action="store_true",
+        help="upload changes to git repo"
+    )
     return parser.parse_args(sys.argv[1:])
 
 
@@ -191,7 +197,8 @@ def main():
 
     print("## Switching to {}".format(root_path))
     os.chdir(root_path)
-    update_repo(args.cid, args.branch)
+    if args.upload:
+        update_repo(args.cid, args.branch)
 
 
 if __name__ == "__main__":
