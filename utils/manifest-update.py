@@ -182,6 +182,10 @@ def main():
         p_list = os.path.split(path)
         path = os.path.join(path, sub_dir) if sub_dir not in p_list else path
 
+    default_path = os.path.join(os.path.split(path)[0], "default")
+    default_manifest = os.path.join(default_path, "manifest.json")
+    default_checkbox_conf = os.path.join(default_path, "checkbox.conf")
+
     if not os.path.exists(path):
         print("## CID folder not exists, creating {} folder".format(args.cid))
         os.makedirs(path)
@@ -189,8 +193,6 @@ def main():
     print("## Switching to {} folder for DUT".format(path))
     os.chdir(path)
 
-    default_manifest = path.replace(args.cid, "default/manifest.json")
-    default_checkbox_conf = path.replace(args.cid, "default/checkbox.conf")
     manifest_update(args.manifest_data, "manifest.json", default_manifest)
     checkbox_conf_update(
         args.checkbox_conf_data, "checkbox.conf", default_checkbox_conf)
