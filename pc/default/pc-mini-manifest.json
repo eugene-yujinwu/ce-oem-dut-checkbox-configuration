@@ -1,0 +1,4 @@
+{
+  "com.canonical.certification::has_audio_playback": true,
+  "com.canonical.certification::has_audio_capture": true
+}
