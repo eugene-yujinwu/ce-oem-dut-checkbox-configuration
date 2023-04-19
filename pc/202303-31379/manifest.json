@@ -1,0 +1,13 @@
+{
+  "com.canonical.certification::has_camera": false,
+  "com.canonical.certification::has_dvi": false,
+  "com.canonical.certification::has_fingerprint_reader": false,
+  "com.canonical.certification::has_hdmi": false,
+  "com.canonical.certification::has_special_keys": false,
+  "com.canonical.certification::has_thunderbolt3": false,
+  "com.canonical.certification::has_touchpad": false,
+  "com.canonical.certification::has_touchscreen": false,
+  "com.canonical.certification::has_usb_storage": false,
+  "com.canonical.certification::has_usbc_video": false,
+  "com.canonical.certification::has_vga": false
+}
