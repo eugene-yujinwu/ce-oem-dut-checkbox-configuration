@@ -11,6 +11,9 @@ import configparser
 GIT_URL="https://git.launchpad.net/~oem-qa/+git"
 GIT_REPO="ce-oem-dut-checkbox-configuration"
 
+DEFAULT_MANIFEST = ""
+MINI_MANIFEST = ""
+
 
 def _issue_command(cmd):
     proc = subprocess.Popen(
@@ -50,21 +53,28 @@ def checkbox_conf_update(checkbox_env, checkbox_file, default_file):
         config.write(fp)
 
 
-def manifest_update(manifest_env, manifest_file, default_file):
+def manifest_update(manifest_env, manifest_file, upload):
+    print(DEFAULT_MANIFEST)
     print("## Check and merge manifest info")
     dict_content = dict()
+
     if os.path.exists(manifest_file):
+        print("loading manifest from {}..".format(manifest_file))
         with open(manifest_file, "r") as fp:
             dict_content.update(json.load(fp))
-    if manifest_env:
-        print("merging manifest environ variable..")
-        dict_content.update(json.loads(manifest_env))
-
-    if not dict_content:
-        print("manifest info is empty, applying default manifest..")
-        with open(default_file, "r") as fp:
-            default_manifest = json.load(fp)
-        dict_content.update(default_manifest)
+        if manifest_env:
+            print("merging manifest environ variable..")
+            dict_content.update(json.loads(manifest_env))
+    else:
+        print(DEFAULT_MANIFEST)
+        content_file = DEFAULT_MANIFEST if upload else MINI_MANIFEST
+        if manifest_env:
+            print("apply user provided manifest..".format(manifest_file))
+            dict_content.update(json.loads(manifest_env))
+        else:
+            print("apply manifest from {}..".format(manifest_file))
+            with open(content_file, "r") as fp:
+                dict_content.update(json.load(fp))
 
     print("update to {}".format(manifest_file))
     with open(manifest_file, "wt") as fp:
@@ -183,7 +193,10 @@ def main():
         path = os.path.join(path, sub_dir) if sub_dir not in p_list else path
 
     default_path = os.path.join(os.path.split(path)[0], "default")
-    default_manifest = os.path.join(default_path, "manifest.json")
+    global DEFAULT_MANIFEST
+    global MINI_MANIFEST
+    DEFAULT_MANIFEST = os.path.join(default_path, "manifest.json")
+    MINI_MANIFEST = os.path.join(default_path, "pc-mini-manifest.json")
     default_checkbox_conf = os.path.join(default_path, "checkbox.conf")
 
     if not os.path.exists(path):
@@ -193,7 +206,7 @@ def main():
     print("## Switching to {} folder for DUT".format(path))
     os.chdir(path)
 
-    manifest_update(args.manifest_data, "manifest.json", default_manifest)
+    manifest_update(args.manifest_data, "manifest.json", args.upload)
     checkbox_conf_update(
         args.checkbox_conf_data, "checkbox.conf", default_checkbox_conf)
 
