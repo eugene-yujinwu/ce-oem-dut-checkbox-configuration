@@ -15,7 +15,7 @@
   "com.canonical.certification::has_touchscreen": false,
   "com.canonical.certification::has_tpm2_chip": true,
   "com.canonical.certification::has_usb_storage": false,
-  "com.canonical.certification::has_usbc_data": true,
+  "com.canonical.certification::has_usbc_data": false,
   "com.canonical.certification::has_usbc_video": false,
   "com.canonical.certification::has_vga": false,
   "com.canonical.certification::has_wlan_adapter": true
