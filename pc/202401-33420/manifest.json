@@ -6,7 +6,7 @@
   "com.canonical.certification::has_card_reader": false,
   "com.canonical.certification::has_dp": false,
   "com.canonical.certification::has_dvi": false,
-  "com.canonical.certification::has_ethernet_adapter": false,
+  "com.canonical.certification::has_ethernet_adapter": true,
   "com.canonical.certification::has_fingerprint_reader": false,
   "com.canonical.certification::has_hdmi": true,
   "com.canonical.certification::has_special_keys": true,
