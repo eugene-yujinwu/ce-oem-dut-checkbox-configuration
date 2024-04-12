@@ -1,0 +1,28 @@
+{
+  com.canonical.certification::has_audio_capture: true,
+  com.canonical.certification::has_audio_loopback_connector = false
+  com.canonical.certification::has_audio_playback: true,
+  com.canonical.certification::has_bt_adapter = false
+  com.canonical.certification::has_eeprom = false
+  com.canonical.certification::has_ethernet_adapter: true,
+  com.canonical.certification::has_hardware_watchdog: true,
+  com.canonical.certification::has_i2c: true,
+  com.canonical.certification::has_tpm2_chip = false
+  com.canonical.certification::has_usb_storage: true,
+  com.canonical.certification::has_wlan_adapter = false
+  com.canonical.certification::has_wwan_module = false
+  com.canonical.certification::socket_can_echo_server_running = false
+  com.canonical.qa.baoshan::has_baoshan_g1200_j34_short = false
+  com.canonical.qa.baoshan::has_baoshan_g1200_j52_txd_rxd_connection = false
+  com.canonical.qa.baoshan::has_baoshan_gpio_lookback: true,
+  com.canonical.qa.baoshan::has_baoshan_spi_lookback: true,
+  com.canonical.qa.baoshan::has_baoshan_uart_lookback: true,
+  com.canonical.qa.ceoem::has_caam = false
+  com.canonical.qa.ceoem::has_hardware_rng: true,
+  com.canonical.qa.ceoem::has_mcrc_engine = false
+  com.canonical.qa.ceoem::has_optee = false
+  com.canonical.qa.ceoem::has_ptp = false
+  com.canonical.qa.ceoem::has_sa2ul_engine = false
+  com.canonical.qa.ceoem::has_socket_can_fd: true,
+  com.canonical.qa.ceoem::has_tcp_multi_connection_server = false
+}
