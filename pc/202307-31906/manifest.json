@@ -20,11 +20,11 @@
     "com.canonical.certification::has_vga": false,
     "com.canonical.certification::has_dvi": false,
     "com.canonical.certification::has_hdmi": false,
-    "com.canonical.qa.ceoem::has_buzzer": false,
-    "com.canonical.qa.ceoem::has_eeprom": true,
-    "com.canonical.qa.ceoem::has_gps": false,
-    "com.canonical.qa.ceoem::has_mtd": true,
-    "com.canonical.qa.ceoem::has_otg": false,
-    "com.canonical.qa.ceoem::has_rs485": true,
-    "com.canonical.qa.ceoem::has_rs485_server": true
+    "com.canonical.contrib::has_buzzer": false,
+    "com.canonical.contrib::has_eeprom": true,
+    "com.canonical.contrib::has_gps": false,
+    "com.canonical.contrib::has_mtd": true,
+    "com.canonical.contrib::has_otg": false,
+    "com.canonical.contrib::has_rs485": true,
+    "com.canonical.contrib::has_rs485_server": true
 }
