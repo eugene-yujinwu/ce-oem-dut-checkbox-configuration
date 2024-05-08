@@ -18,5 +18,5 @@
   "com.canonical.certification::has_usbc_data": true,
   "com.canonical.certification::has_usbc_video": true,
   "com.canonical.certification::has_vga": false,
-  "com.canonical.certification::has_wlan_adapter": true
+  "com.canonical.certification::has_wlan_adapter": false
 }
