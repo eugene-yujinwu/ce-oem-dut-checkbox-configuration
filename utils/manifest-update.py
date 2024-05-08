@@ -7,9 +7,8 @@ import json
 import argparse
 import configparser
 
-
-GIT_URL="https://git.launchpad.net/~oem-qa/+git"
-GIT_REPO="ce-oem-dut-checkbox-configuration"
+GIT_REPO = "ce-oem-dut-checkbox-configuration"
+GIT_URL = "git@github.com:canonical/{}.git".format(GIT_REPO)
 
 DEFAULT_MANIFEST = ""
 MINI_MANIFEST = ""
@@ -17,10 +16,7 @@ MINI_MANIFEST = ""
 
 def _issue_command(cmd):
     proc = subprocess.Popen(
-        cmd,
-        stdout = subprocess.PIPE,
-        stderr = subprocess.PIPE,
-        shell = True
+        cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True
     )
     stdout, stderr = proc.communicate()
     if proc.returncode != 0:
@@ -31,7 +27,7 @@ def _issue_command(cmd):
 
 def checkbox_conf_update(checkbox_env, checkbox_file, default_file):
     print("## Check and merge checkbox config")
-    config=configparser.ConfigParser()
+    config = configparser.ConfigParser()
     config.optionxform = lambda option: option
 
     # Use default checkbox config as base
@@ -69,7 +65,7 @@ def manifest_update(manifest_env, manifest_file, upload):
         print(DEFAULT_MANIFEST)
         content_file = DEFAULT_MANIFEST if upload else MINI_MANIFEST
         if manifest_env:
-            print("apply user provided manifest..".format(manifest_file))
+            print("apply user provided manifest..")
             dict_content.update(json.loads(manifest_env))
         else:
             print("apply manifest from {}..".format(manifest_file))
@@ -106,16 +102,17 @@ def update_repo(cid, branch):
 
 def get_repo(download, branch):
     if download:
-        full_url = "{}/{}".format(GIT_URL, GIT_REPO)
-        print("## Clone code from {}".format(full_url))
+        print("## Clone code from {}".format(GIT_URL))
         returncode, output = _issue_command(
-            "git clone {} -b {} --depth 1".format(full_url, branch)
+            "git clone {} -b {} --depth 1".format(GIT_URL, branch)
         )
         print(output)
         if returncode != 0:
             raise SystemExit(
-                ("Error: Failed to clone code from {}!".format(full_url),
-                 "Please check your connections")
+                (
+                    "Error: Failed to clone code from {}!".format(GIT_URL),
+                    "Please check your connections",
+                )
             )
 
     print("## Update git repo to latest version")
@@ -132,28 +129,32 @@ def parse_arguments():
     )
     parser = argparse.ArgumentParser(description=description)
     parser.add_argument(
-        "-c", "--cid", required=True,
-        help="update checkbox manifest configuration for this CID"
+        "-c",
+        "--cid",
+        required=True,
+        help="update checkbox manifest configuration for this CID",
     )
     parser.add_argument(
-        "--manifest-data", default="",
-        help="Manifest data (with JSON format string)"
+        "--manifest-data",
+        default="",
+        help="Manifest data (with JSON format string)",
     )
     parser.add_argument(
-        "--checkbox-conf-data", default="",
-        help="Checkbox config data (with Config format string)"
+        "--checkbox-conf-data",
+        default="",
+        help="Checkbox config data (with Config format string)",
     )
     parser.add_argument(
         "-b",
         "--branch",
         default="main",
-        help="Git branch of manifest repository"
+        help="Git branch of manifest repository",
     )
     parser.add_argument(
         "-d",
         "--download",
         action="store_true",
-        help="Clone latest {} to local system".format(GIT_REPO)
+        help="Clone latest {} to local system".format(GIT_REPO),
     )
     parser.add_argument(
         "-p",
@@ -162,20 +163,20 @@ def parse_arguments():
         help=(
             "The path of checkbox manifest repo in local system. "
             "Default value is current working directory"
-        )
+        ),
     )
     parser.add_argument(
         "-t",
         "--project-type",
         default="pc",
         choices=["pc", "iot"],
-        help="The type of enablement project, default is pc"
+        help="The type of enablement project, default is pc",
     )
     parser.add_argument(
         "--upload",
         default=False,
         action="store_true",
-        help="upload changes to git repo"
+        help="upload changes to git repo",
     )
     return parser.parse_args(sys.argv[1:])
 
@@ -208,7 +209,8 @@ def main():
 
     manifest_update(args.manifest_data, "manifest.json", args.upload)
     checkbox_conf_update(
-        args.checkbox_conf_data, "checkbox.conf", default_checkbox_conf)
+        args.checkbox_conf_data, "checkbox.conf", default_checkbox_conf
+    )
 
     print("## Switching to {}".format(root_path))
     os.chdir(root_path)
