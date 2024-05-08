@@ -14,12 +14,12 @@
     "com.canonical.qa.baoshan::has_baoshan_gpio_lookback": true,
     "com.canonical.qa.baoshan::has_baoshan_spi_lookback": true,
     "com.canonical.qa.baoshan::has_baoshan_uart_lookback": true,
-    "com.canonical.qa.ceoem::has_caam": false,
-    "com.canonical.qa.ceoem::has_hardware_rng": true,
-    "com.canonical.qa.ceoem::has_mcrc_engine": false,
-    "com.canonical.qa.ceoem::has_optee": false,
-    "com.canonical.qa.ceoem::has_ptp": false,
-    "com.canonical.qa.ceoem::has_sa2ul_engine": false,
-    "com.canonical.qa.ceoem::has_socket_can_fd": false,
-    "com.canonical.qa.ceoem::has_tcp_multi_connection_server": false
+    "com.canonical.contrib::has_caam": false,
+    "com.canonical.contrib::has_hardware_rng": true,
+    "com.canonical.contrib::has_mcrc_engine": false,
+    "com.canonical.contrib::has_optee": false,
+    "com.canonical.contrib::has_ptp": false,
+    "com.canonical.contrib::has_sa2ul_engine": false,
+    "com.canonical.contrib::has_socket_can_fd": false,
+    "com.canonical.contrib::has_tcp_multi_connection_server": false
 }
