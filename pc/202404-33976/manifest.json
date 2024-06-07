@@ -1,6 +1,6 @@
 {
   "com.canonical.certification::has_audio_capture": false,
-  "com.canonical.certification::has_audio_playback": true,
+  "com.canonical.certification::has_audio_playback": false,
   "com.canonical.certification::has_bt_smart": true,
   "com.canonical.certification::has_camera": false,
   "com.canonical.certification::has_card_reader": false,
