@@ -10,7 +10,7 @@
   "com.canonical.certification::has_fingerprint_reader": false,
   "com.canonical.certification::has_hdmi": true,
   "com.canonical.certification::has_special_keys": false,
-  "com.canonical.certification::has_thunderbolt3": true,
+  "com.canonical.certification::has_thunderbolt3": false,
   "com.canonical.certification::has_touchpad": false,
   "com.canonical.certification::has_touchscreen": false,
   "com.canonical.certification::has_tpm2_chip": true,

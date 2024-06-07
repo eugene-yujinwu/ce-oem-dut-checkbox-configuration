@@ -15,7 +15,7 @@
   "com.canonical.certification::has_line_out": false,
   "com.canonical.certification::has_md_raid": false,
   "com.canonical.certification::has_special_keys": true,
-  "com.canonical.certification::has_thunderbolt3": true,
+  "com.canonical.certification::has_thunderbolt3": false,
   "com.canonical.certification::has_touchpad": true,
   "com.canonical.certification::has_touchscreen": true,
   "com.canonical.certification::has_tpm2_chip": true,

@@ -10,13 +10,13 @@
   "com.canonical.certification::has_fingerprint_reader": true,
   "com.canonical.certification::has_hdmi": true,
   "com.canonical.certification::has_special_keys": true,
-  "com.canonical.certification::has_thunderbolt3": true,
+  "com.canonical.certification::has_thunderbolt3": false,
   "com.canonical.certification::has_touchpad": true,
   "com.canonical.certification::has_touchscreen": true,
   "com.canonical.certification::has_tpm2_chip": true,
-  "com.canonical.certification::has_usb_storage": false,
+  "com.canonical.certification::has_usb_storage": true,
   "com.canonical.certification::has_usbc_data": true,
   "com.canonical.certification::has_usbc_video": true,
   "com.canonical.certification::has_vga": false,
-  "com.canonical.certification::has_wlan_adapter": true
+  "com.canonical.certification::has_wlan_adapter": false
 }
