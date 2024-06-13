@@ -10,7 +10,7 @@ on:
 jobs:
   test_manifests_jq:
     name: Test manifests with jq
-    runs-on: ubuntu/latest
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
       - name: Install jq
