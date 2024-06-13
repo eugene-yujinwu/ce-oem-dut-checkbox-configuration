@@ -1,0 +1,24 @@
+name: Test that all manifests are valid
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+  workflow_dispatch:
+
+jobs:
+  test_manifests_jq:
+    name: Test manifests with jq
+    runs-on: ubuntu/latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install jq
+        run: apt install -y jq
+      - name: Run tox
+        run: |
+          # create an errors.txt with all errors and paths
+          find . -type f -name 'manifest.json' \
+            -exec  sh -c 'echo "$@"; cat "$@" | jq -e 1>/dev/null 2>>errors.txt || echo $@ >> errors.txt' sh {} ';'
+          cat errors.txt
+          exit $(cat errors.txt | sed '/^\s*$/d' | wc -l)
