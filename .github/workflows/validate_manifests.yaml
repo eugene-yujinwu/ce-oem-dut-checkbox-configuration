@@ -14,7 +14,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: Install jq
-        run: apt install -y jq
+        run: sudo apt install -qq -y jq
       - name: Run jq validation
         run: |
           # create an errors.txt with all errors and paths
