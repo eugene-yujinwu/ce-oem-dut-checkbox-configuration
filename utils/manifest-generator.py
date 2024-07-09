@@ -48,6 +48,7 @@ def save_manifest(manifest_answers, manifest_path):
     print("Saving manifest to {}".format(manifest_path))
     with open(manifest_path, 'w+', encoding='UTF-8') as stream:
         json.dump(manifest_cache, stream, sort_keys=True, indent=2)
+        stream.write("\n")
 
 
 def parse_arguments():
