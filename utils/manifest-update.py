@@ -75,6 +75,7 @@ def manifest_update(manifest_env, manifest_file, upload):
     print("update to {}".format(manifest_file))
     with open(manifest_file, "wt") as fp:
         json.dump(dict_content, fp, sort_keys=True, indent=2)
+        fp.write("\n")
 
 
 def update_repo(cid, branch):
