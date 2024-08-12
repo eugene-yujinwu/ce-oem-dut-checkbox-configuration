@@ -1,0 +1,107 @@
+#!/usr/bin/env checkbox-cli-wrapper
+[launcher]
+app_id = com.canonical.qa.baoshan:checkbox
+launcher_version = 1
+stock_reports = text, submission_files, certification
+
+[test plan]
+unit = com.canonical.qa.baoshan::genio-baoshan-desktop-22-04
+filter = com.canonical.qa.baoshan::genio-baoshan-core-22
+        com.canonical.qa.baoshan::genio-baoshan-core-22-manual
+        com.canonical.qa.baoshan::genio-baoshan-core-22-automated
+        com.canonical.qa.baoshan::genio-baoshan-core-22-stress
+        com.canonical.qa.baoshan::genio-baoshan-desktop-22-04
+        com.canonical.qa.baoshan::genio-baoshan-desktop-22-04-manual
+        com.canonical.qa.baoshan::genio-baoshan-desktop-22-04-automated
+        com.canonical.qa.baoshan::genio-baoshan-desktop-22-04-stress
+        com.canonical.qa.baoshan::genio-baoshan-server-22-04
+        com.canonical.qa.baoshan::genio-baoshan-server-22-04-manual
+        com.canonical.qa.baoshan::genio-baoshan-server-22-04-automated
+        com.canonical.qa.baoshan::genio-baoshan-server-22-04-stress
+
+[manifest]
+com.canonical.certification::has_ethernet_adapter = true
+com.canonical.certification::has_i2c = true
+com.canonical.certification::has_card_reader = true
+com.canonical.certification::has_audio_capture = true
+com.canonical.certification::has_audio_playback = true
+com.canonical.certification::has_hardware_watchdog = true
+com.canonical.certification::socket_can_echo_server_running = false
+com.canonical.certification::has_bt_adapter = true
+com.canonical.certification::has_bt_smart = true
+com.canonical.certification::has_thunderbolt3 = false
+com.canonical.certification::has_tpm2_chip = false
+com.canonical.certification::has_usb_storage = true
+com.canonical.certification::has_usbc_video = true
+com.canonical.certification::has_usbc_data = true
+com.canonical.certification::has_usbc_otg = false
+com.canonical.certification::has_wlan_adapter = true
+com.canonical.certification::has_wwan_module = false
+com.canonical.certification::has_hdmi = true
+com.canonical.certification::has_dp = false
+com.canonical.certification::has_vga = false
+com.canonical.certification::has_dvi = false
+com.canonical.certification::has_touchscreen = true
+com.canonical.certification::has_touchpad = false
+com.canonical.certification::has_eeprom = false
+com.canonical.certification::need_gadget_snap_update_test = false
+com.canonical.certification::need_kernel_snap_update_test = false
+com.canonical.certification::need_snapd_snap_update_test = false
+com.canonical.qa.baoshan::has_baoshan_amic = true
+com.canonical.qa.baoshan::has_baoshan_dmic = true
+com.canonical.qa.baoshan::has_baoshan_dsi = true
+com.canonical.qa.baoshan::has_baoshan_edp = false
+com.canonical.qa.baoshan::has_baoshan_gpio_lookback = true
+com.canonical.qa.baoshan::has_baoshan_g510_j4202_as_rpi_mode = true
+com.canonical.qa.baoshan::has_baoshan_g510_j4203_as_rpi_mode = true
+com.canonical.qa.baoshan::has_baoshan_g510_j4207_as_rpi_mode = false
+com.canonical.qa.baoshan::has_baoshan_g510_j4208_as_rpi_mode = false
+com.canonical.qa.baoshan::has_baoshan_i2s = true
+com.canonical.qa.baoshan::has_baoshan_lvds = false
+com.canonical.qa.baoshan::has_baoshan_pcm = true
+com.canonical.qa.baoshan::has_baoshan_spi_lookback = true
+com.canonical.qa.baoshan::has_baoshan_uart_lookback = true
+com.canonical.qa.baoshan::has_hdmi_rx = false
+com.canonical.contrib::has_otg = true
+com.canonical.contrib::has_ptp = true
+com.canonical.contrib::has_socket_can_fd = false
+com.canonical.contrib::has_buzzer = false
+com.canonical.contrib::has_eeprom = false
+com.canonical.contrib::has_gps = false
+com.canonical.contrib::has_mtd = false
+com.canonical.contrib::has_rs485 = false
+com.canonical.contrib::has_rs485_server = false
+com.canonical.contrib::has_digital_io = false
+com.canonical.contrib::has_button = false
+com.canonical.contrib::has_caam = false
+com.canonical.contrib::has_sa2ul_engine = false
+com.canonical.contrib::has_mcrc_engine = false
+com.canonical.contrib::has_optee = false
+com.canonical.contrib::has_led_indicator = false
+com.canonical.contrib::has_tcp_multi_connection_server = false
+
+
+[environment]
+WPA_BG_SSID = cert-bg-wpa-tel-l4
+WPA_BG_PSK = insecure
+WPA_N_SSID = cert-n-wpa-tel-l3-01
+WPA_N_PSK = insecure
+WPA_AC_SSID = cert-ac-wpa-tel-l4
+WPA_AC_PSK = insecure
+WPA_AX_SSID = cert-ax-wpa-tel-l4
+WPA_AX_PSK = insecure
+WPA3_AX_SSID = cert-ax-wpa3-tel-l4
+WPA3_AX_PSK = insecure
+OPEN_BG_SSID = cert-bg-open-tel-l4
+OPEN_N_SSID = cert-n-open-tel-l4
+OPEN_AC_SSID = cert-ac-open-tel-l4
+OPEN_AX_SSID = cert-ax-open-tel-l4
+BTDEVADDR = 4C:80:93:CC:AC:21,7C:B2:7D:4B:14:95,34:6F:24:A8:93:EE,C4:BD:E5:51:D6:95,80:32:53:D8:0D:1E
+GENIO_DEVICE=G510
+GENIO_GPU_DRIVER_SNAP=mediatek-genio-g700-gpu-drivers-core22
+GPIO_LOOPBACK_PIN_MAPPING=0:11:0:0:29:1
+OTG=Micro-USB:112b1000
+SNAP_CONFINEMENT_ALLOWLIST=genio-test-tool,mediatek-genio-g700-gpu-drivers-core22
+KERNEL_REPO=universe
+HWRNG=optee-rng
+MODEL_GRADE=signed
