@@ -80,6 +80,7 @@ com.canonical.contrib::has_optee = false
 com.canonical.contrib::has_led_indicator = false
 com.canonical.contrib::has_tcp_multi_connection_server = false
 com.canonical.contrib::has_gpio_slot_been_defined = false
+com.canonical.contrib::has_spi = false
 com.canonical.contrib::has_spi_loopback = false
 
 [environment]
