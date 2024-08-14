@@ -47,6 +47,7 @@ com.canonical.certification::has_eeprom = false
 com.canonical.certification::need_gadget_snap_update_test = false
 com.canonical.certification::need_kernel_snap_update_test = false
 com.canonical.certification::need_snapd_snap_update_test = false
+com.canonical.certification::has_md_raid = false
 com.canonical.qa.baoshan::has_baoshan_amic = true
 com.canonical.qa.baoshan::has_baoshan_dmic = true
 com.canonical.qa.baoshan::has_baoshan_dsi = true
