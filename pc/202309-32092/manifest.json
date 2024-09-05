@@ -8,7 +8,12 @@
   "com.canonical.certification::has_dvi": false,
   "com.canonical.certification::has_ethernet_adapter": true,
   "com.canonical.certification::has_fingerprint_reader": false,
-  "com.canonical.certification::has_hdmi": true,
+  "com.canonical.certification::has_hdmi": false,
+  "com.canonical.certification::has_headset": true,
+  "com.canonical.certification::has_internal_speakers": false,
+  "com.canonical.certification::has_line_in": false,
+  "com.canonical.certification::has_line_out": false,
+  "com.canonical.certification::has_md_raid": false,
   "com.canonical.certification::has_special_keys": false,
   "com.canonical.certification::has_thunderbolt3": false,
   "com.canonical.certification::has_touchpad": false,
@@ -18,5 +23,7 @@
   "com.canonical.certification::has_usbc_data": true,
   "com.canonical.certification::has_usbc_video": false,
   "com.canonical.certification::has_vga": false,
-  "com.canonical.certification::has_wlan_adapter": true
+  "com.canonical.certification::has_wlan_adapter": true,
+  "com.canonical.certification::has_wwan_module": false,
+  "com.canonical.certification::need_snapd_snap_update_test": false
 }
