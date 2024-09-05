@@ -1,6 +1,6 @@
 {
     "com.canonical.certification::has_card_reader": false,
-    "com.canonical.certification::has_edac_module": true,
+    "com.canonical.certification::has_edac_module": false,
     "com.canonical.certification::has_ethernet_adapter": true,
     "com.canonical.certification::has_fingerprint_reader": false,
     "com.canonical.certification::has_hardware_watchdog": true,
