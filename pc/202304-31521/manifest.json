@@ -11,7 +11,6 @@
     "com.canonical.certification::has_usb_type_c": false,
     "com.canonical.certification::has_wlan_adapter": true,
     "com.canonical.certification::has_audio_playback": true,
-    "com.canonical.certification::has_audio_capture": true,
     "com.canonical.certification::has_fingerprint_reader": false,
     "com.canonical.certification::has_hdmi": false,
     "com.canonical.certification::has_dp": true,
