@@ -13,4 +13,3 @@
   "com.canonical.certification::has_wlan_adapter": false,
   "com.canonical.certification::has_audio_playback": false
 }
-
