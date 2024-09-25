@@ -6,5 +6,5 @@
   "com.canonical.certification::has_usb_storage": true,
   "com.canonical.certification::has_wlan_adapter": true,
   "com.canonical.certification::has_camera": false,
-  "com.canonical.certification::has_rpi_camera": true
+  "com.canonical.certification::has_rpi_camera": false
 }
