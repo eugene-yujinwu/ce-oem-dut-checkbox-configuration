@@ -16,4 +16,3 @@
   "com.canonical.certification::has_bt_adapter": true,
   "com.canonical.certification::gpio_loopback": true
 }
-

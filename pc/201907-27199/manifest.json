@@ -16,4 +16,3 @@
   "com.canonical.certification::has_audio_playback": true,
   "com.canonical.certification::gpio_loopback": true
 }
-

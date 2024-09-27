@@ -11,6 +11,11 @@
   "com.canonical.certification::has_tpm2_chip": true,
   "com.canonical.certification::has_usb_storage": true,
   "com.canonical.certification::has_usb_type_c": false,
-  "com.canonical.certification::has_wlan_adapter": false
+  "com.canonical.certification::has_wlan_adapter": false,
+  "com.canonical.certification::has_audio_capture": false,
+  "com.canonical.certification::has_audio_playback": false,
+  "com.canonical.certification::has_i2c": false,
+  "com.canonical.certification::has_special_keys": false,
+  "com.canonical.certification::has_tpm_chip": false,
+  "com.canonical.certification::has_wwan_module": false
 }
-
