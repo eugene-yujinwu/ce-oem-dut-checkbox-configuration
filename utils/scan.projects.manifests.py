@@ -41,7 +41,7 @@ def coerce_boolean(value: str) -> bool:
 def read_manifest(manifest: Union[dict, str], root: Path):
     config = configparser.ConfigParser(delimiters=('=',))
     if isinstance(manifest, dict):
-        filename = manifest.pop("file")
+        filename = manifest["file"]
         with open(root / filename) as manifest_file:
             config.read_file(manifest_file)
     else:
@@ -152,6 +152,7 @@ for project_filename in Path(args.projects).glob("**/*.yaml"):
         # retrieve project-level variables
         project_queue = project.get("queue")
         project_manifest = project.get("manifest")
+        project_environment = project.get("checkbox_conf")
 
         # iterate over all jobs in the current project
         for job in jobs(project):
@@ -159,15 +160,30 @@ for project_filename in Path(args.projects).glob("**/*.yaml"):
             # retrieve job-level variables (possibly overriding project-level)
             queue = job.get("queue", project_queue)
             manifest = job.get("manifest", project_manifest)
+            environment = job.get("checkbox_conf", project_environment)
 
-            if not manifest or not queue:
+            if (not manifest and not environment) or not queue:
                 continue
 
-            manifest_entry_dict = read_manifest(manifest, root)
-            try:
-                manifest_dict = manifest_entry_dict["manifest"]
-            except KeyError:
+            if manifest is not None:
+                manifest_entry_dict = read_manifest(manifest, root)
+                try:
+                    manifest_dict = manifest_entry_dict["manifest"]
+                except KeyError:
+                    manifest_dict = {}
+
+            if environment is not None:
+                environment_entry_dict = read_manifest(environment, root)
+                try:
+                    environment_dict = environment_entry_dict["manifest"]
+                except KeyError:
+                    environment_dict = {}
+
+            if manifest_dict is None and environment_dict is None:
                 continue
+
+            # Caution! This assumes there are no (conflicting) overlaps
+            manifest_dict.update(environment_dict)
 
             # associate the queue with the corresponding CIDs
             try:
