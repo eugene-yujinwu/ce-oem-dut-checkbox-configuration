@@ -8,7 +8,7 @@
   "com.canonical.certification::has_dvi": false,
   "com.canonical.certification::has_ethernet_adapter": true,
   "com.canonical.certification::has_fingerprint_reader": false,
-  "com.canonical.certification::has_hdmi": true,
+  "com.canonical.certification::has_hdmi": false,
   "com.canonical.certification::has_headset": true,
   "com.canonical.certification::has_internal_speakers": false,
   "com.canonical.certification::has_line_in": false,
