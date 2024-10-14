@@ -5,7 +5,7 @@
   "com.canonical.certification::has_camera": false,
   "com.canonical.certification::has_card_reader": false,
   "com.canonical.certification::has_dp": true,
-  "com.canonical.certification::has_dvd_bluray_inserted": true,
+  "com.canonical.certification::has_dvd_bluray_inserted": false,
   "com.canonical.certification::has_dvi": false,
   "com.canonical.certification::has_ethernet_adapter": true,
   "com.canonical.certification::has_fingerprint_reader": false,
