@@ -1,4 +1,5 @@
 {
+  "com.canonical.certification::dangerous_grade_core_image": true,
   "com.canonical.certification::has_audio_playback": false,
   "com.canonical.certification::has_bt_adapter": true,
   "com.canonical.certification::has_ethernet_adapter": true,
