@@ -2,7 +2,7 @@
   "com.canonical.certification::has_audio_capture": true,
   "com.canonical.certification::has_audio_playback": true,
   "com.canonical.certification::has_bt_smart": false,
-  "com.canonical.certification::has_camera": true,
+  "com.canonical.certification::has_camera": false,
   "com.canonical.certification::has_card_reader": false,
   "com.canonical.certification::has_ethernet_adapter": true,
   "com.canonical.certification::has_thunderbolt": false,
