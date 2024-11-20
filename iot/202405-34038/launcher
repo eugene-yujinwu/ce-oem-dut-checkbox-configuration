@@ -46,6 +46,9 @@ com.canonical.certification::has_edac_module = false
 com.canonical.certification::has_eclite = false
 com.canonical.certification::has_ishtp = false
 com.canonical.certification::has_qep = false
+com.canonical.certification::has_led_power = false
+com.canonical.certification::has_led_wireless = false
+com.canonical.certification::has_mei = false
 com.canonical.contrib::has_buzzer = false
 com.canonical.contrib::has_gps = false
 com.canonical.contrib::has_mtd = true
@@ -57,9 +60,12 @@ com.canonical.contrib::has_caam = false
 com.canonical.contrib::has_mcrc_engine = false
 com.canonical.contrib::has_sa2ul_engine = false
 com.canonical.contrib::has_hardware_rng = false
-com.canonical.contrib::has_tcp_multi_connection_server = true
+com.canonical.contrib::has_tcp_multi_connection_server = false
 com.canonical.contrib::has_optee = false
 com.canonical.contrib::has_ptp = false
+com.canonical.contrib::has_uefi_secure_boot_support = false
+com.canonical.contrib::has_gpio_slot_been_defined = false
+com.canonical.contrib::has_spi = false
 
 [environment]
 TOTAL_MTD_NUM=17
