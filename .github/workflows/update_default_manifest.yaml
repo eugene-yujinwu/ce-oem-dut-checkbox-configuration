@@ -1,0 +1,25 @@
+name: Update the default manifest
+
+on:
+  workflow_dispatch:
+
+jobs:
+  install_checkbox:
+    name: Install Checkbox
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install Checkbox
+        run: |
+          sudo add-apt-repository ppa:checkbox-dev/beta
+          sudo apt-get update -qq
+          sudo apt-get install canonical-certification-client -qq -y
+
+  get_latest_manifest:
+    name: Get latest manifest
+    runs-on: ubuntu-latest
+    steps:
+      - name: Get latest manifest
+        run: |
+          # get the latest manifest
+          checkbox-cli expand com.canonical.certification::client-cert-desktop-24-04 -f json|jq|grep "manifest entry" -2|grep has_|cut -d\" -f4|sort
