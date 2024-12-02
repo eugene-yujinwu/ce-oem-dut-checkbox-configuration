@@ -17,13 +17,13 @@ jobs:
         run: |
           # get the latest manifest
           checkbox-cli expand com.canonical.certification::client-cert-desktop-24-04 -f json|jq|grep "manifest entry" -2|grep has_|cut -d\" -f4|sort >>~/new.log
-          cat new.log
+          cat ~/new.log
       - name: Checkout ce-oem-dut-checkbox-configuration
         uses: actions/checkout@v4
       - name: cat old default manifest
         run: |
           cat /home/runner/work/ce-oem-dut-checkbox-configuration/ce-oem-dut-checkbox-configuration/pc/default/manifest.json |grep has_|cut -d\" -f2|sort >>~/old.log
-          cat old.log
+          cat ~/old.log
       - name: diff the old and new manifest
         run: |
             #!/bin/bash
