@@ -22,7 +22,7 @@ jobs:
         uses: actions/checkout@v4
       - name: cat old default manifest
         run: |
-          cat ce-oem-dut-checkbox-configuration/pc/default/manifest.json |grep has_|cut -d\" -f2|sort >>old.log
+          cat /home/runner/work/ce-oem-dut-checkbox-configuration/ce-oem-dut-checkbox-configuration/pc/default/manifest.json |grep has_|cut -d\" -f2|sort >>old.log
           cat old.log
       - name: diff the old and new manifest
         run: |
