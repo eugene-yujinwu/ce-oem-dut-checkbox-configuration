@@ -27,6 +27,10 @@ jobs:
       - name: diff the old and new manifest
         run: |
           #!/bin/bash
+          if [ ! -f ~/new.log ] || [ ! -f ~/old.log ]; then
+            echo "new.log or old.log doesn't exist."
+            exit 1
+          fi
           diff ~/old.log ~/new.log > ~/diff.txt
           if [ $? -eq 0 ]; then
             echo "The manifest doesn't change!"
