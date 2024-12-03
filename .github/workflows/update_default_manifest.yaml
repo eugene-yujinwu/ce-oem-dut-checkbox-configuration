@@ -29,5 +29,4 @@ jobs:
       - name: diff the old and new manifest
         run: |
           #!/usr/bin/bash -e {0}
-          set +e
           echo "start test..."
