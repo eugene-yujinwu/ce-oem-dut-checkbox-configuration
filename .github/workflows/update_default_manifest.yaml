@@ -28,5 +28,9 @@ jobs:
           cat ~/old.log
       - name: diff the old and new manifest
         run: |
-          #!/usr/bin/bash -e {0}
+          set +e
           echo "start test..."
+          if [ ! -f ~/new.log ] || [ ! -f ~/old.log ]; then
+            echo "new.log or old.log doesn't exist."
+            exit 1
+          fi
