@@ -34,3 +34,11 @@ jobs:
             echo "new.log or old.log doesn't exist."
             exit 1
           fi
+          echo "diff old.log new.log"
+          diff ~/old.log ~/new.log > ~/diff.txt
+          if [ $? -eq 0 ]; then
+            echo "The manifest doesn't change!"
+          else
+            echo "The manifest has changed!"
+            cat ~/diff.txt
+          fi
