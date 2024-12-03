@@ -38,7 +38,19 @@ jobs:
           diff ~/old.log ~/new.log > ~/diff.txt
           if [ $? -eq 0 ]; then
             echo "The manifest doesn't change!"
+            exit 0
           else
             echo "The manifest has changed!"
-            cat ~/diff.txt
+            declare -A json_data
+            while IFS= read -r line; do
+                key=$(echo "$line"|tr -d ' \t')
+                value=true
+                if [[ -n "$key" ]]; then
+                json_data["$key"]="$value"
+                fi
+            done < ~/new.log
+            json_string=$(echo "$(declare -p json_data | sed 's/declare -A json_data=//;s/\"//g;s/\[/\"/g;s/\]/\"/g;s/=/:/g;s/ /,/g;s/,)/)/;s/(/\{/;s/)/\}/')")
+            echo "$json_string" | jq > ~/manifest.json
+            cat ~/manifest.json
+            exit 0
           fi
