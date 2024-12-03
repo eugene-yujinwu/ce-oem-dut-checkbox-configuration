@@ -1,6 +1,8 @@
 name: Update the default manifest
 
 on:
+  push:
+    branches: [ update_default_manifest ] 
   workflow_dispatch:
 
 jobs:
