@@ -26,11 +26,11 @@ jobs:
           cat ~/old.log
       - name: diff the old and new manifest
         run: |
-            #!/bin/bash
-            diff ~/old.log ~/new.log > ~/diff.txt
-            if [ $? -eq 0 ]; then
-              echo "The manifest doesn't change!"
-            else
-              echo "The manifest has changed!"
-              cat ~/diff.txt
-            fi
+          #!/bin/bash
+          diff ~/old.log ~/new.log > ~/diff.txt
+          if [ $? -eq 0 ]; then
+            echo "The manifest doesn't change!"
+          else
+            echo "The manifest has changed!"
+            cat ~/diff.txt
+          fi
