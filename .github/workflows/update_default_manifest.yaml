@@ -52,5 +52,14 @@ jobs:
             json_string=$(echo "$(declare -p json_data | sed 's/declare -A json_data=//;s/\"//g;s/\[/\"/g;s/\]/\"/g;s/=/:/g;s/ /,/g;s/,)/)/;s/(/\{/;s/)/\}/')")
             echo "$json_string" | jq > ~/manifest.json
             cat ~/manifest.json
-            exit 0
+            cp ~/manifest.json /home/runner/work/ce-oem-dut-checkbox-configuration/ce-oem-dut-checkbox-configuration/pc/default/manifest.json
           fi
+      - name: GIT commit and push all changed files
+        env: 
+          CI_COMMIT_MESSAGE: Continuous Integration Build Artifacts
+          CI_COMMIT_AUTHOR: Continuous Integration
+        run: |
+          git config --global user.name "${{ env.CI_COMMIT_AUTHOR }}"
+          git config --global user.email "eugene-yujinwu@users.noreply.github.com"
+          git commit -a -m "update default manifest for pc"
+          git push
