@@ -59,7 +59,7 @@ jobs:
           CI_COMMIT_MESSAGE: Continuous Integration Build Artifacts
           CI_COMMIT_AUTHOR: Continuous Integration
         run: |
-          git config --global user.name "${{ env.CI_COMMIT_AUTHOR }}"
+          git config --global user.name "eugene-yujinwu"
           git config --global user.email "eugene-yujinwu@users.noreply.github.com"
           git commit -a -m "update default manifest for pc"
           git push
