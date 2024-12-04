@@ -9,6 +9,8 @@ jobs:
   Update_default_manifest:
     name: Update default manifest
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
     steps:
       - name: Install Checkbox
         run: |
@@ -55,9 +57,8 @@ jobs:
             cp ~/manifest.json /home/runner/work/ce-oem-dut-checkbox-configuration/ce-oem-dut-checkbox-configuration/pc/default/manifest.json
           fi
       - name: GIT commit and push all changed files
-        env: 
-          CI_COMMIT_MESSAGE: Continuous Integration Build Artifacts
-          CI_COMMIT_AUTHOR: Continuous Integration
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }} 
         run: |
           git config --global user.name "eugene-yujinwu"
           git config --global user.email "eugene-yujinwu@users.noreply.github.com"
