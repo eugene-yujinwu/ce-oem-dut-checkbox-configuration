@@ -20,27 +20,27 @@ jobs:
       - name: Get latest manifest
         run: |
           # get the latest manifest
-          checkbox-cli expand com.canonical.certification::client-cert-desktop-24-04 -f json|jq|grep "manifest entry" -2|grep has_|cut -d\" -f4|sort >>new.log
-          cat new.log
+          checkbox-cli expand com.canonical.certification::client-cert-desktop-24-04 -f json|jq|grep "manifest entry" -2|grep has_|cut -d\" -f4|sort >>~/new.txt
+          cat ~/new.txt
       - name: Checkout ce-oem-dut-checkbox-configuration
         uses: actions/checkout@v4
       - name: cat old default manifest
         run: |
-          cat /home/runner/work/ce-oem-dut-checkbox-configuration/ce-oem-dut-checkbox-configuration/pc/default/manifest.json |grep has_|cut -d\" -f2|sort >>old.log
-          cat old.log
+          cat /home/runner/work/ce-oem-dut-checkbox-configuration/ce-oem-dut-checkbox-configuration/pc/default/manifest.json |grep has_|cut -d\" -f2|sort >>~/old.txt
+          cat ~/old.txt
       - name: diff the old and new manifest
         run: |
           set +e
           echo "start test..."
-          if [ ! -f new.log ] || [ ! -f old.log ]; then
-            echo "new.log or old.log doesn't exist."
+          if [ ! -f ~/new.txt ] || [ ! -f ~/old.txt ]; then
+            echo "~/new.txt or ~/old.txt doesn't exist."
             exit 1
           fi
-          echo "diff old.log new.log"
-          diff old.log new.log > diff.txt
+          echo "diff ~/old.txt ~/new.txt"
+          diff ~/old.txt ~/new.txt > diff.txt
           if [ $? -eq 0 ]; then
             echo "The manifest doesn't change!"
-            exit 0
+            exit 1
           else
             echo "The manifest has changed!"
             declare -A json_data
@@ -48,9 +48,9 @@ jobs:
                 key=$(echo "$line"|tr -d ' \t')
                 value=true
                 if [[ -n "$key" ]]; then
-                json_data["$key"]="$value"
+                  json_data["$key"]="$value"
                 fi
-            done < new.log
+            done < ~/new.txt
             json_string=$(echo "$(declare -p json_data | sed 's/declare -A json_data=//;s/\"//g;s/\[/\"/g;s/\]/\"/g;s/=/:/g;s/ /,/g;s/,)/)/;s/(/\{/;s/)/\}/')")
             echo "$json_string" | jq > manifest.json
             cat manifest.json
@@ -59,6 +59,7 @@ jobs:
       - name: GIT commit and push all changed files
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }} 
+        if: success()
         run: |
           git config --global user.name "eugene-yujinwu"
           git config --global user.email "eugene-yujinwu@users.noreply.github.com"
