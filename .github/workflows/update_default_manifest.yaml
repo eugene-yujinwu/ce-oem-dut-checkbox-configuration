@@ -20,24 +20,24 @@ jobs:
       - name: Get latest manifest
         run: |
           # get the latest manifest
-          checkbox-cli expand com.canonical.certification::client-cert-desktop-24-04 -f json|jq|grep "manifest entry" -2|grep has_|cut -d\" -f4|sort >>~/new.log
-          cat ~/new.log
+          checkbox-cli expand com.canonical.certification::client-cert-desktop-24-04 -f json|jq|grep "manifest entry" -2|grep has_|cut -d\" -f4|sort >>new.log
+          cat new.log
       - name: Checkout ce-oem-dut-checkbox-configuration
         uses: actions/checkout@v4
       - name: cat old default manifest
         run: |
-          cat /home/runner/work/ce-oem-dut-checkbox-configuration/ce-oem-dut-checkbox-configuration/pc/default/manifest.json |grep has_|cut -d\" -f2|sort >>~/old.log
-          cat ~/old.log
+          cat /home/runner/work/ce-oem-dut-checkbox-configuration/ce-oem-dut-checkbox-configuration/pc/default/manifest.json |grep has_|cut -d\" -f2|sort >>old.log
+          cat old.log
       - name: diff the old and new manifest
         run: |
           set +e
           echo "start test..."
-          if [ ! -f ~/new.log ] || [ ! -f ~/old.log ]; then
+          if [ ! -f new.log ] || [ ! -f old.log ]; then
             echo "new.log or old.log doesn't exist."
             exit 1
           fi
           echo "diff old.log new.log"
-          diff ~/old.log ~/new.log > ~/diff.txt
+          diff old.log new.log > diff.txt
           if [ $? -eq 0 ]; then
             echo "The manifest doesn't change!"
             exit 0
@@ -50,11 +50,11 @@ jobs:
                 if [[ -n "$key" ]]; then
                 json_data["$key"]="$value"
                 fi
-            done < ~/new.log
+            done < new.log
             json_string=$(echo "$(declare -p json_data | sed 's/declare -A json_data=//;s/\"//g;s/\[/\"/g;s/\]/\"/g;s/=/:/g;s/ /,/g;s/,)/)/;s/(/\{/;s/)/\}/')")
-            echo "$json_string" | jq > ~/manifest.json
-            cat ~/manifest.json
-            cp ~/manifest.json /home/runner/work/ce-oem-dut-checkbox-configuration/ce-oem-dut-checkbox-configuration/pc/default/manifest.json
+            echo "$json_string" | jq > manifest.json
+            cat manifest.json
+            cp manifest.json /home/runner/work/ce-oem-dut-checkbox-configuration/ce-oem-dut-checkbox-configuration/pc/default/manifest.json
           fi
       - name: GIT commit and push all changed files
         env:
