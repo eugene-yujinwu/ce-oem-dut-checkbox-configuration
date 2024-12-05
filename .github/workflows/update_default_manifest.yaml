@@ -34,13 +34,13 @@ jobs:
           echo "start test..."
           if [ ! -f ~/new.txt ] || [ ! -f ~/old.txt ]; then
             echo "~/new.txt or ~/old.txt doesn't exist."
-            exit 1
+            exit 0
           fi
           echo "diff ~/old.txt ~/new.txt"
           diff ~/old.txt ~/new.txt > diff.txt
           if [ $? -eq 0 ]; then
             echo "The manifest doesn't change!"
-            exit 1
+            exit 0
           else
             echo "The manifest has changed!"
             declare -A json_data
@@ -55,11 +55,12 @@ jobs:
             echo "$json_string" | jq > manifest.json
             cat manifest.json
             cp manifest.json /home/runner/work/ce-oem-dut-checkbox-configuration/ce-oem-dut-checkbox-configuration/pc/default/manifest.json
+            exit 1
           fi
       - name: GIT commit and push all changed files
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }} 
-        if: success()
+        if: failure()
         run: |
           git config --global user.name "eugene-yujinwu"
           git config --global user.email "eugene-yujinwu@users.noreply.github.com"
