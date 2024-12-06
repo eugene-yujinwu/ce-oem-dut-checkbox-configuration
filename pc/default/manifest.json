@@ -41,7 +41,6 @@
   "com.canonical.certification::has_led_power": true,
   "com.canonical.certification::has_card_reader": true,
   "com.canonical.certification::has_wwan_module": true,
-  "com.canonical.certification::has_fingerprint_reader": true,
   "com.canonical.certification::has_led_fn_lock": true,
   "com.canonical.certification::has_line_out": true,
   "com.canonical.certification::has_key_fn_lock": true
