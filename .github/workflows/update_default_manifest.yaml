@@ -26,9 +26,7 @@ jobs:
           TEST_PLAN="com.canonical.certification::client-cert-desktop-24-04"
           NEW_MANIFEST="/tmp/new.json"
           ORIG_MANIFEST="./pc/default/manifest.json"
-          #ret=$(python3 ./utils/manifest_get_compare.py --test_plan="$TEST_PLAN" --new_manifest="$NEW_MANIFEST" --orig_manifest="$ORIG_MANIFEST")
           if python3 ./utils/manifest_get_compare.py --test_plan="$TEST_PLAN" --new_manifest="$NEW_MANIFEST" --orig_manifest="$ORIG_MANIFEST"; then
-          # if [ $? -eq 0 ]; then
             cp "$NEW_MANIFEST" "$ORIG_MANIFEST"
             cat "$NEW_MANIFEST"
             echo "has_changes=true" >> $GITHUB_ENV
