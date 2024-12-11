@@ -1,8 +1,8 @@
 name: Update the default manifest
 
 on:
-  # push:
-  #   branches: [ update_default_manifest ]
+  push:
+    branches: [ update_default_manifest ]
   # schedule:
   #   - cron: '*/5 * * * *'
   workflow_dispatch:
@@ -19,53 +19,29 @@ jobs:
           sudo add-apt-repository ppa:checkbox-dev/beta
           sudo apt-get update -qq
           sudo apt-get install canonical-certification-client -qq -y
-      - name: Get latest manifest
-        run: |
-          # get the latest manifest
-          checkbox-cli expand com.canonical.certification::client-cert-desktop-24-04 -f json|jq|grep "manifest entry" -2|grep has_|cut -d\" -f4|sort >>~/new.txt
-          cat ~/new.txt
       - name: Checkout ce-oem-dut-checkbox-configuration
         uses: actions/checkout@v4
-      - name: cat old default manifest
+      - name: Get latest manifest and compare with the default manifest
         run: |
-          cat /home/runner/work/ce-oem-dut-checkbox-configuration/ce-oem-dut-checkbox-configuration/pc/default/manifest.json |grep has_|cut -d\" -f2|sort >>~/old.txt
-          cat ~/old.txt
-      - name: diff the old and new manifest
-        run: |
-          set +e
-          echo "start test..."
-          if [ ! -f ~/new.txt ] || [ ! -f ~/old.txt ]; then
-            echo "~/new.txt or ~/old.txt doesn't exist."
-            exit 0
-          fi
-          echo "diff ~/old.txt ~/new.txt"
-          diff ~/old.txt ~/new.txt > diff.txt
+          TEST_PLAN="com.canonical.certification::client-cert-desktop-24-04"
+          NEW_MANIFEST="/tmp/new.json"
+          ORIG_MANIFEST="./pc/default/manifest.json"
+          #ret=$(python3 ./utils/manifest_get_compare.py --test_plan="$TEST_PLAN" --new_manifest="$NEW_MANIFEST" --orig_manifest="$ORIG_MANIFEST")
+          python3 ./utils/manifest_get_compare.py --test_plan="$TEST_PLAN" --new_manifest="$NEW_MANIFEST" --orig_manifest="$ORIG_MANIFEST"
           if [ $? -eq 0 ]; then
-            echo "The manifest doesn't change!"
-            exit 0
+            cp "$NEW_MANIFEST" "$ORIG_MANIFEST"
+            cat "$NEW_MANIFEST"
+            echo "has_changes=true" >> $GITHUB_ENV
           else
-            echo "The manifest has changed!"
-            declare -A json_data
-            while IFS= read -r line; do
-                key=$(echo "$line"|tr -d ' \t')
-                value=true
-                if [[ -n "$key" ]]; then
-                  json_data["$key"]="$value"
-                fi
-            done < ~/new.txt
-            json_string=$(echo "$(declare -p json_data | sed 's/declare -A json_data=//;s/\"//g;s/\[/\"/g;s/\]/\"/g;s/=/:/g;s/ /,/g;s/,)/)/;s/(/\{/;s/)/\}/')")
-            echo "$json_string" | jq > manifest.json
-            cat manifest.json
-            cp manifest.json /home/runner/work/ce-oem-dut-checkbox-configuration/ce-oem-dut-checkbox-configuration/pc/default/manifest.json
-            exit 1
+            echo "No manifest changes being found."
+            echo "has_changes=false" >> $GITHUB_ENV
           fi
+        continue-on-error: true
       - name: GIT commit and push all changed files
+        if: env.has_changes == 'true'
         env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }} 
-        if: failure()
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          # git config --global user.name "eugene-yujinwu"
-          # git config --global user.email "eugene-yujinwu@users.noreply.github.com"
           git config user.name "${{ github.actor }}"
           git config user.email "${{ github.actor_id }}+${{ github.actor }}@users.noreply.github.com"
           git commit -a -m "update default manifest for pc"
