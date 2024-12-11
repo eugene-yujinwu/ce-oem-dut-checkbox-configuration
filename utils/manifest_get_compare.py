@@ -13,6 +13,7 @@ false and print the differences.
 import json
 import subprocess
 import argparse
+import sys
 
 
 def write_test_plan_to_file(test_plan, out_file):
@@ -79,11 +80,11 @@ def compare_json_keys(old_json_file, new_json_file):
         old_keys = set(old_data.keys())
         new_keys = set(new_data.keys())
 
-        ret = False
+        ret = 1
         # Added keys
         added_keys = new_keys - old_keys
         if added_keys:
-            ret = True
+            ret = 0
             print("Added manifests:")
             for key in added_keys:
                 print(f"{key}: {new_data[key]}")
@@ -91,12 +92,12 @@ def compare_json_keys(old_json_file, new_json_file):
         # Removed keys
         removed_keys = old_keys - new_keys
         if removed_keys:
-            ret = True
+            ret = 0
             print("Removed manifest:")
             for key in removed_keys:
                 print(f"{key}: {old_data[key]}")
 
-        return ret
+        sys.exit(ret)
     except FileNotFoundError:
         print(f"File not found: {old_json_file} or {new_json_file}")
     except json.JSONDecodeError:
