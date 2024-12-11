@@ -23,15 +23,19 @@ jobs:
         uses: actions/checkout@v4
       - name: Get latest manifest and compare with the default manifest
         run: |
-          # get the latest manifest and diff
-          ret=${utils/manifest_get_compare.py --test_plan="com.canonical.certification::client-cert-desktop-24-04" --new_manifest="new.json" --orig_manifest="pc/default/manifest.json"}
-          [ $ret = true ] && cp new.json pc/default/manifest.json
+          TEST_PLAN="com.canonical.certification::client-cert-desktop-24-04"
+          NEW_MANIFEST="/tmp/new.json"
+          ORIG_MANIFEST="./pc/default/manifest.json"
+          python3 ./utils/manifest_get_compare.py --test_plan="$TEST_PLAN" --new_manifest="$NEW_MANIFEST" --orig_manifest="$ORIG_MANIFEST"
+          if [ $? -eq 0 ]; then
+            cp "$NEW_MANIFEST" "$ORIG_MANIFEST"
+          else
+            echo "Error: Manifest comparison failed."
+          fi
       - name: GIT commit and push all changed files
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          # git config --global user.name "eugene-yujinwu"
-          # git config --global user.email "eugene-yujinwu@users.noreply.github.com"
           git diff --quiet
           if [ $? -eq 0 ]; then
             echo "no change"
