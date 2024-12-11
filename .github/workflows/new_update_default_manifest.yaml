@@ -29,6 +29,7 @@ jobs:
           python3 ./utils/manifest_get_compare.py --test_plan="$TEST_PLAN" --new_manifest="$NEW_MANIFEST" --orig_manifest="$ORIG_MANIFEST"
           if [ $? -eq 0 ]; then
             cp "$NEW_MANIFEST" "$ORIG_MANIFEST"
+            cat "$NEW_MANIFEST"
           else
             echo "No manifest changes being found."
           fi
@@ -36,7 +37,7 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          git diff
+          git diff --quiet
           if [ $? -eq 0 ]; then
             echo "no change"
             exit 0
