@@ -25,7 +25,8 @@ jobs:
         run: |
           TEST_PLAN="com.canonical.certification::client-cert-desktop-24-04"
           NEW_MANIFEST="/tmp/new.json"
-          ORIG_MANIFEST="./pc/default/manifest.json"
+          # ORIG_MANIFEST="./pc/default/manifest.json"
+          ORIG_MANIFEST="./wrongplace/manifest.json"
           if python3 ./utils/manifest_get_compare.py --test_plan="$TEST_PLAN" --new_manifest="$NEW_MANIFEST" --orig_manifest="$ORIG_MANIFEST"; then
             echo "No manifest changes being found."
             echo "has_changes=false" >> $GITHUB_ENV
