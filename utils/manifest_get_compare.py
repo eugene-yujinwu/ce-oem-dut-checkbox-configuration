@@ -72,7 +72,7 @@ def compare_json_keys(old_json_file, new_json_file):
         new_json_file: The path to the new manifest file.
 
     Returns:
-        int: 0 if the files are identical, 1 if they differ.
+        Boolean: True if the files are identical, False if they differ.
     """
 
     try:
@@ -84,11 +84,11 @@ def compare_json_keys(old_json_file, new_json_file):
         old_keys = set(old_data.keys())
         new_keys = set(new_data.keys())
 
-        ret = 0
+        ret = True
         # Added keys
         added_keys = new_keys - old_keys
         if added_keys:
-            ret = 1
+            ret = False
             print("Added manifests:")
             for key in added_keys:
                 print(f"{key}: {new_data[key]}")
@@ -96,7 +96,7 @@ def compare_json_keys(old_json_file, new_json_file):
         # Removed keys
         removed_keys = old_keys - new_keys
         if removed_keys:
-            ret = 1
+            ret = False
             print("Removed manifest:")
             for key in removed_keys:
                 print(f"{key}: {old_data[key]}")
@@ -134,7 +134,7 @@ if __name__ == "__main__":
     get_manifest_from_testplan(args.test_plan, args.new_manifest)
 
     if args.orig_manifest:
-        if compare_json_keys(args.orig_manifest, args.new_manifest) == 0:
+        if compare_json_keys(args.orig_manifest, args.new_manifest):
             print("Manifests are identical")
             sys.exit(0)
         else:
