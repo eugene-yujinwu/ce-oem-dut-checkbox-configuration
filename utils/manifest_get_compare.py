@@ -16,9 +16,10 @@ import argparse
 import sys
 
 
-def write_test_plan_to_file(test_plan, out_file):
+def get_manifest_from_testplan(test_plan, out_file):
     """
-    Writes the output of the checkbox-cli expand command to a specified file.
+    get the manifest from the output of checkbox-cli expand command,
+    write it to a specified file.
 
     Args:
         test_plan: The test plan to expand.
@@ -32,7 +33,7 @@ def write_test_plan_to_file(test_plan, out_file):
             capture_output=True, check=True
             )
     except FileNotFoundError:
-        raise FileNotFoundError(
+        raise SystemExit(
             "checkbox-cli command not found."
             "Please install it or check your PATH.")
 
@@ -42,12 +43,12 @@ def write_test_plan_to_file(test_plan, out_file):
             capture_output=True, text=True, check=True
             )
     except subprocess.CalledProcessError as e:
-        raise RuntimeError(f"Error executing checkbox-cli: {e}")
+        raise SystemExit(f"Error executing checkbox-cli: {e}")
 
     try:
         data = json.loads(result.stdout)
     except json.JSONDecodeError:
-        raise ValueError("Output from checkbox-cli is not valid JSON.")
+        raise SystemExit("Output from checkbox-cli is not valid JSON.")
 
     ids = set()
     for entry in data:
@@ -69,6 +70,9 @@ def compare_json_keys(old_json_file, new_json_file):
     Args:
         old_json_file: The path to the orignial manifest file to be compared.
         new_json_file: The path to the new manifest file.
+
+    Returns:
+        int: 0 if the files are identical, 1 if they differ.
     """
 
     try:
@@ -97,11 +101,11 @@ def compare_json_keys(old_json_file, new_json_file):
             for key in removed_keys:
                 print(f"{key}: {old_data[key]}")
 
-        sys.exit(ret)
+        return (ret)
     except FileNotFoundError:
-        print(f"File not found: {old_json_file} or {new_json_file}")
+        raise SystemExit(f"File not found: {old_json_file} or {new_json_file}")
     except json.JSONDecodeError:
-        print("JSON decoding error")
+        raise SystemExit("JSON decoding error")
 
 
 def parse_args():
@@ -127,7 +131,12 @@ def parse_args():
 if __name__ == "__main__":
     args = parse_args()
 
-    write_test_plan_to_file(args.test_plan, args.new_manifest)
+    get_manifest_from_testplan(args.test_plan, args.new_manifest)
 
     if args.orig_manifest:
-        compare_json_keys(args.orig_manifest, args.new_manifest)
+        if compare_json_keys(args.orig_manifest, args.new_manifest) == 0:
+            print("Manifests are identical")
+            sys.exit(0)
+        else:
+            print("Manifests are different")
+            sys.exit(1)

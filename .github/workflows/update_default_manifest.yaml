@@ -21,7 +21,7 @@ jobs:
           sudo apt-get install canonical-certification-client -qq -y
       - name: Checkout ce-oem-dut-checkbox-configuration
         uses: actions/checkout@v4
-      - name: Get latest manifest and compare with the default manifest
+      - name: Get latest manifest and compare it with the default manifest
         run: |
           TEST_PLAN="com.canonical.certification::client-cert-desktop-24-04"
           NEW_MANIFEST="/tmp/new.json"
@@ -34,7 +34,6 @@ jobs:
             echo "No manifest changes being found."
             echo "has_changes=false" >> $GITHUB_ENV
           fi
-        continue-on-error: true
       - name: GIT commit and push all changed files
         if: env.has_changes == 'true'
         env:
