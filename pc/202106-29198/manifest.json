@@ -1,6 +1,6 @@
 {
   "com.canonical.certification::has_bt_smart": false,
-  "com.canonical.certification::has_camera": false, # Camera is intentionally set to false, as the machine is used only to test uc22-fde.
+  "com.canonical.certification::has_camera": false,
   "com.canonical.certification::has_card_reader": false,
   "com.canonical.certification::has_ethernet_adapter": true,
   "com.canonical.certification::has_thunderbolt": false,
