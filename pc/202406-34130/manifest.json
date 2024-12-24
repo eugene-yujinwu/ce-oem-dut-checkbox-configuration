@@ -1,6 +1,7 @@
 {
   "com.canonical.certification::has_audio_capture": false,
   "com.canonical.certification::has_audio_playback": true,
+  "com.canonical.certification::has_bt_obex_support": false,
   "com.canonical.certification::has_bt_smart": false,
   "com.canonical.certification::has_camera": false,
   "com.canonical.certification::has_card_reader": false,
@@ -15,6 +16,7 @@
   "com.canonical.certification::has_line_in": false,
   "com.canonical.certification::has_line_out": true,
   "com.canonical.certification::has_md_raid": false,
+  "com.canonical.certification::has_sim_card": false,
   "com.canonical.certification::has_special_keys": false,
   "com.canonical.certification::has_thunderbolt3": false,
   "com.canonical.certification::has_touchpad": false,
