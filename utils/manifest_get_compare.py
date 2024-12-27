@@ -11,19 +11,19 @@ import argparse
 
 usage = """\
 manifest_get_compare.py [-h] {compare,update,generate} \
---testplan="TEST_PLAN" --manifest="MANIFEST_FILE"
+--test_plan="TEST_PLAN" --manifest="MANIFEST_FILE"
 
 Examples:
     Compared with test plan:
-        python3 manifest_gen_comp_update.py compare --test-plan="TEST_PLAN"\
+        python3 manifest_gen_comp_update.py compare --test_plan="TEST_PLAN"\
  --manifest="MANIFEST_FILE"
 
     Update manifest:
-        python3 manifest_gen_comp_update.py update --test-plan="TEST_PLAN"\
+        python3 manifest_gen_comp_update.py update --test_plan="TEST_PLAN"\
  --manifest="MANIFEST_FILE"
 
     Generate manifest:
-        python3 manifest_gen_comp_update.py generate --test-plan="TEST_PLAN"\
+        python3 manifest_gen_comp_update.py generate --test_plan="TEST_PLAN"\
  --manifest="MANIFEST_FILE"
 
 """
@@ -132,7 +132,7 @@ def parse_args():
         'compare', help='Compare the manifest with a test plans.'
     )
     parser_compare.add_argument(
-        '--test-plan', required=True, help='The test plan to compare.'
+        '--test_plan', required=True, help='The test plan to compare.'
     )
     parser_compare.add_argument(
         '--manifest', required=True, help='The manifest file to be compared.'
@@ -142,7 +142,7 @@ def parse_args():
         'update', help='Update the manifest for the test plans.'
     )
     parser_update.add_argument(
-        '--test-plan', required=True, help='The test plan to get the manifest.'
+        '--test_plan', required=True, help='The test plan to get the manifest.'
     )
     parser_update.add_argument(
         '--manifest', required=True, help='The manifest file to be updated.'
@@ -152,7 +152,7 @@ def parse_args():
         'generate', help='Generate a manifest file for the test plan.'
     )
     parser_generate.add_argument(
-        '--test-plan', required=True,
+        '--test_plan', required=True,
         help='Generate manifest for the test plan.'
     )
     parser_generate.add_argument(
