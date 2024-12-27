@@ -34,4 +34,7 @@ jobs:
             git config user.email "${{ github.actor_id }}+${{ github.actor }}@users.noreply.github.com"
             git add "$DEFAULT_MANIFEST"
             git commit -a -m "update default manifest for pc" &&  git push
+            echo "New manifest pushed!"
+          else
+            echo "No changes to commit."
           fi
