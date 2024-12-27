@@ -22,22 +22,16 @@ jobs:
       - name: Get latest manifest and compare it with the default manifest
         run: |
           TEST_PLAN="com.canonical.certification::client-cert-desktop-24-04"
-          NEW_MANIFEST="/tmp/new.json"
-          ORIG_MANIFEST="./pc/default/manifest.json"
-          if python3 ./utils/manifest_get_compare.py --test_plan="$TEST_PLAN" --new_manifest="$NEW_MANIFEST" --orig_manifest="$ORIG_MANIFEST"; then
-            echo "No manifest changes being found."
-            echo "has_changes=false" >> $GITHUB_ENV
-          else
-            cp "$NEW_MANIFEST" "$ORIG_MANIFEST"
-            cat "$NEW_MANIFEST"
-            echo "has_changes=true" >> $GITHUB_ENV
-          fi
+          DEFAULT_MANIFEST="./pc/default/manifest.json"
+          python3 ./utils/manifest_get_compare.py update --test_plan="$TEST_PLAN" --manifest="$DEFAULT_MANIFEST" 
       - name: GIT commit and push all changed files
-        if: env.has_changes == 'true'
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          git config user.name "${{ github.actor }}"
-          git config user.email "${{ github.actor_id }}+${{ github.actor }}@users.noreply.github.com"
-          git commit -a -m "update default manifest for pc"
-          git push
+          DEFAULT_MANIFEST="./pc/default/manifest.json"
+          if ! git diff --quiet "$DEFAULT_MANIFEST"; then
+            git config user.name "${{ github.actor }}"
+            git config user.email "${{ github.actor_id }}+${{ github.actor }}@users.noreply.github.com"
+            git add "$DEFAULT_MANIFEST"
+            git commit -a -m "update default manifest for pc" &&  git push
+          fi

@@ -1,29 +1,40 @@
 #!/usr/bin/env python3
 
 """
-Generate a manifest.json for a device manifest with a default value
-of "true" based on a specific test plan.
-
-If a machine manifest is provided, the tool will generate the corresponding
-device manifest and compare it with the given machine manifest. It will
-return true if the two manifests are identical; otherwise, it will return
-false and print the differences.
+Compare or generate or update the manifest for a specific test plan.
 """
 
 import json
 import subprocess
 import argparse
-import sys
 
 
-def get_manifest_from_testplan(test_plan, out_file):
+usage = """\
+manifest_get_compare.py [-h] {compare,update,generate} \
+--testplan="TEST_PLAN" --manifest="MANIFEST_FILE"
+
+Examples:
+    Compared with test plan:
+        python3 manifest_gen_comp_update.py compare --test-plan="TEST_PLAN"\
+ --manifest="MANIFEST_FILE"
+
+    Update manifest:
+        python3 manifest_gen_comp_update.py update --test-plan="TEST_PLAN"\
+ --manifest="MANIFEST_FILE"
+
+    Generate manifest:
+        python3 manifest_gen_comp_update.py generate --test-plan="TEST_PLAN"\
+ --manifest="MANIFEST_FILE"
+
+"""
+
+
+def get_manifest_from_testplan(test_plan):
     """
     get the manifest from the output of checkbox-cli expand command,
     write it to a specified file.
-
     Args:
-        test_plan: The test plan to expand.
-        out_file: The output filename.
+        test_plan: The test plan for which to get the manifest.
     """
 
     # Check if checkbox-cli is accessible
@@ -55,34 +66,30 @@ def get_manifest_from_testplan(test_plan, out_file):
         if entry["unit"] == "manifest entry":
             ids.add(entry["id"])
 
-    sorted_ids = sorted(ids)
+    return (ids)
 
+
+def generate_new_manifest(new_manifest_file, ids):
+    sorted_ids = sorted(ids)
     new_data = {id: True for id in sorted_ids}
 
-    with open(out_file, 'w') as f:
+    with open(new_manifest_file, 'w') as f:
         json.dump(new_data, f, indent=2)
 
 
-def compare_json_keys(old_json_file, new_json_file):
+def compare_json_keys(orig_manifest_file, new_keys):
     """
-    Compares the keys in two JSON files and prints the difference.
-
+    Compares the keys in original manifest file and the new_keys.
     Args:
-        old_json_file: The path to the orignial manifest file to be compared.
-        new_json_file: The path to the new manifest file.
-
-    Returns:
-        Boolean: True if the files are identical, False if they differ.
+        orig_manifest_file: The path to the orignial manifest file to compared.
+        new_keys: The manifest key get from test plan.
     """
 
     try:
-        with open(old_json_file, 'r') as f:
+        with open(orig_manifest_file, 'r') as f:
             old_data = json.load(f)
-        with open(new_json_file, 'r') as f:
-            new_data = json.load(f)
 
         old_keys = set(old_data.keys())
-        new_keys = set(new_data.keys())
 
         ret = True
         # Added keys
@@ -91,7 +98,7 @@ def compare_json_keys(old_json_file, new_json_file):
             ret = False
             print("Added manifests:")
             for key in added_keys:
-                print(f"{key}: {new_data[key]}")
+                print(f"{key}")
 
         # Removed keys
         removed_keys = old_keys - new_keys
@@ -99,44 +106,86 @@ def compare_json_keys(old_json_file, new_json_file):
             ret = False
             print("Removed manifest:")
             for key in removed_keys:
-                print(f"{key}: {old_data[key]}")
+                print(f"{key}")
 
         return (ret)
     except FileNotFoundError:
-        raise SystemExit(f"File not found: {old_json_file} or {new_json_file}")
+        raise SystemExit(f"File not found: {orig_manifest_file}")
     except json.JSONDecodeError:
         raise SystemExit("JSON decoding error")
 
 
 def parse_args():
     parser = argparse.ArgumentParser(
-        description=(
-            "Generate a manifest from a test plan, Compare it with"
-            " an specific manifest."
-        )
+      description=(
+        "Compare or generate or update the manifest for a specific test plans."
+      ),
+      usage=usage,
     )
-    parser.add_argument('--test_plan', type=str, help='Test plan to expand')
-    parser.add_argument(
-        '--new_manifest',
-        type=str,
-        help='Path to the new manifest file extracted from the test plan'
+
+    subparsers = parser.add_subparsers(
+        dest='command', help='command should be in compare, generate, update'
     )
-    parser.add_argument(
-        '--orig_manifest',
-        type=str,
-        help='Path to the original manifest file to be compare')
-    return parser.parse_args()
+    subparsers.required = True
+
+    parser_compare = subparsers.add_parser(
+        'compare', help='Compare the manifest with a test plans.'
+    )
+    parser_compare.add_argument(
+        '--test-plan', required=True, help='The test plan to compare.'
+    )
+    parser_compare.add_argument(
+        '--manifest', required=True, help='The manifest file to be compared.'
+    )
+
+    parser_update = subparsers.add_parser(
+        'update', help='Update the manifest for the test plans.'
+    )
+    parser_update.add_argument(
+        '--test-plan', required=True, help='The test plan to get the manifest.'
+    )
+    parser_update.add_argument(
+        '--manifest', required=True, help='The manifest file to be updated.'
+    )
+
+    parser_generate = subparsers.add_parser(
+        'generate', help='Generate a manifest file for the test plan.'
+    )
+    parser_generate.add_argument(
+        '--test-plan', required=True,
+        help='Generate manifest for the test plan.'
+    )
+    parser_generate.add_argument(
+        '--manifest', required=True, help='File to store generated manifest.'
+    )
+    args = parser.parse_args()
+    return args
 
 
-if __name__ == "__main__":
+def main():
     args = parse_args()
 
-    get_manifest_from_testplan(args.test_plan, args.new_manifest)
-
-    if args.orig_manifest:
-        if compare_json_keys(args.orig_manifest, args.new_manifest):
-            print("Manifests are identical")
-            sys.exit(0)
+    if args.command == 'update':
+        print(f"Comparing to test plan: {args.test_plan}")
+        print(f"Using manifest: {args.manifest}")
+        ids = get_manifest_from_testplan(args.test_plan)
+        if compare_json_keys(args.manifest, ids):
+            print("Manifest is up to date.")
         else:
-            print("Manifests are different")
-            sys.exit(1)
+            print("Manifest is outdated. Update it.")
+            generate_new_manifest(args.manifest, ids)
+
+    elif args.command == 'compare':
+        print(f"Generating test plan: {args.test_plan}")
+        ids = get_manifest_from_testplan(args.test_plan)
+        compare_json_keys(args.manifest, ids)
+
+    elif args.command == 'generate':
+        print(f"Generating manifest for test plan: {args.test_plan}")
+        ids = get_manifest_from_testplan(args.test_plan)
+        print(f"Write manifest to: {args.manifest}")
+        generate_new_manifest(args.manifest, ids)
+
+
+if __name__ == '__main__':
+    main()
