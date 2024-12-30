@@ -15,15 +15,15 @@ manifest_get_compare.py [-h] {compare,update,generate} \
 
 Examples:
     Compared with test plan:
-        python3 manifest_gen_comp_update.py compare --test_plan="TEST_PLAN"\
+        python3 manifest_get_compare.py compare --test_plan="TEST_PLAN"\
  --manifest="MANIFEST_FILE"
 
     Update manifest:
-        python3 manifest_gen_comp_update.py update --test_plan="TEST_PLAN"\
+        python3 manifest_get_compare.py update --test_plan="TEST_PLAN"\
  --manifest="MANIFEST_FILE"
 
     Generate manifest:
-        python3 manifest_gen_comp_update.py generate --test_plan="TEST_PLAN"\
+        python3 manifest_get_compare.py generate --test_plan="TEST_PLAN"\
  --manifest="MANIFEST_FILE"
 
 """
@@ -40,19 +40,21 @@ def get_manifest_from_testplan(test_plan):
     # Check if checkbox-cli is accessible
     try:
         subprocess.run(
-            ["checkbox-cli", "--version"],
-            capture_output=True, check=True
-            )
+            ["checkbox-cli", "--version"], capture_output=True, check=True
+        )
     except FileNotFoundError:
         raise SystemExit(
             "checkbox-cli command not found."
-            "Please install it or check your PATH.")
+            "Please install it or check your PATH."
+        )
 
     try:
         result = subprocess.run(
             ["checkbox-cli", "expand", test_plan, "-f", "json"],
-            capture_output=True, text=True, check=True
-            )
+            capture_output=True,
+            text=True,
+            check=True,
+        )
     except subprocess.CalledProcessError as e:
         raise SystemExit(f"Error executing checkbox-cli: {e}")
 
@@ -66,15 +68,12 @@ def get_manifest_from_testplan(test_plan):
         if entry["unit"] == "manifest entry":
             ids.add(entry["id"])
 
-    return (ids)
+    return ids
 
 
 def generate_new_manifest(new_manifest_file, ids):
-    sorted_ids = sorted(ids)
-    new_data = {id: True for id in sorted_ids}
-
-    with open(new_manifest_file, 'w') as f:
-        json.dump(new_data, f, indent=2)
+    with open(new_manifest_file, "w") as f:
+        json.dump({id: True for id in sorted(ids)}, f, indent=2)
 
 
 def compare_json_keys(orig_manifest_file, new_keys):
@@ -86,7 +85,7 @@ def compare_json_keys(orig_manifest_file, new_keys):
     """
 
     try:
-        with open(orig_manifest_file, 'r') as f:
+        with open(orig_manifest_file, "r") as f:
             old_data = json.load(f)
 
         old_keys = set(old_data.keys())
@@ -108,7 +107,7 @@ def compare_json_keys(orig_manifest_file, new_keys):
             for key in removed_keys:
                 print(f"{key}")
 
-        return (ret)
+        return ret
     except FileNotFoundError:
         raise SystemExit(f"File not found: {orig_manifest_file}")
     except json.JSONDecodeError:
@@ -117,46 +116,49 @@ def compare_json_keys(orig_manifest_file, new_keys):
 
 def parse_args():
     parser = argparse.ArgumentParser(
-      description=(
-        "Compare or generate or update the manifest for a specific test plans."
-      ),
-      usage=usage,
+        description=(
+            "Compare or generate or update the manifest for a specific test plans."
+        ),
+        usage=usage,
     )
 
     subparsers = parser.add_subparsers(
-        dest='command', help='command should be in compare, generate, update'
+        dest="command", help="command should be in compare, generate, update."
     )
     subparsers.required = True
 
     parser_compare = subparsers.add_parser(
-        'compare', help='Compare the manifest with a test plans.'
+        "compare", help="Compare the manifest with a test plans."
     )
     parser_compare.add_argument(
-        '--test_plan', required=True, help='The test plan to compare.'
+        "--test_plan",
+        required=True,
+        help="The test plan to compare.",
     )
     parser_compare.add_argument(
-        '--manifest', required=True, help='The manifest file to be compared.'
+        "--manifest", required=True, help="The manifest file to be compared."
     )
 
     parser_update = subparsers.add_parser(
-        'update', help='Update the manifest for the test plans.'
+        "update", help="Update the manifest for the test plans."
     )
     parser_update.add_argument(
-        '--test_plan', required=True, help='The test plan to get the manifest.'
+        "--test_plan", required=True, help="The test plan to get the manifest."
     )
     parser_update.add_argument(
-        '--manifest', required=True, help='The manifest file to be updated.'
+        "--manifest", required=True, help="The manifest file to be updated."
     )
 
     parser_generate = subparsers.add_parser(
-        'generate', help='Generate a manifest file for the test plan.'
+        "generate", help="Generate a manifest file for the test plan."
     )
     parser_generate.add_argument(
-        '--test_plan', required=True,
-        help='Generate manifest for the test plan.'
+        "--test_plan",
+        required=True,
+        help="Generate manifest for the test plan.",
     )
     parser_generate.add_argument(
-        '--manifest', required=True, help='File to store generated manifest.'
+        "--manifest", required=True, help="File to store generated manifest."
     )
     args = parser.parse_args()
     return args
@@ -165,7 +167,7 @@ def parse_args():
 def main():
     args = parse_args()
 
-    if args.command == 'update':
+    if args.command == "update":
         print(f"Comparing to test plan: {args.test_plan}")
         print(f"Using manifest: {args.manifest}")
         ids = get_manifest_from_testplan(args.test_plan)
@@ -175,17 +177,17 @@ def main():
             print("Manifest is outdated. Update it.")
             generate_new_manifest(args.manifest, ids)
 
-    elif args.command == 'compare':
+    elif args.command == "compare":
         print(f"Generating test plan: {args.test_plan}")
         ids = get_manifest_from_testplan(args.test_plan)
         compare_json_keys(args.manifest, ids)
 
-    elif args.command == 'generate':
+    elif args.command == "generate":
         print(f"Generating manifest for test plan: {args.test_plan}")
         ids = get_manifest_from_testplan(args.test_plan)
         print(f"Write manifest to: {args.manifest}")
         generate_new_manifest(args.manifest, ids)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()

@@ -24,7 +24,7 @@ jobs:
           TEST_PLAN="com.canonical.certification::client-cert-desktop-24-04"
           DEFAULT_MANIFEST="./pc/default/manifest.json"
           python3 ./utils/manifest_get_compare.py update --test_plan="$TEST_PLAN" --manifest="$DEFAULT_MANIFEST"
-      - name: GIT commit and push all changed files
+      - name: GIT commit and push manifest file back
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
@@ -33,8 +33,8 @@ jobs:
             git config user.name "${{ github.actor }}"
             git config user.email "${{ github.actor_id }}+${{ github.actor }}@users.noreply.github.com"
             git add "$DEFAULT_MANIFEST"
-            git commit -a -m "update default manifest for pc" &&  git push
-            echo "New manifest pushed!"
+            git commit -m "update default manifest for pc" &&  git push
+            echo "New PC default manifest pushed!"
           else
             echo "No changes to commit."
           fi
