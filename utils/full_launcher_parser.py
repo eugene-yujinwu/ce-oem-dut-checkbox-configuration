@@ -1,8 +1,53 @@
 #!/usr/bin/env python3
-import re
 import json
 import argparse
 import os
+from configparser import ConfigParser
+from typing import Dict, List
+
+
+def dump_sections(config, sections: List):
+    """
+    Dump the target sections from the config file,
+    Args:
+        config: A configuration object for the input full-launcher
+                configuration.
+        sections: A list include the target sections in config.
+    """
+    target_sections = ConfigParser()
+    for section in sections:
+        if section in config.sections():
+            target_sections.add_section(section)
+            # Copy all key-value pairs from the original config
+            for key, value in config.items(section):
+                target_sections.set(section, key, value)
+    return target_sections
+
+
+def dump_files(config, files: Dict[str, List]):
+    """
+    Dumps specified sections from a configuration object into multiple output files.
+
+    Args:
+        config: A configuration object for the input full-launcher
+                configuration.
+        files: A dictionary where:
+            - keys (str): File paths for output files.
+            - values (List[str]):
+                List of section names to be written to the corresponding file.
+
+
+    """
+    for file in files.keys():
+        with open(file, "w") as f:
+            launcher = dump_sections(config, files[file])
+            if "manifest" in file:
+                manifest_data = {}
+                for key, value in launcher.items("manifest"):
+                    manifest_data[key] = value.lower() == "true"
+                json.dump(manifest_data, f, indent=2)
+            else:
+                launcher.write(f)
 
 
 def parse_and_separate_file(input_file):
@@ -19,65 +64,31 @@ def parse_and_separate_file(input_file):
     # Convert input_file to an absolute path
     input_file = os.path.abspath(input_file)
 
-    # Define output file names
+    # Define output file
     input_dir = os.path.dirname(input_file)
     output_launcher = os.path.join(input_dir, "launcher")
     output_manifest = os.path.join(input_dir, "manifest.json")
-    output_checkbox = os.path.join(input_dir, "checkbox.conf")
+    output_checkbox_conf = os.path.join(input_dir, "checkbox.conf")
 
-    # Define the sections of the content for launcher file
+    # Define the included sections of the content for each file
     launcher_sections = ["launcher", "test plan", "test selection"]
+    checkbox_conf_sections = ["environment"]
+    manifest_sections = ["manifest"]
 
-    # Read the input file
-    with open(input_file, "r") as f:
-        lines = f.readlines()
+    # Initialize configparser and read the file
+    config = ConfigParser(delimiters='=')
+    config.optionxform = str
+    config.read(input_file)
 
-    # Define patterns to match sections
-    section_pattern = re.compile(r"^\[(.+)\]$")
-    current_section = None
-    section_data = {}
+    files = {output_launcher: launcher_sections,
+             output_manifest: manifest_sections,
+             output_checkbox_conf: checkbox_conf_sections}
 
-    for line in lines:
-        line = line.rstrip()
-        match = section_pattern.match(line)
-        if match:
-            current_section = match.group(1)
-            section_data[current_section] = []
-        elif current_section:
-            section_data[current_section].append(line)
-
-    # Write launcher file
-    with open(output_launcher, "w") as f:
-        f.write("#!/usr/bin/env checkbox-cli-wrapper\n")
-        # check if the section launcher, test plan and test selection in
-        # predefined launcher_sections
-        for section in launcher_sections:
-            if section in section_data:
-                f.write("[{}]\n".format(section))
-                for line in section_data[section]:
-                    f.write(line + "\n")
-
-    # Parse and write manifest file as JSON
-    manifest_data = {}
-    if "manifest" in section_data:
-        for line in section_data["manifest"]:
-            if "=" in line:
-                key, value = map(str.strip, line.split("=", 1))
-                manifest_data[key] = value.lower() == "true"
-
-    with open(output_manifest, "w") as f:
-        json.dump(manifest_data, f, indent=2)
-
-    # Write checkbox.conf file
-    with open(output_checkbox, "w") as f:
-        if "environment" in section_data:
-            f.write("[environment]\n")
-            for line in section_data["environment"]:
-                f.write(line + "\n")
+    dump_files(config, files)
 
     print(
         "Output files created:\n  {}\n  {}\n  {}".format(
-            output_launcher, output_manifest, output_checkbox
+            output_launcher, output_manifest, output_checkbox_conf
         )
     )
 
