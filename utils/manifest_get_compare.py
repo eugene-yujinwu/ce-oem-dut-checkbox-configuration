@@ -168,12 +168,11 @@ def main():
         print(f"Using manifest: {args.manifest}")
         ids = get_manifest_from_testplan(args.test_plan)
         ret = compare_json_keys(args.manifest, ids)
-        if args.update:
-            if not ret:
-                print("Something changed, update the manifest.")
-                generate_new_manifest(args.manifest, ids)
-            else:
-                print("No update needed.")
+        if args.update and not ret:
+            print("Something changed, update the manifest.")
+            generate_new_manifest(args.manifest, ids)
+        else:
+            print("No update needed.")
 
     elif args.command == "generate":
         print(f"Generating manifest for test plan: {args.test_plan}")
