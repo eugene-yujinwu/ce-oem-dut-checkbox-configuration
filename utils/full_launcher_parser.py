@@ -3,10 +3,11 @@ import json
 import argparse
 import os
 from configparser import ConfigParser
-from typing import Tuple, List
+from typing import Tuple, List, Dict
+import re
 
 
-def dump_manifest(config_dict):
+def dump_manifest(config_dict: Dict[str, Dict[str, str]]):
     """
     Dump the manifest section,
     Args:
@@ -19,13 +20,20 @@ def dump_manifest(config_dict):
     return manifest_data
 
 
-def dump_config_to_dict(config):
+def dump_config_to_dict(config: ConfigParser) -> Dict[str, Dict[str, str]]:
+    """
+    Dump config file to a dictionary.
+    Args:
+        config: A configuratoin object for the input full-launcher
+    """
     return {
         section: dict(config.items(section)) for section in config.sections()
     }
 
 
-def dump_files(config_dict, files: Tuple[str, List[str]]):
+def dump_files(
+        config_dict: Dict[str, Dict[str, str]],
+        files: Tuple[str, List[str]]):
     """
     Dumps specified sections from a configuration dict into multiple output
     files.
@@ -42,7 +50,7 @@ def dump_files(config_dict, files: Tuple[str, List[str]]):
     """
     for file, sections in files:
         with open(file, "w") as f:
-            if file.endswith("manifest.json"):
+            if re.match(r".*manifest-\w+\d{2}\.json$", file):
                 json_file = dump_manifest(config_dict)
                 json.dump(json_file, f, indent=2)
             else:
@@ -57,7 +65,8 @@ def dump_files(config_dict, files: Tuple[str, List[str]]):
                 tmp_config.write(f)
 
 
-def mandatory_sections_check(config_dict, mandatory_sections):
+def mandatory_sections_check(config_dict: Dict[str, Dict[str, str]],
+                             mandatory_sections: List):
     missing_sections = [
         item for item in mandatory_sections if item not in config_dict.keys()
     ]
@@ -67,7 +76,21 @@ def mandatory_sections_check(config_dict, mandatory_sections):
         )
 
 
-def parse_and_separate_file(input_file):
+def image_type_check(file: str):
+    # We are expecting the file name of full-launcher
+    # should be like "full-launcher-core22"
+    pattern = r"full-launcher-(core|server|desktop)(\d{2})$"
+    match = re.search(pattern, file)
+    if match:
+        return "{}{}".format(match.group(1), match.group(2))
+    else:
+        raise SystemError(
+            "Missing image type for the name of input full "
+            "launcher: {}".format(file)
+        )
+
+
+def parse_and_separate_file(input_file: str):
     """
     Parses full-launcher file and separates it into multiple output files
     includes:
@@ -81,11 +104,20 @@ def parse_and_separate_file(input_file):
     # Convert input_file to an absolute path
     input_file = os.path.abspath(input_file)
 
+    if os.path.exists(input_file):
+        image_type = image_type_check(input_file)
+    else:
+        raise FileNotFoundError
+
     # Define output file
     input_dir = os.path.dirname(input_file)
-    output_launcher = os.path.join(input_dir, "launcher")
-    output_manifest = os.path.join(input_dir, "manifest.json")
-    output_checkbox_conf = os.path.join(input_dir, "checkbox.conf")
+    output_launcher = os.path.join(input_dir, "launcher-{}".format(image_type))
+    output_manifest = os.path.join(
+        input_dir, "manifest-{}.json".format(image_type)
+    )
+    output_checkbox_conf = os.path.join(
+        input_dir, "checkbox-{}.conf".format(image_type)
+    )
 
     # Define the included sections of the content for each file
     launcher_sections = ["launcher", "test plan", "test selection"]
@@ -107,10 +139,10 @@ def parse_and_separate_file(input_file):
     # manifest sections as mandatory sections since cert teams infrastructure
     # need those informations.
     mandatory_sections = list(
-        set(launcher_sections + checkbox_conf_sections + manifest_sections)
-    )
+        launcher_sections + checkbox_conf_sections + manifest_sections)
 
     mandatory_sections_check(dump_config_to_dict(config), mandatory_sections)
+
     dump_files(dump_config_to_dict(config), files)
 
     print(
@@ -135,9 +167,10 @@ def main():
     try:
         parse_and_separate_file(args.input_file)
     except FileNotFoundError:
-        print("Error: The file {} does not exist.".format(args.input_file))
+        raise SystemError("The file {} does not exist."
+                          .format(args.input_file))
     except Exception as e:
-        print("An error occurred: {}".format(e))
+        raise SystemError("An error occurred: {}".format(e))
 
 
 if __name__ == "__main__":
