@@ -10,19 +10,19 @@ import argparse
 
 
 usage = """\
-manifest_get_compare.py [-h] {compare,update,generate} \
+manifest_get_compare.py [-h] {compare,generate} \
 --test_plan="TEST_PLAN" --manifest="MANIFEST_FILE"
 
 Examples:
-    Compared with test plan:
+    Compared manifest with a test plan:
         python3 manifest_get_compare.py compare --test_plan="TEST_PLAN"\
  --manifest="MANIFEST_FILE"
 
-    Update manifest:
-        python3 manifest_get_compare.py update --test_plan="TEST_PLAN"\
- --manifest="MANIFEST_FILE"
+    Compare and update the manifest:
+        python3 manifest_get_compare.py compare --update\
+ --test_plan="TEST_PLAN" --manifest="MANIFEST_FILE"
 
-    Generate manifest:
+    Generate manifest for test plan:
         python3 manifest_get_compare.py generate --test_plan="TEST_PLAN"\
  --manifest="MANIFEST_FILE"
 
@@ -107,6 +107,9 @@ def compare_json_keys(orig_manifest_file, new_keys):
             for key in removed_keys:
                 print(f"{key}")
 
+        if ret:
+            print("Manifests are the same.")
+
         return ret
     except FileNotFoundError:
         raise SystemExit(f"File not found: {orig_manifest_file}")
@@ -117,18 +120,21 @@ def compare_json_keys(orig_manifest_file, new_keys):
 def parse_args():
     parser = argparse.ArgumentParser(
         description=(
-            "Compare or generate or update the manifest for a specific test plans."
+            "Compare or generate or update the manifest for a test plans."
         ),
         usage=usage,
     )
 
     subparsers = parser.add_subparsers(
-        dest="command", help="command should be in compare, generate, update."
+        dest="command", help="command should be in compare, generate."
     )
     subparsers.required = True
 
     parser_compare = subparsers.add_parser(
-        "compare", help="Compare the manifest with a test plans."
+        "compare", help="Compare or update the manifest with a test plans."
+    )
+    parser_compare.add_argument(
+        "--update", action="store_true", help="compare and update the manifest"
     )
     parser_compare.add_argument(
         "--test_plan",
@@ -137,16 +143,6 @@ def parse_args():
     )
     parser_compare.add_argument(
         "--manifest", required=True, help="The manifest file to be compared."
-    )
-
-    parser_update = subparsers.add_parser(
-        "update", help="Update the manifest for the test plans."
-    )
-    parser_update.add_argument(
-        "--test_plan", required=True, help="The test plan to get the manifest."
-    )
-    parser_update.add_argument(
-        "--manifest", required=True, help="The manifest file to be updated."
     )
 
     parser_generate = subparsers.add_parser(
@@ -167,20 +163,17 @@ def parse_args():
 def main():
     args = parse_args()
 
-    if args.command == "update":
+    if args.command == "compare":
         print(f"Comparing to test plan: {args.test_plan}")
         print(f"Using manifest: {args.manifest}")
         ids = get_manifest_from_testplan(args.test_plan)
-        if compare_json_keys(args.manifest, ids):
-            print("Manifest is up to date.")
-        else:
-            print("Manifest is outdated. Update it.")
-            generate_new_manifest(args.manifest, ids)
-
-    elif args.command == "compare":
-        print(f"Generating test plan: {args.test_plan}")
-        ids = get_manifest_from_testplan(args.test_plan)
-        compare_json_keys(args.manifest, ids)
+        ret = compare_json_keys(args.manifest, ids)
+        if args.update:
+            if not ret:
+                print("Something changed, update the manifest.")
+                generate_new_manifest(args.manifest, ids)
+            else:
+                print("No update needed.")
 
     elif args.command == "generate":
         print(f"Generating manifest for test plan: {args.test_plan}")

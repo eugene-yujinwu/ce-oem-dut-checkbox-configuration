@@ -23,7 +23,7 @@ jobs:
         run: |
           TEST_PLAN="com.canonical.certification::client-cert-desktop-24-04"
           DEFAULT_MANIFEST="./pc/default/manifest.json"
-          python3 ./utils/manifest_get_compare.py update --test_plan="$TEST_PLAN" --manifest="$DEFAULT_MANIFEST"
+          python3 ./utils/manifest_get_compare.py compare --update --test_plan="$TEST_PLAN" --manifest="$DEFAULT_MANIFEST"
       - name: GIT commit and push manifest file back
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
