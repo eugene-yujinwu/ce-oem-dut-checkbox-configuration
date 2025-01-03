@@ -3,33 +3,35 @@ import json
 import argparse
 import os
 from configparser import ConfigParser
-from typing import Dict, List
+from typing import Tuple, List
 
 
-def dump_sections(config, sections: List):
+def dump_manifest(config_dict):
     """
-    Dump the target sections from the config file,
+    Dump the manifest section,
     Args:
-        config: A configuration object for the input full-launcher
-                configuration.
-        sections: A list include the target sections in config.
+        config_dict: A configuration dict for the input full-launcher
+        configuration.
     """
-    target_sections = ConfigParser()
-    for section in sections:
-        if section in config.sections():
-            target_sections.add_section(section)
-            # Copy all key-value pairs from the original config
-            for key, value in config.items(section):
-                target_sections.set(section, key, value)
-    return target_sections
+    manifest_data = {}
+    for key, value in config_dict["manifest"].items():
+        manifest_data[key] = value.lower() == "true"
+    return manifest_data
 
 
-def dump_files(config, files: Dict[str, List]):
+def dump_config_to_dict(config):
+    return {
+        section: dict(config.items(section)) for section in config.sections()
+    }
+
+
+def dump_files(config_dict, files: Tuple[str, List[str]]):
     """
-    Dumps specified sections from a configuration object into multiple output files.
+    Dumps specified sections from a configuration dict into multiple output
+    files.
 
     Args:
-        config: A configuration object for the input full-launcher
+        config_dict: A configuration dict for the input full-launcher
                 configuration.
         files: A dictionary where:
             - keys (str): File paths for output files.
@@ -38,16 +40,31 @@ def dump_files(config, files: Dict[str, List]):
 
 
     """
-    for file in files.keys():
+    for file, sections in files:
         with open(file, "w") as f:
-            launcher = dump_sections(config, files[file])
-            if "manifest" in file:
-                manifest_data = {}
-                for key, value in launcher.items("manifest"):
-                    manifest_data[key] = value.lower() == "true"
-                json.dump(manifest_data, f, indent=2)
+            if file.endswith("manifest.json"):
+                json_file = dump_manifest(config_dict)
+                json.dump(json_file, f, indent=2)
             else:
-                launcher.write(f)
+                tmp_config = ConfigParser()
+                # Fileter out the expected sections for the file
+                filtered_data = {
+                    key: value
+                    for key, value in config_dict.items()
+                    if key in sections
+                }
+                tmp_config.read_dict(filtered_data)
+                tmp_config.write(f)
+
+
+def mandatory_sections_check(config_dict, mandatory_sections):
+    missing_sections = [
+        item for item in mandatory_sections if item not in config_dict.keys()
+    ]
+    if missing_sections:
+        raise SystemError(
+            "Missing mandatory sections: {}".format(missing_sections)
+        )
 
 
 def parse_and_separate_file(input_file):
@@ -76,15 +93,25 @@ def parse_and_separate_file(input_file):
     manifest_sections = ["manifest"]
 
     # Initialize configparser and read the file
-    config = ConfigParser(delimiters='=')
+    config = ConfigParser(delimiters="=")
     config.optionxform = str
     config.read(input_file)
 
-    files = {output_launcher: launcher_sections,
-             output_manifest: manifest_sections,
-             output_checkbox_conf: checkbox_conf_sections}
+    files = (
+        [output_launcher, launcher_sections],
+        [output_manifest, manifest_sections],
+        [output_checkbox_conf, checkbox_conf_sections],
+    )
 
-    dump_files(config, files)
+    # We treat launcher, test plan, test selection, environment and
+    # manifest sections as mandatory sections since cert teams infrastructure
+    # need those informations.
+    mandatory_sections = list(
+        set(launcher_sections + checkbox_conf_sections + manifest_sections)
+    )
+
+    mandatory_sections_check(dump_config_to_dict(config), mandatory_sections)
+    dump_files(dump_config_to_dict(config), files)
 
     print(
         "Output files created:\n  {}\n  {}\n  {}".format(
