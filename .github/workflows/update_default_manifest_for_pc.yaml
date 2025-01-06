@@ -1,0 +1,40 @@
+name: Update the default manifest for PC
+
+on:
+  schedule:
+    - cron: '0 0 * * 0'
+  workflow_dispatch:
+
+jobs:
+  Update_default_manifest:
+    name: Update default manifest
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Install Checkbox
+        run: |
+          sudo add-apt-repository ppa:checkbox-dev/beta
+          sudo apt-get update -qq
+          sudo apt-get install canonical-certification-client -qq -y
+      - name: Checkout ce-oem-dut-checkbox-configuration
+        uses: actions/checkout@v4
+      - name: Get latest manifest and compare it with the default manifest
+        run: |
+          TEST_PLAN="com.canonical.certification::client-cert-desktop-24-04"
+          DEFAULT_MANIFEST="./pc/default/manifest.json"
+          python3 ./utils/manifest_get_compare.py compare --update --test_plan="$TEST_PLAN" --manifest="$DEFAULT_MANIFEST"
+      - name: GIT commit and push manifest file back
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          DEFAULT_MANIFEST="./pc/default/manifest.json"
+          if ! git diff --quiet "$DEFAULT_MANIFEST"; then
+            git config user.name "${{ github.actor }}"
+            git config user.email "${{ github.actor_id }}+${{ github.actor }}@users.noreply.github.com"
+            git add "$DEFAULT_MANIFEST"
+            git commit -m "update default manifest for pc" &&  git push
+            echo "New PC default manifest pushed!"
+          else
+            echo "No changes to commit."
+          fi
