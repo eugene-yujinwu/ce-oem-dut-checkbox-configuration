@@ -99,10 +99,9 @@ def parse_and_separate_file(input_file: str):
     files = ([output_manifest, manifest_sections],)
 
     mandatory_sections = list(manifest_sections)
-
-    mandatory_sections_check(dump_config_to_dict(config), mandatory_sections)
-
-    dump_files(dump_config_to_dict(config), files)
+    config_dict = dump_config_to_dict(config)
+    mandatory_sections_check(config_dict, mandatory_sections)
+    dump_files(config_dict, files)
 
 
 def main():
