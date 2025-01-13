@@ -6,7 +6,7 @@ from configparser import ConfigParser
 from typing import Tuple, List, Dict
 
 
-def dump_manifest(config_dict: Dict[str, Dict[str, str]]):
+def dump_manifest(manifest_section: Dict[str, str]):
     """
     Dump the manifest section,
     Args:
@@ -14,7 +14,7 @@ def dump_manifest(config_dict: Dict[str, Dict[str, str]]):
         configuration.
     """
     manifest_data = {
-        key: value == "true" for key, value in config_dict["manifest"].items()
+        key: value == "true" for key, value in manifest_section.items()
     }
     return manifest_data
 
@@ -50,7 +50,7 @@ def dump_files(
     for file, sections in files:
         with open(file, "w") as f:
             if file.endswith("manifest.json"):
-                json_file = dump_manifest(config_dict)
+                json_file = dump_manifest(config_dict["manifest"])
                 json.dump(json_file, f, indent=2)
             else:
                 # This part could be used if one file include multiple sections
@@ -66,11 +66,9 @@ def dump_files(
         print("Output files created:\n  {}\n".format(file))
 
 
-def mandatory_sections_check(
-    config_dict: Dict[str, Dict[str, str]], mandatory_sections: List
-):
+def mandatory_sections_check(sections_list: List, mandatory_sections: List):
     missing_sections = [
-        item for item in mandatory_sections if item not in config_dict.keys()
+        item for item in mandatory_sections if item not in sections_list
     ]
     if missing_sections:
         raise SystemError(
@@ -111,7 +109,7 @@ def parse_and_separate_file(input_file: str):
 
     mandatory_sections = list(manifest_sections)
     config_dict = dump_config_to_dict(config)
-    mandatory_sections_check(config_dict, mandatory_sections)
+    mandatory_sections_check(config_dict.keys(), mandatory_sections)
     dump_files(config_dict, files)
 
 
