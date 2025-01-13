@@ -13,9 +13,9 @@ def dump_manifest(config_dict: Dict[str, Dict[str, str]]):
         config_dict: A configuration dict for the input full-launcher
         configuration.
     """
-    manifest_data = {}
-    for key, value in config_dict["manifest"].items():
-        manifest_data[key] = value.lower() == "true"
+    manifest_data = {
+        key: value == "true" for key, value in config_dict["manifest"].items()
+    }
     return manifest_data
 
 
@@ -52,6 +52,17 @@ def dump_files(
             if file.endswith("manifest.json"):
                 json_file = dump_manifest(config_dict)
                 json.dump(json_file, f, indent=2)
+            else:
+                # This part could be used if one file include multiple sections
+                tmp_config = ConfigParser()
+                # Fileter out the expected sections for the file
+                filtered_data = {
+                    key: value
+                    for key, value in config_dict.items()
+                    if key in sections
+                }
+                tmp_config.read_dict(filtered_data)
+                tmp_config.write(f)
         print("Output files created:\n  {}\n".format(file))
 
 
