@@ -1,0 +1,51 @@
+#!/usr/bin/env checkbox-cli-wrapper
+[launcher]
+app_id = com.canonical.qa.shiner:checkbox
+launcher_version = 1
+stock_reports = text, submission_files, certification
+
+[test plan]
+unit = com.canonical.qa.shiner::imx8jace-automated
+filter = com.canonical.qa.shiner::imx8jace
+        com.canonical.qa.shiner::imx8jace-manual
+        com.canonical.qa.shiner::imx8jace-automated
+        com.canonical.qa.shiner::imx8jace-stress
+forced = yes
+
+[test selection]
+forced = yes
+exclude = com.canonical.certification::power-management/.*
+                  com.canonical.certification::.*trigger-system-.*
+                  com.canonical.contrib::ce-oem-power-management/cold-reboot-by-pdu
+                  com.canonical.contrib::ce-oem-power-management/post-cold-reboot-by-pdu
+                  com.canonical.certification::ubuntucore/kernel-refresh-.*
+                  com.canonical.certification::ubuntucore/kernel-verify-.*
+                  com.canonical.certification::ubuntucore/kernel-revert-.*
+                  .*::suspend.*
+                  .*::after-suspend.*
+
+[manifest]
+com.canonical.certification::has_bt_adapter= false
+com.canonical.certification::has_ethernet_adapter= true
+com.canonical.certification::has_i2c= true
+com.canonical.certification::has_hardware_watchdog= true
+com.canonical.certification::has_wlan_adapter= false
+com.canonical.certification::has_wwan_module= false
+com.canonical.certification::has_audio_loopback_connector= false
+com.canonical.certification::has_audio_playback= false
+com.canonical.certification::has_audio_capture= false
+com.canonical.certification::has_camera= false
+com.canonical.certification::has_led_gpio_sysfs = true
+com.canonical.qa.shiner::has_lon_devices= false
+com.canonical.contrib::has_mtd= true
+com.canonical.contrib::has_caam= true
+com.canonical.contrib::has_optee= true
+
+
+[environment]
+STORE_ID=thzrI7eXMtoKQl7ptQhj
+SERIAL_PORTS_STATIC=/dev/ttymxc3
+TOTAL_MTD_NUM=1
+SYS_LEDS=BT:bt-blue-led STATUS:status-grn-led SHTDWN:shtdwn-grn-led WIFI-Grn:wifi-grn-led WIFI-Red:wifi-yel-led BEAT:beat-yel-led
+GPIO_BUTTONS=wifi:130 bt:131
+SERIAL_RS485_LOOPBACK=serial/by-id/usb-NXP_SEMICONDUCTORS_TridiumLPC485-2_r01_92A1E95473A4235285A3360AF468665C-if00:serial/by-id/usb-NXP_SEMICONDUCTORS_TridiumLPC485-2_r01_92A1E95473A4235285A3360AF468665C-if02

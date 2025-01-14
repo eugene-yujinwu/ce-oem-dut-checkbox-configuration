@@ -1,0 +1,92 @@
+[launcher]
+app_id = com.canonical.qa.shiner:checkbox
+launcher_version = 1
+stock_reports = text, submission_files, certification
+
+[test plan]
+unit = com.canonical.qa.shiner::imx8pdk-automated
+forced = yes
+
+[test selection]
+forced = yes
+exclude = com.canonical.certification::image/model-grade
+          com.canonical.certification::snappy/test-snaps-confinement
+          .*bluetooth4/beacon_eddystone_url_hci1    # Following this bug :https://bugs.launchpad.net/sugarland/+bug/1990914, this is the sugarland iot, but they use the same BT chip.
+          .*ethernet/ping_ethfec
+          .*ipv6_link_local_address_ethfec
+          .*sensor/imx-thermal-external    # The external temperature is easily affected by the lab, and also the time that ran stress command only 10s, so excluded this unstable test case.
+          .*imx/imx8-common_module-porta   # There is no common modules on this, refer the shiner-imx-high-pdk qa track mainboard.
+          .*wwan/check-sim.*   # There are no extra SIM card to plug
+          .*wwan/gsm-connection.*
+          com.canonical.certification::power-management/.*
+          com.canonical.certification::.*trigger-system-.*
+          com.canonical.contrib::ce-oem-power-management/cold-reboot-by-pdu
+          com.canonical.contrib::ce-oem-power-management/post-cold-reboot-by-pdu
+          com.canonical.certification::ubuntucore/kernel-refresh-.*
+          com.canonical.certification::ubuntucore/kernel-verify-.*
+          com.canonical.certification::ubuntucore/kernel-revert-.*
+          .*::suspend.*
+          .*::after-suspend.*
+          imx-camera/pdk-roundtrip-qrcode_video0  # Exclude video0 since it is not a real captrue device.
+
+[manifest]
+com.canonical.certification::has_bt_adapter= true
+com.canonical.certification::has_ethernet_adapter= true
+com.canonical.certification::has_i2c= true
+com.canonical.certification::has_hardware_watchdog= false
+com.canonical.certification::has_wlan_adapter= true
+com.canonical.certification::has_wwan_module= true
+com.canonical.certification::need_kernel_snap_update_test= false
+com.canonical.certification::need_snapd_snap_update_test= false
+com.canonical.certification::need_gadget_snap_update_test= false
+com.canonical.certification::has_audio_loopback_connector= true
+com.canonical.certification::has_audio_playback= true
+com.canonical.certification::has_audio_capture= true
+com.canonical.certification::has_eeprom= true
+com.canonical.certification::has_led_gpio_sysfs = true
+com.canonical.qa.shiner::has_mipi_camera= true
+com.canonical.contrib::has_mtd= true
+com.canonical.contrib::has_caam= true
+com.canonical.contrib::has_button= false
+com.canonical.contrib::has_buzzer= true
+com.canonical.contrib::has_optee= true
+
+[environment]
+WIFI_INTERFACE=wlan0
+OPEN_N_SSID=cert-n-open-tel-l4
+OPEN_BG_SSID=cert-bg-open-tel-l4
+OPEN_AC_SSID=cert-ac-open-tel-l4
+WPA_N_SSID=cert-n-wpa-tel-l4
+WPA_BG_SSID=cert-bg-wpa-tel-l4
+WPA_AC_SSID=cert-ac-wpa-tel-l4
+WPA_N_PSK=insecure
+WPA_BG_PSK=insecure
+WPA_AC_PSK=insecure
+OBEX_TARGET=00:02:72:3E:83:D6
+WWAN_APN=internet
+WWAN_NET_IF=ppp0
+WWAN_CONTROL_IF=ttyACM3
+STRESS_BOOT_ITERATIONS=30
+STRESS_S3_ITERATIONS=30
+STRESS_S4_ITERATIONS=30
+TEST_TARGET_IPERF=10.101.48.243
+STRESS_S4_WAIT_DELAY=120
+STRESS_S4_SLEEP_DELAY=60
+STRESS_S3_SLEEP_DELAY=60
+STRESS_BOOT_WAKEUP_DELAY=60
+STRESS_S3_WAIT_DELAY=120
+STRESS_BOOT_WAIT_DELAY=120
+WIFI_AP_SETUPTIME=30
+WWAN_SETUPTIME=30
+TPM2TOOLS_TCTI_NAME=device
+TPM2TOOLS_DEVICE_FILE=/dev/tpm0
+SNAPD_TASK_TIMEOUT=120
+STORE_ID=ged8Ce2jo8nohkieshah
+SERIAL_PORTS_STATIC=/dev/ttymxc2
+TOTAL_MTD_NUM=1
+BEEP_PATH=/dev/input/event2
+SERIAL_RS485_LOOPBACK=ttySC0:ttySC1
+SYS_LEDS=DL14:trouble DL15:bt-status DL16:panel-conn DL17:cloud-conn DL18:wifi-conn DL19:lte-conn DL20:add-on DL21:module-conn
+COMMON_MODULE_MAPPING=porta:spidev2.0:ttySC2
+TOTAL_RTC_NUM=2
+HWRNG=rng-caam

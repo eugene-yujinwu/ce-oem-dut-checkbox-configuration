@@ -1,0 +1,76 @@
+#!/usr/bin/env checkbox-cli-wrapper
+[launcher]
+app_id = com.canonical.qa.shiner:checkbox
+launcher_version = 1
+stock_reports = text, submission_files, certification
+
+[test plan]
+unit = com.canonical.qa.shiner::imx8beats-essential-automated
+filter = com.canonical.qa.shiner::imx8beats-essential
+        com.canonical.qa.shiner::imx8beats-essential-manual
+        com.canonical.qa.shiner::imx8beats-essential-automated
+        com.canonical.qa.shiner::imx8beats-essential-stress
+forced = yes
+
+[test selection]
+forced = yes
+exclude = com.canonical.certification::power-management/.*
+            com.canonical.certification::.*trigger-system-.*
+            com.canonical.contrib::ce-oem-power-management/cold-reboot-by-pdu
+            com.canonical.contrib::ce-oem-power-management/post-cold-reboot-by-pdu
+            com.canonical.certification::ubuntucore/kernel-refresh-.*
+            com.canonical.certification::ubuntucore/kernel-verify-.*
+            com.canonical.certification::ubuntucore/kernel-revert-.*
+            .*::suspend.*
+            .*::after-suspend.*
+
+[manifest]
+com.canonical.certification::has_audio_capture = false
+com.canonical.certification::has_audio_loopback_connector = false
+com.canonical.certification::has_audio_playback = false
+com.canonical.certification::has_bt_adapter = false
+com.canonical.certification::has_card_reader = true
+com.canonical.certification::has_dp = false
+com.canonical.certification::has_dvi = false
+com.canonical.certification::has_eeprom = false
+com.canonical.certification::has_ethernet_adapter = true
+com.canonical.certification::has_hardware_watchdog = true
+com.canonical.certification::has_hdmi = false
+com.canonical.certification::has_i2c = true
+com.canonical.certification::has_thunderbolt3 = false
+com.canonical.certification::has_tpm2_chip = false
+com.canonical.certification::has_usb_storage = true
+com.canonical.certification::has_usbc_data = false
+com.canonical.certification::has_usbc_otg = true
+com.canonical.certification::has_vga = false
+com.canonical.certification::has_wlan_adapter = false
+com.canonical.certification::has_wwan_module = false
+com.canonical.certification::socket_can_echo_server_running = false
+com.canonical.certification::has_led_gpio_sysfs = true
+com.canonical.contrib::has_buzzer = false
+com.canonical.contrib::has_caam = true
+com.canonical.contrib::has_gps = false
+com.canonical.contrib::has_mtd = true
+com.canonical.contrib::has_otg = true
+com.canonical.contrib::has_optee = true
+com.canonical.contrib::has_ptp = true
+com.canonical.contrib::has_rpmsg = true
+com.canonical.contrib::has_hardware_rng = true
+com.canonical.contrib::has_button = true
+
+[environment]
+STORE_ID=thoph7xoh3ooSahchah4
+TOTAL_MTD_NUM=1
+TOTAL_RTC_NUM=1
+SYS_LEDS=DL17G:DL17:green DL17R:DL17:red DL18G:DL18:green DL18R:DL18:red DL19G:DL19:green DL19R:DL19:red DL20G:DL20:green DL20R:DL20:red DL21G:DL21:green DL21R:DL21:red DL22G:DL22:green DL22R:DL22:red DL23G:DL23:green DL23R:DL23:red DL24G:DL24:green DL24R:DL24:red DL25G:DL25:green DL25R:DL25:red DL26G:DL26:green DL26R:DL26:red DL27G:DL27:green DL27R:DL27:red DL40G:DL40:green DL40R:DL40:red DL41G:DL41:green DL41R:DL41:red DL42G:DL42:green DL42R:DL42:red DL43G:DL43:green DL43R:DL43:red
+NDM_PMIC_BUCK3=0x14
+NDM_CPU_FREQ=1200000
+NDM_DRAM_FREQ=500000000
+NDM_GPU_FREQ=800000000
+NDM_VPU_FREQ=600000000
+HWRNG=rng-caam
+INTERRUPTS_BUTTONS=power_fail
+EXPECTED_SDMA_IRQS=3
+RPMSG_RP_FIRMWARE_MAPPING=remoteproc0:beats_essential_rpmsg_echo.elf remoteproc0:beats_essential_rpmsg_pingpong.elf
+RPMSG_RP_FIRMWARE_PATH=/snap/checkbox-shiner/current/providers/checkbox-provider-shiner/data/m4_firmware/
+MSTP_DEVICES=0:1
