@@ -24,17 +24,28 @@ jobs:
           TEST_PLAN="com.canonical.certification::client-cert-desktop-24-04"
           DEFAULT_MANIFEST="./pc/default/manifest.json"
           python3 ./utils/manifest_get_compare.py compare --update --test_plan="$TEST_PLAN" --manifest="$DEFAULT_MANIFEST"
-      - name: GIT commit and push manifest file back
+      - name: GIT commit and create a PR to update the manifest
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           DEFAULT_MANIFEST="./pc/default/manifest.json"
+
           if ! git diff --quiet "$DEFAULT_MANIFEST"; then
+            git checkout main
+            git pull origin main
             git config user.name "${{ github.actor }}"
             git config user.email "${{ github.actor_id }}+${{ github.actor }}@users.noreply.github.com"
+            git checkout -b update-default-pc-manifest
             git add "$DEFAULT_MANIFEST"
-            git commit -m "update default manifest for pc" &&  git push
-            echo "New PC default manifest pushed!"
+            git commit -m "update default manifest for pc"
+            git diff main update-default-pc-manifest
+            git push origin update-default-pc-manifest
+            gh pr create \
+            --title "Update default manifest.json of PC" \
+            --body "This PR was auto-generated to update the default manifest.json of PC." \
+            --base main \
+            --head update-default-pc-manifest
+            echo "A PR auto-generated for update PC default manifest submitted!"
           else
             echo "No changes to commit."
           fi
