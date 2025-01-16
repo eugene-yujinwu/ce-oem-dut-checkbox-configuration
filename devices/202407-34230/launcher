@@ -23,6 +23,30 @@ filter = com.canonical.qa.intliotg::intliotg-desktop-24-04
          com.canonical.qa.intliotg::intliotg-server-24-04-automated-rt
          com.canonical.qa.intliotg::intliotg-server-24-04-stress-rt
          com.canonical.qa.intliotg::rt-performance-tests-stress
+         com.canonical.qa.intliotg::intliotg-desktop-22-04
+         com.canonical.qa.intliotg::intliotg-desktop-22-04-manual
+         com.canonical.qa.intliotg::intliotg-desktop-22-04-automated
+         com.canonical.qa.intliotg::intliotg-desktop-22-04-stress
+         com.canonical.qa.intliotg::intliotg-server-22-04
+         com.canonical.qa.intliotg::intliotg-server-22-04-manual
+         com.canonical.qa.intliotg::intliotg-server-22-04-automated
+         com.canonical.qa.intliotg::intliotg-server-22-04-stress
+         com.canonical.qa.intliotg::intliotg-desktop-22-04-rt
+         com.canonical.qa.intliotg::intliotg-desktop-22-04-manual-rt
+         com.canonical.qa.intliotg::intliotg-desktop-22-04-automated-rt
+         com.canonical.qa.intliotg::intliotg-desktop-22-04-stress-rt
+         com.canonical.qa.intliotg::intliotg-server-22-04-rt
+         com.canonical.qa.intliotg::intliotg-server-22-04-manual-rt
+         com.canonical.qa.intliotg::intliotg-server-22-04-automated-rt
+         com.canonical.qa.intliotg::intliotg-server-22-04-stress-rt
+         com.canonical.qa.intliotg::intliotg-ubuntucore-24
+         com.canonical.qa.intliotg::intliotg-ubuntucore-24-manual
+         com.canonical.qa.intliotg::intliotg-ubuntucore-24-automated
+         com.canonical.qa.intliotg::intliotg-ubuntucore-24-stress
+         com.canonical.qa.intliotg::intliotg-ubuntucore-24-rt
+         com.canonical.qa.intliotg::intliotg-ubuntucore-24-manual-rt
+         com.canonical.qa.intliotg::intliotg-ubuntucore-24-automated-rt
+         com.canonical.qa.intliotg::intliotg-ubuntucore-24-stress-rt
 
 [manifest]
 com.canonical.certification::has_card_reader= false
