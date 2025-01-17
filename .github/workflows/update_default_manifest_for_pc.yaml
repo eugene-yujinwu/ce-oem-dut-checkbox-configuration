@@ -9,8 +9,6 @@ jobs:
   Update_default_manifest:
     name: Update default manifest
     runs-on: ubuntu-latest
-    permissions:
-      contents: write
     steps:
       - name: Install Checkbox
         run: |
@@ -19,6 +17,8 @@ jobs:
           sudo apt-get install canonical-certification-client -qq -y
       - name: Checkout ce-oem-dut-checkbox-configuration
         uses: actions/checkout@v4
+        with:
+          ref: main
       - name: Get latest manifest and compare it with the default manifest
         run: |
           TEST_PLAN="com.canonical.certification::client-cert-desktop-24-04"
@@ -29,16 +29,12 @@ jobs:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           DEFAULT_MANIFEST="./pc/default/manifest.json"
-
           if ! git diff --quiet "$DEFAULT_MANIFEST"; then
-            git checkout main
-            git pull origin main
             git config user.name "${{ github.actor }}"
             git config user.email "${{ github.actor_id }}+${{ github.actor }}@users.noreply.github.com"
             git checkout -b update-default-pc-manifest
             git add "$DEFAULT_MANIFEST"
             git commit -m "update default manifest for pc"
-            git diff main update-default-pc-manifest
             git push origin update-default-pc-manifest
             gh pr create \
             --title "Update default manifest.json of PC" \
