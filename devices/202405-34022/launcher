@@ -10,10 +10,6 @@ filter = com.canonical.qa.baoshan::genio-baoshan-core-22
         com.canonical.qa.baoshan::genio-baoshan-core-22-manual
         com.canonical.qa.baoshan::genio-baoshan-core-22-automated
         com.canonical.qa.baoshan::genio-baoshan-core-22-stress
-        com.canonical.qa.baoshan::genio-baoshan-desktop-22-04
-        com.canonical.qa.baoshan::genio-baoshan-desktop-22-04-manual
-        com.canonical.qa.baoshan::genio-baoshan-desktop-22-04-automated
-        com.canonical.qa.baoshan::genio-baoshan-desktop-22-04-stress
         com.canonical.qa.baoshan::genio-baoshan-server-22-04
         com.canonical.qa.baoshan::genio-baoshan-server-22-04-manual
         com.canonical.qa.baoshan::genio-baoshan-server-22-04-automated
