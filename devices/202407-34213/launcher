@@ -11,6 +11,11 @@ filter = com.canonical.qa.riverside::riverside-classic
         com.canonical.qa.riverside::riverside-classic-automated
         com.canonical.qa.riverside::riverside-classic-stress
         com.canonical.qa.riverside::riverside-feature-classic-automated
+        com.canonical.qa.riverside::riverside
+        com.canonical.qa.riverside::riverside-manual
+        com.canonical.qa.riverside::riverside-automated
+        com.canonical.qa.riverside::riverside-stress
+        com.canonical.qa.riverside::riverside-feature-automated
 
 [manifest]
 com.canonical.contrib::has_ptp = true
@@ -27,10 +32,14 @@ com.canonical.contrib::has_tcp_multi_connection_server = false
 com.canonical.contrib::has_optee = false
 com.canonical.contrib::has_gps = false
 com.canonical.contrib::has_buzzer = false
-com.canonical.contrib::has_uefi_secure_boot_support = false
+com.canonical.contrib::has_uefi_secure_boot_support = true
+com.canonical.contrib::has_ubuntu_frame = false
+com.canonical.contrib::has_otg = false
 com.canonical.certification::has_bt_adapter = true
+com.canonical.certification::has_bt_obex_support = true
 com.canonical.certification::has_wlan_adapter = true
 com.canonical.certification::has_ethernet_adapter = true
+com.canonical.certification::has_ethernet_wake_on_lan_support = false
 com.canonical.certification::has_i2c = true
 com.canonical.certification::has_camera = true
 com.canonical.certification::has_usb_storage = true
@@ -61,8 +70,7 @@ com.canonical.certification::has_thunderbolt3 = false
 ROUTERS=multiple
 WPA_BG_SSID=cert-bg-wpa-tel-l4
 WPA_BG_PSK=insecure
-WPA_N_SSID=cert-n-wpa-tel-l3-01
-# cert-n-wpa-tel-l4
+WPA_N_SSID=cert-n-wpa-tel-l4
 WPA_N_PSK=insecure
 WPA_AC_SSID=cert-ac-wpa-tel-l4
 WPA_AC_PSK=insecure
