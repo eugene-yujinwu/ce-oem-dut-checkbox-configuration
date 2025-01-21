@@ -86,7 +86,7 @@ com.canonical.contrib::has_spi_loopback = false
 [environment]
 WPA_BG_SSID = cert-bg-wpa-tel-l4
 WPA_BG_PSK = insecure
-WPA_N_SSID = cert-n-wpa-tel-l4
+WPA_N_SSID = cert-n-wpa-tel-l3-01
 WPA_N_PSK = insecure
 WPA_AC_SSID = cert-ac-wpa-tel-l4
 WPA_AC_PSK = insecure
