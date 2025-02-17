@@ -22,6 +22,7 @@ com.canonical.certification::has_audio_loopback_connector = false
 com.canonical.certification::has_audio_playback = false
 com.canonical.certification::has_bt_adapter = false
 com.canonical.certification::has_bt_smart = false
+com.canonical.certification::has_bt_obex_support = false
 com.canonical.certification::has_camera = false
 com.canonical.certification::has_card_reader = false
 com.canonical.certification::has_thunderbolt3 = false
@@ -66,7 +67,10 @@ com.canonical.contrib::has_uefi_secure_boot_support = false
 com.canonical.contrib::has_gpio_slot_been_defined = false
 com.canonical.contrib::has_spi = false
 com.canonical.qa.limerick::has_rs485_thermal_sensor = false
+com.canonical.contrib::has_pdu = false
+com.canonical.contrib::has_ubuntu_frame = false
 
 [environment]
 TOTAL_MTD_NUM=17
 TOTAL_RTC_NUM=1
+KERNEL_REPO=universe
