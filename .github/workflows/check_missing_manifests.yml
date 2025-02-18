@@ -1,0 +1,25 @@
+name: Check missing manifests
+
+on:
+  repository_dispatch:
+    types: [check-missing-manifests]
+
+jobs:
+  run-script:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.x"
+
+      - name: Execute script with manifest entries
+        env:
+          C3_CLIENT_ID: ${{ secrets.C3_CLIENT_ID }}
+          C3_CLIENT_SECRET: ${{ secrets.C3_CLIENT_SECRET }}
+        run: |
+          python ce-oem-dut-checkbox-configuration/utils/check_missing_manifests.py --manifest-entries "${{ github.event.client_payload.manifest-entries }}"
+
