@@ -7,7 +7,7 @@
   "com.canonical.certification::has_ethernet_adapter": true,
   "com.canonical.certification::has_thunderbolt": false,
   "com.canonical.certification::has_thunderbolt3": false,
-  "com.canonical.certification::has_touchpad": true,
+  "com.canonical.certification::has_touchpad": false,
   "com.canonical.certification::has_touchscreen": false,
   "com.canonical.certification::has_tpm2_chip": true,
   "com.canonical.certification::has_usb_storage": true,
