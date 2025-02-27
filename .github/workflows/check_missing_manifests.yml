@@ -17,6 +17,7 @@ jobs:
           python-version: "3.x"
 
       - name: Execute script with manifest entries
+        id: execute-python-script
         env:
           C3_CLIENT_ID: ${{ secrets.C3_CLIENT_ID }}
           C3_CLIENT_SECRET: ${{ secrets.C3_CLIENT_SECRET }}
@@ -31,7 +32,7 @@ jobs:
           CHECKBOX_COMMIT_STATUS_FPAT: ${{ secrets.CHECKBOX_COMMIT_STATUS_FPAT }}
           CHECKBOX_COMMIT: ${{ github.event.client_payload.commit }}
           URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
-        if: failure()
+        if: ${{ failure() && steps.execute-python-script.conclusion == 'failure' }}
         run: |
           echo "Some manifest entries are missing, sending commit status request 'failure'..."
           curl -L \
@@ -47,7 +48,7 @@ jobs:
           CHECKBOX_COMMIT_STATUS_FPAT: ${{ secrets.CHECKBOX_COMMIT_STATUS_FPAT }}
           CHECKBOX_COMMIT: ${{ github.event.client_payload.commit }}
           URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
-        if: success()
+        if: ${{ steps.execute-python-script.conclusion == 'success' }}
         run: |
             echo "No manifest entries are missing, sending commit status request 'success'..."
             curl -L \
