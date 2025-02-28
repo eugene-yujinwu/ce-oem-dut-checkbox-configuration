@@ -17,5 +17,6 @@
   "com.canonical.certification::has_i2c": true,
   "com.canonical.certification::has_special_keys": false,
   "com.canonical.certification::has_tpm_chip": false,
-  "com.canonical.certification::has_wwan_module": true
+  "com.canonical.certification::has_wwan_module": true,
+  "com.canonical.certification::_ignore_disconnected_ethernet_interfaces": true
 }

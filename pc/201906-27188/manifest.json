@@ -12,5 +12,6 @@
   "com.canonical.certification::has_usb_type_c": false,
   "com.canonical.certification::has_wlan_adapter": false,
   "com.canonical.certification::has_audio_playback": true,
-  "com.canonical.certification::gpio_loopback": true
+  "com.canonical.certification::gpio_loopback": true,
+  "com.canonical.certification::_ignore_disconnected_ethernet_interfaces": true
 }

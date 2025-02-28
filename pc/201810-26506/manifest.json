@@ -18,5 +18,6 @@
   "com.canonical.certification::has_special_keys": true,
   "com.canonical.certification::has_tpm_chip": false,
   "com.canonical.certification::has_wwan_module": false,
-  "com.canonical.certification::socket_can_echo_server_running": false
+  "com.canonical.certification::socket_can_echo_server_running": false,
+  "com.canonical.certification::_ignore_disconnected_ethernet_interfaces": true
 }

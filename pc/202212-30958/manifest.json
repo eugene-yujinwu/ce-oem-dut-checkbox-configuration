@@ -20,5 +20,6 @@
   "com.canonical.certification::has_qep": false,
   "com.canonical.qa.intliotg::has_tsn": true,
   "com.canonical.qa.intliotg::has_usb_dwc3_controller": false,
-  "com.canonical.qa.intliotg::has_va_api": true
+  "com.canonical.qa.intliotg::has_va_api": true,
+  "com.canonical.certification::_ignore_disconnected_ethernet_interfaces": true
 }
