@@ -23,7 +23,6 @@ jobs:
           C3_CLIENT_SECRET: ${{ secrets.C3_CLIENT_SECRET }}
           CHECKBOX_COMMIT_STATUS_FPAT: ${{ secrets.CHECKBOX_COMMIT_STATUS_FPAT }}
           CHECKBOX_COMMIT: ${{ github.event.client_payload.commit }}
-        continue-on-error: true
         run: |
           python utils/check_missing_manifests.py --manifest-entries "${{ github.event.client_payload.manifest-entries }}"
 
