@@ -32,7 +32,7 @@ jobs:
           CHECKBOX_COMMIT_STATUS_FPAT: ${{ secrets.CHECKBOX_COMMIT_STATUS_FPAT }}
           CHECKBOX_COMMIT: ${{ github.event.client_payload.commit }}
           URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
-        if: ${{ failure() && steps.execute-python-script.conclusion == 'failure' }}
+        if: ${{ failure() && steps.execute-python-script.outcome == 'failure' }}
         run: |
           echo "Some manifest entries are missing, sending commit status request 'failure'..."
           curl -L \
@@ -48,7 +48,7 @@ jobs:
           CHECKBOX_COMMIT_STATUS_FPAT: ${{ secrets.CHECKBOX_COMMIT_STATUS_FPAT }}
           CHECKBOX_COMMIT: ${{ github.event.client_payload.commit }}
           URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
-        if: ${{ steps.execute-python-script.conclusion == 'success' }}
+        if: ${{ steps.execute-python-script.outcome == 'success' }}
         run: |
             echo "No manifest entries are missing, sending commit status request 'success'..."
             curl -L \
