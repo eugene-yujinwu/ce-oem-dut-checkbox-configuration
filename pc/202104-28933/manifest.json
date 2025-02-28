@@ -11,5 +11,6 @@
   "com.canonical.certification::has_hardware_watchdog": false,
   "com.canonical.certification::has_wlan_adapter": false,
   "com.canonical.certification::has_wwan_module": false,
-  "com.canonical.certification::has_tpm2_chip": true
+  "com.canonical.certification::has_tpm2_chip": true,
+  "com.canonical.certification::_ignore_disconnected_ethernet_interfaces": true
 }

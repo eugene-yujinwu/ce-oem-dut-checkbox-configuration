@@ -16,5 +16,6 @@
   "com.canonical.qa.baoshan::has_baoshan_g1200_j52_txd_rxd_connection": false,
   "com.canonical.qa.baoshan::has_baoshan_gpio_lookback": false,
   "com.canonical.qa.baoshan::has_baoshan_spi_lookback": false,
-  "com.canonical.qa.baoshan::has_baoshan_uart_lookback": false
+  "com.canonical.qa.baoshan::has_baoshan_uart_lookback": false,
+  "com.canonical.certification::_ignore_disconnected_ethernet_interfaces": true
 }

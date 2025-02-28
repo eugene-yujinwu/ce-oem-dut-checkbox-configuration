@@ -13,5 +13,6 @@
   "com.canonical.certification::has_audio_playback": false,
   "com.canonical.certification::has_audio_capture": true,
   "com.canonical.certification::has_fingerprint_reader": false,
-  "com.canonical.certification::has_special_keys": false
+  "com.canonical.certification::has_special_keys": false,
+  "com.canonical.certification::_ignore_disconnected_ethernet_interfaces": true
 }

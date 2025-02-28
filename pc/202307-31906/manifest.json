@@ -26,5 +26,6 @@
   "com.canonical.contrib::has_mtd": true,
   "com.canonical.contrib::has_otg": false,
   "com.canonical.contrib::has_rs485": true,
-  "com.canonical.contrib::has_rs485_server": true
+  "com.canonical.contrib::has_rs485_server": true,
+  "com.canonical.certification::_ignore_disconnected_ethernet_interfaces": true
 }

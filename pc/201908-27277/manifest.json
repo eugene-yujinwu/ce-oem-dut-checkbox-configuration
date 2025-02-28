@@ -2,5 +2,6 @@
   "com.canonical.certification::has_audio_playback": false,
   "com.canonical.certification::has_ethernet_adapter": true,
   "com.canonical.certification::gpio_loopback": false,
-  "com.canonical.certification::has_wlan_adapter": false
+  "com.canonical.certification::has_wlan_adapter": false,
+  "com.canonical.certification::_ignore_disconnected_ethernet_interfaces": true
 }

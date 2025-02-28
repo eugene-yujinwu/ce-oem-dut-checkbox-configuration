@@ -25,5 +25,6 @@
   "com.canonical.contrib::has_caam": true,
   "com.canonical.contrib::has_button": false,
   "com.canonical.contrib::has_buzzer": true,
-  "com.canonical.contrib::has_optee": true
+  "com.canonical.contrib::has_optee": true,
+  "com.canonical.certification::_ignore_disconnected_ethernet_interfaces": true
 }

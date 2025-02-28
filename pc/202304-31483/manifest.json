@@ -20,5 +20,6 @@
   "com.canonical.certification::has_audio_capture": false,
   "com.canonical.qa.shiner::has_eeprom": true,
   "com.canonical.qa.shiner::has_mtd": true,
-  "com.canonical.qa.shiner::has_lon_devices": false
+  "com.canonical.qa.shiner::has_lon_devices": false,
+  "com.canonical.certification::_ignore_disconnected_ethernet_interfaces": true
 }

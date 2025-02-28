@@ -20,5 +20,6 @@
   "com.canonical.certification::has_special_keys": false,
   "com.canonical.certification::has_touchpad": false,
   "com.canonical.certification::has_usbc_data": true,
-  "com.canonical.certification::has_usbc_video": false
+  "com.canonical.certification::has_usbc_video": false,
+  "com.canonical.certification::_ignore_disconnected_ethernet_interfaces": true
 }

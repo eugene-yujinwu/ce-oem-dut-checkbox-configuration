@@ -36,5 +36,6 @@
   "com.canonical.contrib::has_sa2ul_engine": false,
   "com.canonical.contrib::has_hardware_rng": true,
   "com.canonical.contrib::has_tcp_multi_connection_server": false,
-  "com.canonical.contrib::has_tcp_echo_stress_server": false
+  "com.canonical.contrib::has_tcp_echo_stress_server": false,
+  "com.canonical.certification::_ignore_disconnected_ethernet_interfaces": true
 }

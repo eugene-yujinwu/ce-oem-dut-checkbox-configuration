@@ -35,5 +35,6 @@
   "com.canonical.qa.intliotg::has_usb_dwc3_controller": false,
   "com.canonical.qa.intliotg::has_va_api": true,
   "com.canonical.contrib::has_eeprom": false,
-  "com.canonical.contrib::has_mtd": false
+  "com.canonical.contrib::has_mtd": false,
+  "com.canonical.certification::_ignore_disconnected_ethernet_interfaces": true
 }
