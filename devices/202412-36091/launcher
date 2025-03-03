@@ -1,0 +1,110 @@
+#!/usr/bin/env checkbox-cli-wrapper
+[launcher]
+app_id = com.canonical.qa.carmel:checkbox
+launcher_version = 1
+stock_reports = text, submission_files, certification
+
+[test plan]
+unit = com.canonical.qa.carmel::carmel-classic
+filter = com.canonical.qa.carmel::carmel-server-24-04
+        com.canonical.qa.carmel::carmel-server-24-04-manual
+        com.canonical.qa.carmel::carmel-server-24-04-automated
+        com.canonical.qa.carmel::carmel-server-24-04-stress
+        com.canonical.qa.carmel::carmel-desktop-24-04
+        com.canonical.qa.carmel::carmel-desktop-24-04-manual
+        com.canonical.qa.carmel::carmel-desktop-24-04-automated
+        com.canonical.qa.carmel::carmel-desktop-24-04-stress
+
+[manifest]
+com.canonical.certification::has_audio_capture = true
+com.canonical.certification::has_audio_loopback_connector = false
+com.canonical.certification::has_audio_playback = true
+com.canonical.certification::has_bt_adapter = true
+com.canonical.certification::has_bt_obex_support = true
+com.canonical.certification::has_bt_smart = true
+com.canonical.certification::has_card_reader = true
+com.canonical.certification::has_dp = true
+com.canonical.certification::has_dvi = false
+com.canonical.certification::has_eclite = false
+com.canonical.certification::has_edac_module = false
+com.canonical.certification::has_eeprom = false
+com.canonical.certification::has_ethernet_adapter = true
+com.canonical.certification::has_hdmi = true
+com.canonical.certification::has_i2c = true
+com.canonical.certification::has_ishtp = false
+com.canonical.certification::has_led_fn_lock = false
+com.canonical.certification::has_led_power = false
+com.canonical.certification::has_led_serial = false
+com.canonical.certification::has_led_wireless = false
+com.canonical.certification::has_md_raid = false
+com.canonical.certification::has_mei = false
+com.canonical.certification::has_qep = false
+com.canonical.certification::has_thunderbolt3 = false
+com.canonical.certification::has_tpm2_chip = false
+com.canonical.certification::has_usb_storage = true
+com.canonical.certification::has_usbc_data = true
+com.canonical.certification::has_usbc_otg = false
+com.canonical.certification::has_vga = false
+com.canonical.certification::has_wlan_adapter = true
+com.canonical.certification::has_wwan_module = false
+com.canonical.certification::need_snapd_snap_update_test = false
+com.canonical.certification::socket_can_echo_server_running = false
+com.canonical.contrib::has_buzzer = false
+com.canonical.contrib::has_caam = false
+com.canonical.contrib::has_gpio_slot_been_defined = false
+com.canonical.contrib::has_gps = false
+com.canonical.contrib::has_hardware_rng = true
+com.canonical.contrib::has_mcrc_engine = false
+com.canonical.contrib::has_mtd = false
+com.canonical.contrib::has_optee = false
+com.canonical.contrib::has_pdu = false
+com.canonical.contrib::has_ptp = false
+com.canonical.contrib::has_rpyc_otg_server = false
+com.canonical.contrib::has_sa2ul_engine = false
+com.canonical.contrib::has_socket_can_fd = false
+com.canonical.contrib::has_spi = true
+com.canonical.contrib::has_tcp_multi_connection_server = false
+com.canonical.contrib::has_ubuntu_frame = false
+com.canonical.contrib::has_uefi_secure_boot_support = false
+com.canonical.contrib::has_wifi_ap_host = true
+
+[environment]
+ROUTERS=multiple
+WIFI_AP_HOST_DEVICE_INTERFACE=wlan0
+WIFI_AP_HOST_DEVICE_IP=0.0.0.0
+WIFI_AP_HOST_DEVICE_PWD=insecure
+WIFI_AP_HOST_DEVICE_USER=ubuntu
+WPA_BG_SSID=cert-bg-wpa-tel-l4
+WPA_BG_PSK=insecure
+WPA_N_SSID=cert-n-wpa-tel-l4
+WPA_N_PSK=insecure
+WPA_AC_SSID=cert-ac-wpa-tel-l4
+WPA_AC_PSK=insecure
+WPA_AX_SSID=cert-ax-wpa-tel-l4
+WPA_AX_PSK=insecure
+WPA_BE_SSID=cert-be-wpa-tel-l4
+WPA_BE_PSK=insecure
+WPA3_AX_SSID=cert-ax-wpa3-tel-l4
+WPA3_AX_PSK=insecure
+WPA3_BE_SSID=cert-be-wpa3-tel-l4
+WPA3_BE_PSK=insecure
+OPEN_BG_SSID=cert-bg-open-tel-l4
+OPEN_N_SSID=cert-n-open-tel-l4
+OPEN_AC_SSID=cert-ac-open-tel-l4
+OPEN_AX_SSID=cert-ax-open-tel-l4
+OPEN_BE_SSID=cert-be-open-tel-l4
+BTDEVADDR=7C:B2:7D:4B:14:95,28:3A:4D:46:79:C0,34:6F:24:A8:93:EE,80:32:53:D8:0D:1E
+TEST_TARGET_IPERF=10.102.182.100,10.102.182.137,10.102.182.101,10.102.182.48,10.102.182.123
+HWRNG=qcom_hwrng
+WIFI_AP_MODE=wlan0:a:161:none:none wlan0:a:44:none:none wlan0:bg:5:none:none wlan0:a:161:wpa-psk:ccmp wlan0:a:36:wpa-psk:ccmp wlan0:a:44:wpa-psk:ccmp wlan0:bg:10:wpa-psk:ccmp
+STRESS_BOOT_ITERATIONS=100
+STRESS_BOOT_WAIT_DELAY=120
+STRESS_BOOT_WAKEUP_DELAY=60
+STRESS_S3_ITERATIONS=100
+STRESS_S3_SLEEP_DELAY=60
+STRESS_S3_WAIT_DELAY=120
+GST_TEST_DATA=/home/ubuntu/gst_test_data
+AIML_DATA_VERSION=v1.2
+OTG=Micro-USB:112b1000
+VIDEO_CODEC_JSON_CONFIG_NAME=carmel
+VIDEO_CODEC_TESTING_DATA=/home/ubuntu/gst_test_data/
