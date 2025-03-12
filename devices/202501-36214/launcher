@@ -77,7 +77,7 @@ com.canonical.contrib::has_spi_loopback = false
 com.canonical.contrib::has_gpio_slot_been_defined = false
 
 [environment]
-USB_OTG_MAPPING=PORT1:38100000.usb:usb3
+USB_OTG_MAPPING=PORT1:ci_hdrc.0:usb2
 SNAP_CONFINEMENT_ALLOWLIST=x-test
 HWRNG=rng-caam
 TOTAL_MTD_NUM=1
