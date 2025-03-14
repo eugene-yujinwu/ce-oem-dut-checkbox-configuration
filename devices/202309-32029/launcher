@@ -30,6 +30,7 @@ com.canonical.certification::has_hardware_watchdog = true
 com.canonical.certification::socket_can_echo_server_running = false
 com.canonical.certification::has_bt_adapter = false
 com.canonical.certification::has_bt_smart = false
+com.canonical.certification::has_bt_obex_support = false
 com.canonical.certification::has_thunderbolt3 = false
 com.canonical.certification::has_tpm2_chip = false
 com.canonical.certification::has_usb_storage = true
