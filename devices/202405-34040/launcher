@@ -1,0 +1,76 @@
+#!/usr/bin/env checkbox-cli-wrapper
+[launcher]
+app_id = com.canonical.qa.numedal:checkbox
+launcher_version = 1
+stock_reports = text, submission_files, certification
+
+[test plan]
+unit = com.canonical.qa.numedal::numedal-classic
+filter = com.canonical.qa.numedal::numedal-classic
+        com.canonical.qa.numedal::numedal-classic-manual
+        com.canonical.qa.numedal::numedal-classic-automated
+        com.canonical.qa.numedal::numedal-classic-stress
+
+[manifest]
+com.canonical.certification::has_audio_capture = false
+com.canonical.certification::has_audio_loopback_connector = false
+com.canonical.certification::has_audio_playback = false
+com.canonical.certification::has_bt_adapter = false
+com.canonical.certification::has_card_reader = true
+com.canonical.certification::has_dp = true
+com.canonical.certification::has_dvi = false
+com.canonical.certification::has_eeprom = false
+com.canonical.certification::has_ethernet_adapter = true
+com.canonical.certification::has_hdmi = false
+com.canonical.certification::has_i2c = false
+com.canonical.certification::has_thunderbolt3 = false
+com.canonical.certification::has_tpm2_chip = false
+com.canonical.certification::has_usb_storage = true
+com.canonical.certification::has_usbc_data = false
+com.canonical.certification::has_usbc_otg = false
+com.canonical.certification::has_vga = false
+com.canonical.certification::has_wlan_adapter = false
+com.canonical.certification::has_wwan_module = false
+com.canonical.certification::socket_can_echo_server_running = false
+com.canonical.certification::has_led_gpio_sysfs= false #led can only be test if IPC OOT driver has been probe
+com.canonical.certification::has_hardware_watchdog = false #watchdog can only be test if IPC OOT driver has been probe
+com.canonical.contrib::has_buzzer = false
+com.canonical.contrib::has_caam = false
+com.canonical.contrib::has_gps = false
+com.canonical.contrib::has_mtd = false
+com.canonical.contrib::has_otg = false
+com.canonical.contrib::has_optee = false
+com.canonical.contrib::has_ptp = true
+com.canonical.contrib::has_rpmsg = false
+com.canonical.contrib::has_tcp_multi_connection_server = false
+com.canonical.contrib::has_tcp_echo_stress_server = false
+com.canonical.contrib::has_serial_ehco_server = true
+
+[environment]
+STRESS_BOOT_ITERATIONS=30
+STRESS_S3_ITERATIONS=30
+STRESS_S4_ITERATIONS=30
+TEST_TARGET_IPERF=10.102.88.220
+STRESS_S4_WAIT_DELAY=120
+STRESS_S4_SLEEP_DELAY=60
+STRESS_S3_SLEEP_DELAY=60
+STRESS_BOOT_WAKEUP_DELAY=60
+STRESS_S3_WAIT_DELAY=120
+STRESS_BOOT_WAIT_DELAY=120
+TPM2TOOLS_TCTI_NAME=device
+TPM2TOOLS_DEVICE_FILE=/dev/tpm0
+STORE_ID=foobar
+TOTAL_MTD_NUM=0
+TOTAL_RTC_NUM=1
+SYS_LEDS=run-green:simatic-ipc:green:run-stop run-yellow:simatic-ipc:yellow:run-stop error-red:simatic-ipc:red:error maint-red:simatic-ipc:red:maint error-yellow:simatic-ipc:yellow:error maint-yellow:simatic-ipc:yellow:maint
+TCP_ECHO_SERVER_IP=10.102.88.220
+TCP_ECHO_SERVER_PORT=1024
+TCP_ECHO_LOOP_ITERATIONS=10000
+TCP_MULTI_CONNECTIONS_SERVER_IP=10.102.88.220
+TCP_MULTI_CONNECTIONS_START_PORT=1025
+TCP_MULTI_CONNECTIONS_END_PORT=1224
+TCP_MULTI_CONNECTIONS_PAYLOAD_SIZE=64
+SERIAL_PORTS=URS485:/dev/ttyS0:115200
+WATCHDOG_IDENTITY=simatic_ipc_wdt
+WATCHDOG_TYPE=simatic_ipc_wdt
+TSN_DEVICE_IP_LIST=eno1:10.102.88.220,eno2:10.102.88.220,eno3:10.102.88.220
