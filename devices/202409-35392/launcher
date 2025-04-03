@@ -40,6 +40,7 @@ com.canonical.certification::need_gadget_snap_update_test = false
 com.canonical.certification::need_kernel_snap_update_test = false
 com.canonical.certification::need_snapd_snap_update_test = false
 com.canonical.certification::dangerous_grade_core_image = false
+com.canonical.certification::_dangerous_grade_core_image = false
 com.canonical.certification::has_ishtp = false
 com.canonical.certification::has_eclite = false
 com.canonical.certification::has_led_power = false

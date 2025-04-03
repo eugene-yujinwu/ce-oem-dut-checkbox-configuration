@@ -19,5 +19,6 @@
   "com.canonical.certification::has_tpm_chip": false,
   "com.canonical.certification::has_wwan_module": false,
   "com.canonical.certification::socket_can_echo_server_running": false,
-  "com.canonical.certification::_ignore_disconnected_ethernet_interfaces": true
+  "com.canonical.certification::_ignore_disconnected_ethernet_interfaces": true,
+  "com.canonical.certification::_dangerous_grade_core_image": true
 }

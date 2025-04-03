@@ -21,5 +21,6 @@
   "com.canonical.qa.shiner::has_eeprom": true,
   "com.canonical.qa.shiner::has_mtd": true,
   "com.canonical.qa.shiner::has_lon_devices": true,
-  "com.canonical.certification::_ignore_disconnected_ethernet_interfaces": true
+  "com.canonical.certification::_ignore_disconnected_ethernet_interfaces": true,
+  "com.canonical.certification::_dangerous_grade_core_image": true
 }

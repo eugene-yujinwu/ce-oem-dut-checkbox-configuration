@@ -14,5 +14,6 @@
   "com.canonical.certification::has_audio_capture": true,
   "com.canonical.certification::has_hardware_watchdog": true,
   "com.canonical.certification::has_wwan_module": false,
-  "com.canonical.certification::_ignore_disconnected_ethernet_interfaces": true
+  "com.canonical.certification::_ignore_disconnected_ethernet_interfaces": true,
+  "com.canonical.certification::_dangerous_grade_core_image": true
 }

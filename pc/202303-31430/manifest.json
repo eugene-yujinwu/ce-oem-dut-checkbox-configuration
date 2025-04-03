@@ -22,5 +22,6 @@
   "com.canonical.qa.baoshan::has_baoshan_gpio_lookback": true,
   "com.canonical.qa.baoshan::has_baoshan_spi_lookback": true,
   "com.canonical.qa.baoshan::has_baoshan_uart_lookback": false,
-  "com.canonical.certification::_ignore_disconnected_ethernet_interfaces": true
+  "com.canonical.certification::_ignore_disconnected_ethernet_interfaces": true,
+  "com.canonical.certification::_dangerous_grade_core_image": true
 }

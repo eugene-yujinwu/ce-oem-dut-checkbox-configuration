@@ -15,5 +15,6 @@
   "com.canonical.certification::has_usb_type_c": false,
   "com.canonical.certification::has_usbc_video": false,
   "com.canonical.certification::has_wlan_adapter": false,
-  "com.canonical.certification::_ignore_disconnected_ethernet_interfaces": true
+  "com.canonical.certification::_ignore_disconnected_ethernet_interfaces": true,
+  "com.canonical.certification::_dangerous_grade_core_image": true
 }

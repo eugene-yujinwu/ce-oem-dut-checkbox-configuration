@@ -26,5 +26,6 @@
   "com.canonical.conrtib::has_buzzer": false,
   "com.canonical.conrtib::has_gps": false,
   "com.canonical.conrtib::has_tcp_echo_stress_server": false,
-  "com.canonical.certification::_ignore_disconnected_ethernet_interfaces": true
+  "com.canonical.certification::_ignore_disconnected_ethernet_interfaces": true,
+  "com.canonical.certification::_dangerous_grade_core_image": true
 }

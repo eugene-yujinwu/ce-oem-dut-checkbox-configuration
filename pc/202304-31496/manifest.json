@@ -13,5 +13,6 @@
   "com.canonical.certification::has_audio_playback": true,
   "com.canonical.certification::has_audio_capture": false,
   "com.canonical.certification::has_touchpad": false,
-  "com.canonical.certification::_ignore_disconnected_ethernet_interfaces": true
+  "com.canonical.certification::_ignore_disconnected_ethernet_interfaces": true,
+  "com.canonical.certification::_dangerous_grade_core_image": true
 }

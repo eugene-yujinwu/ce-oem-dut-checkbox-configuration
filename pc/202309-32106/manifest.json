@@ -25,5 +25,6 @@
   "com.canonical.contrib::has_sa2ul_engine": false,
   "com.canonical.contrib::has_socket_can_fd": false,
   "com.canonical.contrib::has_tcp_multi_connection_server": false,
-  "com.canonical.certification::_ignore_disconnected_ethernet_interfaces": true
+  "com.canonical.certification::_ignore_disconnected_ethernet_interfaces": true,
+  "com.canonical.certification::_dangerous_grade_core_image": true
 }
