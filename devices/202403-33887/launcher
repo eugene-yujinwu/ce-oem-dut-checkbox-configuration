@@ -9,6 +9,7 @@ forced = yes
 
 [manifest]
 com.canonical.certification::dangerous_grade_core_image = false
+com.canonical.certification::_dangerous_grade_core_image = false
 com.canonical.certification::has_bt_adapter = true
 com.canonical.certification::has_bt_obex_support = false
 com.canonical.certification::has_card_reader = true
