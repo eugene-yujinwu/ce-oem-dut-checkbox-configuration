@@ -1,0 +1,18 @@
+provision_data:
+  ubuntu_sso_email: ce-certification-qa@lists.canonical.com
+  provision_plan:
+    config:
+      project_name: baoshan
+      console_type: serial
+      serial_console:
+        port: /dev/ttyUSB0
+        baud_rate: 921600
+      network: eth0
+      hostname: "mtk-genio"
+    run_stage:
+      - deploy:
+          utility: genio_flash
+          utility_extra_args: '--daa -e list_dtbo="gpu-mali.dtbo apusys.dtbo video.dtbo display-dsiedp.dtbo display-dsi-p1v4.dtbo" -e ethaddr="de:ad:be:ef:00:01" -c 2'
+          timeout: 1200
+      - initial_login:
+          method: console-conf
