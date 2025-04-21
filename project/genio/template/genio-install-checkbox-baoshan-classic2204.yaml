@@ -1,0 +1,6 @@
+actions:
+  - action: install_snap
+    name: checkbox-baoshan
+    track: latest
+    risk: edge
+    mode: classic

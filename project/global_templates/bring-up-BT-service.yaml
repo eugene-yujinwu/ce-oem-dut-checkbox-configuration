@@ -1,0 +1,15 @@
+actions:
+  - action: create_service
+    service_name: bring-up-bluetooth.service
+    service_raw: |
+      [Unit]
+      Description=Bring up bluetooth service
+      After=network.target
+
+      [Service]
+      Type=oneshot
+      ExecStart=/snap/bin/hciconfig hci0 up
+
+      [Install]
+      WantedBy=multi-user.target
+    service_file_dest: /etc/systemd/system

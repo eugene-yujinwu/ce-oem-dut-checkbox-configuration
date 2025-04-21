@@ -1,0 +1,16 @@
+actions:
+  - action: load_template
+    name: genio-install-other-snap.yaml
+  - action: install_snap
+    name: mediatek-genio-{{ PLATFORM }}-gpu-drivers-core22
+    track: latest
+    risk: candidate
+  - action: install_snap
+    name: ubuntu-frame
+    track: "22"
+    risk: stable
+    post_commands: |
+      sudo snap disconnect ubuntu-frame:graphics-core22
+      sudo snap connect ubuntu-frame:graphics-core22 "mediatek-genio-{{ PLATFORM }}-gpu-drivers-core22:graphics-core22"
+      sudo snap set ubuntu-frame config=
+      sudo snap stop --disable ubuntu-frame.daemon

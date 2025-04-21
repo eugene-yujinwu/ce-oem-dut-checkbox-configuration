@@ -1,0 +1,3 @@
+project: "genio"
+setup_yaml_name: "server2204_env.yaml"
+config_yaml_name: "genio_g1200_config.yaml"

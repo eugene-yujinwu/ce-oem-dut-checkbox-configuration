@@ -1,0 +1,15 @@
+actions:
+  - action: ssh_command
+    command: |
+      amixer set Master unmute
+      amixer set Master 100
+      amixer set Speaker 100
+      amixer -c 1 set Master unmute
+      amixer -c 1 set Master 100
+      amixer -c 1 set Speaker 100
+      gsettings set org.gnome.desktop.screensaver ubuntu-lock-on-suspend false
+      gsettings set org.gnome.desktop.screensaver lock-enabled false
+      gsettings set org.gnome.settings-daemon.plugins.power sleep-inactive-ac-type 'nothing'
+      gsettings set org.gnome.settings-daemon.plugins.power sleep-inactive-battery-type 'nothing'
+      gsettings set org.gnome.desktop.session idle-delay 'uint32 0'
+      # need to add the method to enable the Auto-login.

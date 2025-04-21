@@ -1,0 +1,3 @@
+project: "genio"
+setup_yaml_name: "uc22_g350_env.yaml"
+config_yaml_name: "genio_g350_config.yaml"

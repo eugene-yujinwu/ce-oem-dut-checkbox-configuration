@@ -1,0 +1,8 @@
+actions:
+  - action: ssh_command
+    command: |
+      USER="$(whoami)"
+      FILE_PATH="/var/lib/extrausers/group"
+      LINE_TO_APPEND="audio:x:1005:$USER"
+      echo $LINE_TO_APPEND | sudo tee -a $FILE_PATH
+      id $USER

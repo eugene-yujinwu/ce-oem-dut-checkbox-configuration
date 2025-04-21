@@ -1,0 +1,4 @@
+actions:
+  - action: ssh_command
+    command: |
+      snap set system journal.persistent=true

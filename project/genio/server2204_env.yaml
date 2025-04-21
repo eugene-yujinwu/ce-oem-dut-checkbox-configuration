@@ -1,0 +1,13 @@
+actions:
+  - action: load_template
+    name: sudo_nopassword.yaml
+  - action: load_template
+    name: snap_stop_refresh.yaml
+  - action: load_template
+    name: install-checkbox-classic2204.yaml
+  - action: load_template
+    name: genio-install-checkbox-baoshan-classic2204.yaml
+  - action: load_template
+    name: genio-install-other-snap.yaml
+  - action: load_template
+    name: genio-install-gpu-drivers-ubuntu-frame.yaml

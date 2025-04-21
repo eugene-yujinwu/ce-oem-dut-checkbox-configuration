@@ -1,0 +1,23 @@
+actions:
+  - action: load_template
+    name: sudo_nopassword.yaml
+  - action: load_template
+    name: snap_stop_refresh.yaml
+  - action: load_template
+    name: install-checkbox-uc22.yaml
+  - action: load_template
+    name: genio-install-checkbox-baoshan-uc22.yaml
+  - action: install_snap
+    name: bluez
+    track: "22"
+    risk: stable
+    post_commands: |
+      sudo snap connect checkbox-baoshan:bluez bluez:service
+  - action: load_template
+    name: bring-up-BT-service.yaml
+  - action: load_template
+    name: genio-install-gpu-drivers-ubuntu-frame.yaml
+  - action: load_template
+    name: genio-enable-audio.yaml
+  - action: load_template
+    name: persist-journal-log-in-core-image.yaml
