@@ -5,15 +5,11 @@ launcher_version = 1
 stock_reports = text, submission_files, certification
 
 [test plan]
-unit = com.canonical.qa.limerick::kr260-limerick-server-24-04
-filter = com.canonical.qa.limerick::kr260-limerick-server-24-04
-        com.canonical.qa.limerick::kr260-limerick-server-manual-24-04
-        com.canonical.qa.limerick::kr260-limerick-server-automated-24-04
-        com.canonical.qa.limerick::kr260-limerick-server-stress-24-04
-        com.canonical.qa.limerick::kr260-limerick-desktop-24-04
-        com.canonical.qa.limerick::kr260-limerick-desktop-manual-24-04
-        com.canonical.qa.limerick::kr260-limerick-desktop-automated-24-04
-        com.canonical.qa.limerick::kr260-limerick-desktop-stress-24-04
+unit = com.canonical.qa.limerick::limerick-server-24-04
+filter = com.canonical.qa.limerick::limerick-server-24-04
+        com.canonical.qa.limerick::limerick-manual-server-24-04
+        com.canonical.qa.limerick::limerick-automated-server-24-04
+        com.canonical.qa.limerick::limerick-stress-server-24-04
 
 [manifest]
 com.canonical.certification::has_ethernet_adapter = true
@@ -73,3 +69,6 @@ com.canonical.contrib::has_ubuntu_frame = false
 [environment]
 TOTAL_MTD_NUM=17
 KERNEL_REPO=universe
+NETWORK_PDU_CONF=10.102.195.40:10
+NETWORK_PDU_TYPE=raritan
+SNAPD_TASK_TIMEOUT=120
