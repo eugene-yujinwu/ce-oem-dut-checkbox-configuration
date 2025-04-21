@@ -83,6 +83,7 @@ com.canonical.contrib::has_spi_loopback = true
 com.canonical.contrib::has_gpio_slot_been_defined = false
 
 [environment]
+TEST_TARGET_IPERF = 10.102.182.2,10.102.182.3,10.102.182.4,10.102.182.5,10.102.182.6,10.102.182.7
 GENIO_DEVICE=G350
 GENIO_GPU_DRIVER_VERSION=r48p0
 GENIO_GPU_DRIVER_SNAP=mediatek-genio-g350-gpu-drivers-core22
