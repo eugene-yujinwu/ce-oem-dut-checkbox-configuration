@@ -1,0 +1,6 @@
+actions:
+  - action: install_snap
+    name: checkbox-limerick-classic
+    track: 24.04
+    risk: edge
+    mode: classic

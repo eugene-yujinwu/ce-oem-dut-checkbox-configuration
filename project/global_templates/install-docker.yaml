@@ -1,0 +1,6 @@
+actions:
+  - action: install_snap
+    name: docker
+    track: latest
+    risk: stable
+    mode: classic

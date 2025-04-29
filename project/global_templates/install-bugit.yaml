@@ -1,0 +1,6 @@
+actions:
+  - action: install_snap
+    name: bugit
+    track: latest
+    risk: edge
+    mode: devmode

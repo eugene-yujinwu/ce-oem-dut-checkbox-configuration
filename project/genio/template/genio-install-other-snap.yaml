@@ -5,11 +5,6 @@ actions:
     risk: stable
     mode: devmode
   - action: install_snap
-    name: bugit
-    track: latest
-    risk: stable
-    mode: devmode
-  - action: install_snap
     name: x-test
     track: "22"
     risk: stable

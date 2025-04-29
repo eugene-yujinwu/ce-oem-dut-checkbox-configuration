@@ -13,3 +13,5 @@ actions:
     name: genio-install-other-snap.yaml
   - action: load_template
     name: genio-install-gpu-drivers-ubuntu-frame.yaml
+  - action: load_template
+    name: install-bugit.yaml
