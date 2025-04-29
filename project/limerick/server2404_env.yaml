@@ -1,0 +1,11 @@
+actions:
+  - action: load_template
+    name: snap_stop_refresh.yaml
+  - action: load_template
+    name: install-checkbox-classic2404.yaml
+  - action: load_template
+    name: limerick-install-checkbox-limerick-classic2404.yaml
+  - action: load_template
+    name: install-bugit.yaml
+  - action: load_template
+    name: install-docker.yaml
