@@ -47,6 +47,7 @@ com.canonical.certification::has_mei = false
 com.canonical.certification::has_led_power = false
 com.canonical.certification::has_led_wireless = false
 com.canonical.certification::has_socket_can_fd = false
+com.canonical.certification::has_ethernet_wake_on_lan_support = true
 com.canonical.contrib::has_buzzer = false
 com.canonical.contrib::has_gps = false
 com.canonical.contrib::has_mtd = true
