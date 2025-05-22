@@ -1,4 +1,5 @@
 provision_data:
+  urls: []
   ubuntu_sso_email: ce-certification-qa@lists.canonical.com
   provision_plan:
     config:

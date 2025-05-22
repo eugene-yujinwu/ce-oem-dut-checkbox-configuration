@@ -1,4 +1,5 @@
 provision_data:
+  urls: []
   provision_plan:
     config:
       project_name: baoshan
