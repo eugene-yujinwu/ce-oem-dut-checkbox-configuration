@@ -1,0 +1,24 @@
+actions:
+  - action: load_template
+    name: snap_stop_refresh.yaml
+  - action: load_template
+    name: install-checkbox-snap-classic2404.yaml
+  - action: install_snap
+    name: bluez
+    track: "24"
+    risk: stable
+    post_commands: |
+      sudo snap connect checkbox-ce-oem:bluez bluez
+  - action: install_snap
+    name: x-test
+    track: "24"
+    risk: stable
+    mode: devmode
+    post_commands: |
+      sudo snap connect {{ XSNAP }}:xtest x-test:xtest-404
+      sudo snap start --enable x-test.tee-supplicant
+  - action: install_snap
+    name: bugit
+    track: latest
+    risk: edge
+    mode: devmode
