@@ -1,0 +1,7 @@
+actions:
+  - action: install_snap
+    name: modem-manager
+    track: "20"
+    risk: stable
+    post_commands: |
+      sudo snap connect {{ FRONTEND_CHECKBOX }}:modem-manager modem-manager

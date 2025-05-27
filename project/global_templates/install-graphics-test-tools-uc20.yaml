@@ -1,0 +1,5 @@
+actions:
+  - action: install_snap
+    name: graphics-test-tools
+    track: "20"
+    risk: stable

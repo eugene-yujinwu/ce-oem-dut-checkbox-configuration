@@ -1,0 +1,29 @@
+actions:
+  - action: create_service
+    service_name: probe-bt-module.service
+    service_raw: |
+      [Unit]
+      Description: this service will bring up the Bluetooh interface
+      After: systemd-modules-load.service
+
+      [Service]
+      Type: oneshot
+      ExecStart: modprobe hci_uart
+
+      [Install]
+      WantedBy: multi-user.target
+    service_file_dest: /etc/systemd/system
+  - action: create_service
+    service_name: probe-wifi-module.service
+    service_raw: |
+      [Unit]
+      Description: this service will bring up the Bluetooh interface
+      After: systemd-modules-load.service
+
+      [Service]
+      Type: oneshot
+      ExecStart: modprobe lwb5plus-brcmfmac regdomain=TW
+
+      [Install]
+      WantedBy: multi-user.target
+    service_file_dest: /etc/systemd/system

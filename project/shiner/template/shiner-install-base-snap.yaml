@@ -1,0 +1,10 @@
+actions:
+  - action: install_snap
+    name: checkbox-shiner
+    track: latest
+    risk: edge
+    mode: devmode
+  - action: install_snap
+    name: hon-x-test
+    track: latest
+    risk: stable

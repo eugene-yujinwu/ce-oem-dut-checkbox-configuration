@@ -1,0 +1,12 @@
+actions:
+  - action: install_snap
+    name: checkbox20
+    track: latest
+    risk: beta
+  - action: install_snap
+    name: checkbox-ce-oem
+    track: uc20
+    risk: edge
+    mode: devmode
+    post_commands: |
+      sudo snap stop --disable checkbox-ce-oem.remote-slave

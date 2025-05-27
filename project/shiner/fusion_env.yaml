@@ -1,0 +1,22 @@
+actions:
+  - action: load_template
+    name: sudo_nopassword.yaml
+  - action: load_template
+    name: snap_stop_refresh.yaml
+  - action: load_template
+    name: persist-journal-log-in-core-image.yaml
+  - action: load_template
+    name: install-checkbox-snap-uc20-disable-ce-oem.yaml
+  - action: load_template
+    name: shiner-install-base-snap.yaml
+  - action: load_template
+    name: install-graphics-test-tools-uc20.yaml
+  - action: load_template
+    name: install-network-manager-uc20.yaml
+  - action: load_template
+    name: install-bluez-uc20.yaml
+  - action: ssh_command
+    command: |
+      sudo snap connect graphics-test-tools:graphics-core20 {{ GPU_DRIVER_SNAP }}:graphics-core20
+      sudo snap disconnect ubuntu-frame:graphics-core20
+      sudo snap connect ubuntu-frame:graphics-core20 {{ GPU_DRIVER_SNAP }}:graphics-core20
