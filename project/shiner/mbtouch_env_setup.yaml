@@ -1,0 +1,137 @@
+actions:
+  - action: load_template
+    name: sudo_nopassword.yaml
+  - action: load_template
+    name: snap_stop_refresh.yaml
+  - action: load_template
+    name: persist-journal-log-in-core-image.yaml
+  - action: load_template
+    name: install-checkbox-snap-uc20-disable-ce-oem.yaml
+  - action: load_template
+    name: shiner-install-base-snap.yaml
+  - action: load_template
+    name: install-graphics-test-tools-uc20.yaml
+  - action: load_template
+    name: install-network-manager-uc20.yaml
+  - action: load_template
+    name: install-bluez-uc20.yaml
+  - action: ssh_command
+    command: |
+      sudo snap connect graphics-test-tools:graphics-core20 {{ GPU_DRIVER_SNAP }}:graphics-core20
+      sudo snap disconnect ubuntu-frame:graphics-core20
+      sudo snap connect ubuntu-frame:graphics-core20 {{ GPU_DRIVER_SNAP }}:graphics-core20
+  - action: load_template
+    name: bring-up-BT-service.yaml
+  - action: create_service
+    service_name: bring-up-audio.service
+    service_raw: |
+      [Unit]
+      Description=this is a service to configure ALSA audio settings
+      After=systemd-modules-load.service
+
+      [Service]
+      Type=oneshot
+      ExecStart=python3 /home/iotuc/enable_audio_via_alsa.py configure -c "amixer -c imx8mmwm8904 cset name='Capture Switch' on" "amixer -c imx8mmwm8904 cset name='Capture Volume' 80%" "amixer -c imx8mmwm8904 cset name='Headphone Volume' 80%"
+
+      [Install]
+      WantedBy=multi-user.target
+    service_file_dest: /etc/systemd/system
+    script_file: enable_audio_via_alsa.py
+    script_raw: |
+      #!/usr/bin/env python3
+      import argparse
+      import subprocess
+
+      CHECKBOX_ENV = "checkbox-ce-oem.shell"
+
+      def restore_alsa_config(args):
+          with subprocess.Popen(
+              "/usr/bin/snap run {}".format(CHECKBOX_ENV),
+              shell=True,
+              stdin=subprocess.PIPE,
+              stdout=subprocess.PIPE,
+              stderr=subprocess.PIPE,
+              text=True,
+          ) as sp:
+              ret = sp.communicate(
+                  "alsactl store -f {}".format(args.file),
+                  timeout=30
+              )
+              print("output log:\n{}".format(ret[0]))
+              print("error message:\n{}".format(ret[1]))
+
+
+      def backup_alsa_config(args):
+          with subprocess.Popen(
+              "/usr/bin/snap run {}".format(CHECKBOX_ENV),
+              shell=True,
+              stdin=subprocess.PIPE,
+              stdout=subprocess.PIPE,
+              stderr=subprocess.PIPE,
+              text=True,
+          ) as sp:
+              ret = sp.communicate(
+                  "alsactl restore -f {}".format(args.file),
+                  timeout=30
+              )
+              print("output log:\n{}".format(ret[0]))
+              print("error message:\n{}".format(ret[1]))
+
+
+      def configure_audio_via_alsa(args):
+          print("# Configure audio")
+          for cmd in args.commands:
+              with subprocess.Popen(
+                  "/usr/bin/snap run {}".format(CHECKBOX_ENV),
+                  shell=True,
+                  stdin=subprocess.PIPE,
+                  stdout=subprocess.PIPE,
+                  stderr=subprocess.PIPE,
+                  text=True,
+              ) as sp:
+                  print("# entering checkbox-ce-oem shell mode")
+                  ret = sp.communicate(cmd, timeout=30)
+                  print("output log:\n{}".format(ret[0]))
+                  if sp.returncode != 0:
+                      raise subprocess.CalledProcessError(ret[1])
+
+          print("completed the audio configuration")
+
+
+      def register_arguments():
+          parser = argparse.ArgumentParser(
+              description=(
+                  "the scripts is uses configure the audio setting via checkbox"
+              )
+          )
+          sub_parsers = parser.add_subparsers(dest="test_func")
+          sub_parsers.required = True
+
+          configure_parser = sub_parsers.add_parser("configure")
+          configure_parser.set_defaults(test_func=configure_audio_via_alsa)
+          configure_parser.add_argument(
+              "-c",
+              "--commands",
+              required=True,
+              type=str,
+              nargs="+"
+          )
+
+          backup_parser = sub_parsers.add_parser("backup")
+          backup_parser.set_defaults(test_func=backup_alsa_config)
+          backup_parser.add_argument("--file", default="asound.state", type=str)
+
+          restore_parser = sub_parsers.add_parser("restore")
+          restore_parser.set_defaults(test_func=restore_alsa_config)
+          restore_parser.add_argument("--file", default="asound.state", type=str)
+
+          return parser.parse_args()
+
+
+      def main():
+          args = register_arguments()
+          args.test_func(args)
+
+
+      if __name__ == "__main__":
+          main()
