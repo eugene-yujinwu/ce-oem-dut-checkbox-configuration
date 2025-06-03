@@ -59,6 +59,7 @@ com.canonical.contrib::has_otg = true
 com.canonical.contrib::has_ptp = false
 com.canonical.contrib::has_socket_can_fd = true
 com.canonical.contrib::has_buzzer = false
+com.canonical.contrib::has_eeprom = false
 com.canonical.contrib::has_gps = false
 com.canonical.contrib::has_mtd = true
 com.canonical.contrib::has_rs485 = false
@@ -77,9 +78,13 @@ com.canonical.contrib::has_spi_loopback = false
 com.canonical.contrib::has_gpio_slot_been_defined = false
 
 [environment]
-USB_OTG_MAPPING=PORT1:38100000.usb:usb3
-SNAP_CONFINEMENT_ALLOWLIST=x-test
+TEST_SNAP=test-snapd-tools-core24
+SNAPD_TASK_TIMEOUT=120
+STORE_ID=Chaibai2os0ahjah6thi
+SNAP_CONFINEMENT_ALLOWLIST=x-test,bugit
 HWRNG=rng-caam
 TOTAL_MTD_NUM=1
-MODEL_GRADE=signed
+MODEL_GRADE=secured
+USB_OTG_MAPPING=port1:38100000.usb:usb3
+RPYC_SERVER=10.102.88.108
 SPI_DEVICES=/dev/spidev1.0
