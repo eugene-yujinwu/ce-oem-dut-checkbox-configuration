@@ -4,12 +4,6 @@ actions:
   - action: load_template
     name: install-checkbox-snap-classic2404.yaml
   - action: install_snap
-    name: bluez
-    track: "24"
-    risk: stable
-    post_commands: |
-      sudo snap connect checkbox-ce-oem:bluez bluez
-  - action: install_snap
     name: x-test
     track: "24"
     risk: stable
