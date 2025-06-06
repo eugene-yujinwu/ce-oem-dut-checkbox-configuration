@@ -14,7 +14,7 @@
   "com.canonical.certification::has_audio_playback": true,
   "com.canonical.certification::has_bt_adapter": true,
   "com.canonical.certification::gpio_loopback": true,
-  "com.canonical.certification::has_rpi_camera": true,
+  "com.canonical.certification::has_rpi_camera": false,
   "com.canonical.certification::_ignore_disconnected_ethernet_interfaces": true,
   "com.canonical.certification::_dangerous_grade_core_image": true
 }
