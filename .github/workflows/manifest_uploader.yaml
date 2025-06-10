@@ -1,0 +1,74 @@
+name: manifest uploader
+on:
+  workflow_dispatch:
+    inputs:
+      name:
+        type: string
+        description: the branch name that you would like to upload
+        required: true
+      project:
+        type: choice
+        description: folder
+        required: true
+        options:
+          - pc
+          - devices
+      manifest:
+        type: string
+        description: the manifest content in json format
+        required: true
+      default_checkbox_conf:
+        type: boolean
+        description: update the checkbox.conf to default
+        required: true
+
+run-name: Create new branch or add commit to ${{ github.event.inputs.name }}
+
+jobs:
+  update_manifest:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+    - uses: canonical/ce-oem-dut-checkbox-configuration/.github/actions/branch-switch@main
+      with:
+        branch: ${{ github.event.inputs.name }}
+        create: true
+        github-token: ${{ secrets.GITHUB_TOKEN }}
+    - name: set the checkbox.conf to default
+      if: ${{ inputs.default_checkbox_conf }}
+      env:
+          LOCATION: "${{ github.event.inputs.project }}/${{ github.event.inputs.name }}"
+      run: |
+        mkdir -p ${LOCATION}
+        # github action could not support input ini file in the input field. Therefore, copy the default value
+        curl -L https://raw.githubusercontent.com/canonical/oem-qa-tools/refs/heads/main/Tools/PC/oem-qa-checkbox-installer/conf/plainbox.conf -o ${LOCATION}/checkbox.conf
+    - name: create/update the content
+      id: create-update-content
+      env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          LOCATION: "${{ github.event.inputs.project }}/${{ github.event.inputs.name }}"
+      run: |
+        mkdir -p ${LOCATION}
+        echo '${{ github.event.inputs.manifest }}' | jq -r . > ${LOCATION}/manifest.json
+        if [ -z "$(git status --porcelain)" ]; then
+            echo "No changes to commit."
+            echo "exists=false" >> $GITHUB_OUTPUT
+        else
+            echo "exists=true" >> $GITHUB_OUTPUT
+        fi
+    - name: commit the content
+      if: ${{ steps.create-update-content.outputs.exists  == 'true' }}
+      env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          LOCATION: "${{ github.event.inputs.project }}/${{ github.event.inputs.name }}"
+      run: |
+        git config user.name "${{ github.actor }}"
+        git config user.email "${{ github.actor_id }}+${{ github.actor }}@users.noreply.github.com"
+        if [ "${{ inputs.default_checkbox_conf }}" == "true" ]; then
+            git add ${LOCATION}/checkbox.conf ${LOCATION}/manifest.json
+        else
+            git add ${LOCATION}/manifest.json
+        fi
+        git commit -m "update content for ${{ github.event.inputs.name }}"
+        git push origin ${{ github.event.inputs.name }}
