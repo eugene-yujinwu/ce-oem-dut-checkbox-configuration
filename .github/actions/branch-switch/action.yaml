@@ -1,0 +1,50 @@
+name: Branch switch
+
+description: 'GitHub Action to switch to the branch.'
+inputs:
+  branch:
+    description: 'Branch name to switch to'
+    type: string
+    required: true
+  github-token:
+    description: 'The GITHUB_TOKEN'
+    type: string
+    required: true
+  create:
+    description: 'Create the branch if it is not exist'
+    type: boolean
+    required: true
+    default: true
+
+runs:
+  using: "composite"
+  steps:
+    - name: Checkout
+      uses: actions/checkout@v4
+    - name: Check if branch exists
+      id: check-branch-exists
+      shell: bash
+      run: |
+          git fetch origin +refs/heads/*:refs/remotes/origin/*
+          if [[ -n $(git ls-remote --heads origin ${{ inputs.branch }}) ]]; then
+              echo "exists=true" >> $GITHUB_OUTPUT
+          else
+              echo "exists=false" >> $GITHUB_OUTPUT          
+          fi
+    - name: Switch to branch
+      shell: bash
+      env:
+          GH_TOKEN: ${{ inputs.github-token }}
+      run: |
+          if [ "${{ steps.check-branch-exists.outputs.exists }}" == "true" ]; then
+              echo "Found branch ${{ inputs.branch }} on origin" 
+              if git rev-parse --verify ${{ inputs.branch }} >/dev/null 2>&1; then
+                  git checkout ${{ inputs.branch }}
+                  git pull origin ${{ inputs.branch }}
+              else
+                  git checkout -b ${{ inputs.branch }} --track remotes/origin/${{ inputs.branch }}
+              fi
+          else
+              git checkout -b ${{ inputs.branch }}
+              git push --set-upstream origin ${{ inputs.branch }}
+          fi
