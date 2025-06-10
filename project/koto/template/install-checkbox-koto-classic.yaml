@@ -1,0 +1,6 @@
+actions:
+  - action: install_snap
+    name: checkbox-koto-classic
+    track: latest
+    risk: edge
+    mode: devmode

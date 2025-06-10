@@ -1,0 +1,5 @@
+actions:
+  - action: install_snap
+    name: ubuntu-frame
+    track: "24"
+    risk: stable

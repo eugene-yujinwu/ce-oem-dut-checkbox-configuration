@@ -1,0 +1,11 @@
+actions:
+  - action: load_template
+    name: sudo_nopassword.yaml
+  - action: load_template
+    name: install-checkbox-snap-classic2404-disable-ce-oem.yaml
+  - action: load_template
+    name: install-checkbox-koto-classic.yaml
+  - action: load_template
+    name: koto-install-base-snap.yaml
+  - action: load_template
+    name: install-graphics-test-tools-24.yaml

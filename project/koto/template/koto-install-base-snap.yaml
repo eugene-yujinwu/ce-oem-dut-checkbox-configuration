@@ -1,0 +1,16 @@
+actions:
+  - action: install_snap
+    name: x-test
+    # Since track 24 build up with optee 4.x. Therefore, we need x-test from track 22
+    track: "22"
+    risk: stable
+    post_commands: |
+      sudo snap connect x-test:tee :tee
+      sudo snap connect x-test:home :home
+      sudo snap connect x-test:xtest x-test:xtest-319
+      sudo snap start --enable x-test.tee-supplicant
+  - action: install_snap
+    name: bugit
+    track: latest
+    risk: edge
+    mode: devmode

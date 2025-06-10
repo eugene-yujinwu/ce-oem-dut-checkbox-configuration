@@ -1,0 +1,17 @@
+actions:
+  - action: load_template
+    name: sudo_nopassword.yaml
+  - action: load_template
+    name: snap_stop_refresh.yaml
+  - action: load_template
+    name: persist-journal-log-in-core-image.yaml
+  - action: load_template
+    name: install-checkbox-snap-uc24-disable-ce-oem.yaml
+  - action: load_template
+    name: install-checkbox-koto.yaml
+  - action: load_template
+    name: koto-install-base-snap.yaml
+  - action: load_template
+    name: install-ubuntu-frame-24.yaml
+  - action: load_template
+    name: install-graphics-test-tools-24.yaml
