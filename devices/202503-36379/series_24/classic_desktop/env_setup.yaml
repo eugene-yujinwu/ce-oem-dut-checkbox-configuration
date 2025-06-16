@@ -1,0 +1,3 @@
+project: "koto"
+setup_yaml_name: "koto_classic24_env_setup.yaml"
+config_yaml_name: "koto_config.yaml"

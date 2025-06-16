@@ -1,0 +1,102 @@
+#!/usr/bin/env checkbox-cli-wrapper
+[launcher]
+app_id = com.canonical.qa.koto:checkbox
+launcher_version = 1
+stock_reports = text, submission_files, certification
+
+[test plan]
+unit = com.canonical.qa.koto::koto
+filter = com.canonical.qa.koto::koto
+         com.canonical.qa.koto::koto-manual
+         com.canonical.qa.koto::koto-automated
+         com.canonical.qa.koto::koto-stress
+         com.canonical.qa.koto::koto-desktop
+         com.canonical.qa.koto::koto-desktop-manual
+         com.canonical.qa.koto::koto-desktop-automated
+         com.canonical.qa.koto::koto-desktop-stress
+         com.canonical.qa.koto::koto-server
+         com.canonical.qa.koto::koto-server-manual
+         com.canonical.qa.koto::koto-server-automated
+         com.canonical.qa.koto::koto-server-stress
+
+[test selection]
+exclude = com.canonical.certification::bluetooth.*
+          com.canonical.certification::mediacard/(?!sd).*
+          com.canonical.certification::monitor/.*_(?!hdmi).*
+          com.canonical.certification::serial.*
+          com.canonical.certification::usb3.*
+          com.canonical.certification::usb-c.*
+          com.canonical.certification::wireless.*
+          com.canonical.certification::wireless/wifi_ap.*
+          com.canonical.certification::wwan.*
+          com.canonical.certification::led/fn
+          com.canonical.certification::led/bluetooth
+          com.canonical.certification::led/power-blink-suspend
+          com.canonical.certification::led/serial
+          com.canonical.certification::after-suspend.*bluetooth.*
+          com.canonical.certification::after-suspend-monitor/.*_(?!hdmi).*
+          com.canonical.certification::after-suspend-serial.*
+          com.canonical.certification::after-suspend-usb3.*
+          com.canonical.certification::after-suspend-usb-c.*
+          com.canonical.certification::after-suspend-wireless.*
+          com.canonical.certification::after-suspend-wireless/wifi_ap.*
+          com.canonical.certification::after-suspend.*wwan.*
+          com.canonical.certification::power-management/.*cold.*
+          com.canonical.certification::power-management/.*warm.*
+          com.canonical.certification::suspend.*
+          .*::after-suspend.*
+          com.canonical.certification::stress-tests/suspend.*
+          com.canonical.certification::cold-boot.*
+          #com.canonical.certification::warm-boot.*
+
+[manifest]
+com.canonical.certification::has_bt_adapter= false
+com.canonical.certification::has_ethernet_adapter= true
+com.canonical.certification::has_i2c= true
+com.canonical.certification::has_hardware_watchdog= false
+com.canonical.certification::has_wlan_adapter= false
+com.canonical.certification::has_wwan_module= false
+com.canonical.certification::need_kernel_snap_update_test= false
+com.canonical.certification::need_snapd_snap_update_test= false
+com.canonical.certification::need_gadget_snap_update_test= false
+com.canonical.certification::has_audio_loopback_connector= true
+com.canonical.certification::has_audio_playback= true
+com.canonical.certification::has_audio_capture= true
+com.canonical.certification::has_eeprom= false
+com.canonical.certification::has_led_gpio_sysfs = false
+com.canonical.qa.shiner::has_mipi_camera= true
+com.canonical.contrib::has_mtd= false
+com.canonical.contrib::has_caam= false
+com.canonical.contrib::has_button= false
+com.canonical.contrib::has_buzzer= false
+com.canonical.contrib::has_optee= true
+
+[environment]
+WPA_BG_SSID = cert-bg-wpa-tel-l10
+WPA_BG_PSK = insecure
+WPA_N_SSID = cert-n-wpa-tel-l10
+WPA_N_PSK = insecure
+WPA_AC_SSID = cert-ac-wpa-tel-l10
+WPA_AC_PSK = insecure
+WPA_AX_SSID = cert-ax-wpa-tel-l10
+WPA_AX_PSK = insecure
+WPA3_AX_SSID = cert-ax-wpa3-tel-l10
+WPA3_AX_PSK = insecure
+OPEN_BG_SSID = cert-bg-open-tel-l10
+OPEN_N_SSID = cert-n-open-tel-l10
+OPEN_AC_SSID = cert-ac-open-tel-l10
+OPEN_AX_SSID = cert-ax-open-tel-l10
+SNAPD_TASK_TIMEOUT=120
+TOTAL_MTD_NUM=0
+SYS_LEDS=foo
+TOTAL_RTC_NUM=1
+HWRNG=foo
+BTDEVADDR=4C:80:93:CC:AC:21,7C:B2:7D:4B:14:95,34:6F:24:A8:93:EE,C4:BD:E5:51:D6:95,80:32:53:D8:0D:1E
+TEST_TARGET_IPERF=10.102.182.2,10.102.182.3,10.102.182.4,10.102.182.5,10.102.182.6,10.102.182.7
+OPTEE_FW_VERSION=3.19
+GL_VENDOR=Mesa
+GL_RENDERER=Mali-G31 (Panfrost)
+STRESS_BOOT_ITERATIONS=30
+STRESS_BOOT_WAIT_DELAY=120
+STRESS_BOOT_WAKEUP_DELAY=60
+XTEST=x-test

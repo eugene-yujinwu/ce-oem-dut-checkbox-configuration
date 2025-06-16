@@ -1,0 +1,35 @@
+provision_data:
+  urls:
+    - https://tel-image-cache.canonical.com/oem-share/koto/rzg2-uc24/x01/ubuntu-core24-rzg2l.img.xz
+  ubuntu_sso_email: ce-certification-qa@lists.canonical.com
+  provision_plan:
+    config:
+      project_name: koto
+      serial_console:
+        port: /dev/serial/by-id/usb-FTDI_FT230X_Basic_UART_DP066EW3-if00-port0
+        baud_rate: 115200
+      network: end0
+    run_stage:
+      - sys_commands:
+          - zapper sdwire plug_to_self
+          - sleep 10
+      - sys_commands:
+          timeout: 600
+          cmd:
+            - sudo dd if=/dev/zero of=/dev/sda bs=32M count=100
+            - sync
+      - sys_commands:
+          timeout: 600
+          cmd:
+            - find . -type f -name "*.img.xz" -print0 | xargs -0 xzcat | sudo dd of=/dev/sda bs=32M
+            - sync
+      - sys_commands:
+          - zapper sdwire set DUT
+          - sleep 10
+      - sys_commands:
+          - zapper relays set default SW1 ON SW2 OFF
+          - sleep 10
+      - reboot_script
+      - initial_login:
+          method: console-conf
+          timeout: 900
