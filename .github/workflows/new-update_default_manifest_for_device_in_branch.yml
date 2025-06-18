@@ -1,0 +1,50 @@
+name: Update the default manifest for PC machine in branch
+
+on:
+  push:
+    paths:
+      - './pc/default/manifest.json'  
+    branches:
+      - main
+  workflow_dispatch:
+                     
+jobs:
+  Update_default_manifest:
+    name: loop the Branch, then compare and update the manifest with the default manifest.
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout ce-oem-dut-checkbox-configuration
+        uses: actions/checkout@v4
+        with:
+          ref: main
+      - name: copy default manifest to /tmp
+        uses: actions/checkout@v4
+        run: |
+          cp ./pc/default/manifest.json /tmp
+      - name: Get branch manifest and compare it with the default manifest
+        run: |
+          branches=$(git branch -r | grep -E 'origin/[0-9]{6}-[0-9]{5}' | sed -E 's/origin\///')
+
+          DEFAULT_MANIFEST="./tmp/manifest.json"
+
+          for branch in $branches; do
+              # echo "Processing branch: $branch"
+
+              git checkout -B "$branch-temp" "origin/$branch" >/dev/null
+
+              if [ -d "./pc/$branch" ]; then
+                  echo "$branch is pc device" 
+                  manifest_path="./pc/$branch/manifest.json"
+                  # cat $manifest_path
+                  if [ ! -f "$manifest_path" ]; then
+                      echo "create a manifest file with default manifest"
+                      cp $DEFAULT_MANIFEST ./pc/$branch
+                  else
+                      python3 ./utils/manifest_compare_update.py $DEFAULT_MANIFEST $manifest_path
+                  fi
+              fi
+              #git add $manifest_path 
+              #git commit 
+              #git push $branch-temp back
+          done
