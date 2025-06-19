@@ -21,10 +21,10 @@ jobs:
         with:
           ref: main
           fetch-depth: 0
-      - name: copy default manifest to /tmp
-        uses: actions/checkout@v4
-        with:
-          ref: main # Checkout the main branch to get the default manifest
+      # - name: copy default manifest to /tmp
+      #   uses: actions/checkout@v4
+      #   with:
+      #     ref: main # Checkout the main branch to get the default manifest
 
       - name: Store default manifest
         run: |
@@ -50,7 +50,7 @@ jobs:
           # Get all remote branches matching the pattern
           # Filter out the main branch if it matches the pattern
           git branch -r
-          branches=$(git branch -r | grep -E 'origin/[0-9]{6}-[0-9]{5}$' || true | sed -E 's/origin\///' | grep -v '^main$')
+          branches=$(git branch -r | grep -E 'origin/[0-9]{6}-[0-9]{5}$' | sed -E 's/origin\///' | grep -v '^main$')
 
           if [ -z "$branches" ]; then
             echo "No matching branches found to process."
