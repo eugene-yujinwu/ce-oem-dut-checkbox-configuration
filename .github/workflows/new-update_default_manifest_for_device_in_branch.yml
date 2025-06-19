@@ -46,7 +46,8 @@ jobs:
           DEFAULT_MANIFEST="/tmp/default_manifests/manifest.json"
           # Get all remote branches matching the pattern
           # Filter out the main branch if it matches the pattern
-          branches=$(git branch -r | grep -E 'origin/[0-9]{6}-[0-9]{5}$' | sed -E 's/origin\///' | grep -v '^main$')
+          git branch -r
+          branches=$(git branch -r | grep -E 'origin/[0-9]{6}-[0-9]{5}$' || true | sed -E 's/origin\///' | grep -v '^main$')
 
           if [ -z "$branches" ]; then
             echo "No matching branches found to process."
