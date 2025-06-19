@@ -31,7 +31,7 @@ jobs:
           # Copy the default manifest to a known, stable location for comparison
           mkdir -p /tmp/default_manifests
           cp ./pc/default/manifest.json /tmp/default_manifests/manifest.json
-
+          cp ./utils/manifest_compare_update.py /tmp/default_manifests/manifest_compare_update.py
       - name: Configure Git
         run: |
           git config user.name "GitHub Actions"
@@ -80,7 +80,7 @@ jobs:
                 # Execute Python script.
                 # If your Python script can indicate changes via exit code, use that.
                 # Otherwise, 'git diff --quiet' is a robust way to check for file changes.
-                python3 ./utils/manifest_compare_update.py "$DEFAULT_MANIFEST" "$manifest_path"
+                python3 /tmp/default_manifests/manifest_compare_update.py "$DEFAULT_MANIFEST" "$manifest_path"
 
                 # Check if the file was modified after the Python script ran
                 if ! git diff --quiet "$manifest_path"; then
