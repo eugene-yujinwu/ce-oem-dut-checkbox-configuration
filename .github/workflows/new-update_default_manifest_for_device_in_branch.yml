@@ -40,6 +40,9 @@ jobs:
           # or use a PAT if pushing to different repos or if GITHUB_TOKEN isn't sufficient.
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
+          # Enable verbose debugging and strict error checking
+          set -euxo pipefail
+
           DEFAULT_MANIFEST="/tmp/default_manifests/manifest.json"
           # Get all remote branches matching the pattern
           # Filter out the main branch if it matches the pattern
@@ -50,55 +53,63 @@ jobs:
             exit 0
           fi
 
+          # Loop through each matching branch
           for branch in $branches; do
             echo "--- Processing branch: $branch ---"
 
-            # Fetch and checkout the target branch
+            # Fetch the specific branch and check it out
             git fetch origin "$branch"
             git checkout "$branch"
 
             if [ -d "./pc/$branch" ]; then
-              echo "$branch is a PC device branch."
+              echo "$branch is a PC device device branch."
               manifest_path="./pc/$branch/manifest.json"
-              changes_made=false
+              changes_made=false # Flag to track if actual changes occurred
 
               if [ ! -f "$manifest_path" ]; then
-                echo "Manifest file not found in ./pc/$branch. Creating it with default manifest."
-                mkdir -p "$(dirname "$manifest_path")" # Ensure directory exists
+                echo "Manifest file not found in $manifest_path. Creating it with default manifest."
+                mkdir -p "$(dirname "$manifest_path")" # Ensure directory structure exists
                 cp "$DEFAULT_MANIFEST" "$manifest_path"
                 changes_made=true
               else
-                echo "Comparing and updating manifest: $manifest_path"
-                # Ensure your Python script exits with a non-zero code if no changes are made
-                # or prints a specific message to indicate changes
+                echo "Comparing and potentially updating manifest: $manifest_path"
+                # Execute Python script.
+                # If your Python script can indicate changes via exit code, use that.
+                # Otherwise, 'git diff --quiet' is a robust way to check for file changes.
                 python3 ./utils/manifest_compare_update.py "$DEFAULT_MANIFEST" "$manifest_path"
-                # You need a way to detect if the python script actually made changes.
-                # A simple way is to compare file hashes before and after, or check the script's exit code.
-                # For this example, let's assume the script prints 'CHANGES_MADE' if it modifies the file.
-                # Or you could rely on `git status` later.
+
+                # Check if the file was modified after the Python script ran
                 if ! git diff --quiet "$manifest_path"; then
-                    echo "Changes detected in $manifest_path after running script."
+                    echo "Changes detected in $manifest_path after running Python script."
                     changes_made=true
                 else
-                    echo "No changes detected in $manifest_path after running script."
+                    echo "No changes detected in $manifest_path by Python script."
                 fi
               fi
 
+              # Commit and push only if changes were made
               if [ "$changes_made" = true ]; then
-                echo "Committing and pushing changes to $branch."
+                echo "Committing and pushing changes to branch: $branch"
                 git add "$manifest_path"
-                git commit -m "chore: Update manifest.json with default from main branch"
-                # Push the changes. Force push might be needed if branch history diverged,
-                # but generally prefer rebase or merge for safer operations.
-                # Simple push assumes you're on the branch and can fast-forward or merge.
-                git push origin "$branch"
+                # Check if there are actual changes staged to avoid committing an empty commit
+                if git diff --cached --quiet; then
+                    echo "No actual changes to commit in $manifest_path, despite 'changes_made' flag. Skipping commit."
+                else
+                    git commit -m "chore: Update manifest.json with default from main branch"
+                    # Push changes. If permissions are an issue, this is where it will fail.
+                    if ! git push origin "$branch"; then
+                        echo "Error: Failed to push to branch $branch. Check repository permissions (e.g., 'contents: write') or branch protection rules."
+                        exit 1 # Exit with error if push fails
+                    fi
+                fi
               else
                 echo "No changes to commit for branch $branch."
               fi
             else
-              echo "Directory ./pc/$branch does not exist. Skipping branch."
+              echo "Directory ./pc/$branch does not exist. Skipping branch $branch."
             fi
+
             echo "--- Finished processing branch: $branch ---"
-            # After processing, go back to a detached HEAD or main to not affect next loop iteration directly
+            # Return to the previous branch (or detached HEAD) for the next iteration
             git checkout -
           done
