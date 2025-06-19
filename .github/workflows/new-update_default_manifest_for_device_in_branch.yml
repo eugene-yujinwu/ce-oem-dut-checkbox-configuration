@@ -9,23 +9,24 @@ on:
   #   branches:
   #     - main
   workflow_dispatch:
-                     
+  
+# Add this permissions block here, at the top level of your workflow
+# permissions:
+#   contents: write # This grants write access to the repository contents
+
+
 jobs:
   Update_default_manifest:
     name: loop the Branch, then compare and update the manifest with the default manifest.
     runs-on: ubuntu-latest
-
+    permissions:
+      contents: write
     steps:
       - name: Checkout ce-oem-dut-checkbox-configuration
         uses: actions/checkout@v4
         with:
           ref: main
           fetch-depth: 0
-      # - name: copy default manifest to /tmp
-      #   uses: actions/checkout@v4
-      #   with:
-      #     ref: main # Checkout the main branch to get the default manifest
-
       - name: Store default manifest
         run: |
           # Copy the default manifest to a known, stable location for comparison
