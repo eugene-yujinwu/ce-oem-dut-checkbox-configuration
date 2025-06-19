@@ -1,5 +1,4 @@
 {
-    "com.canonical.certification::has_audio_capture": true,
     "com.canonical.certification::has_audio_playback": true,
     "com.canonical.certification::has_bt_obex_support": true,
     "com.canonical.certification::has_bt_smart": true,
