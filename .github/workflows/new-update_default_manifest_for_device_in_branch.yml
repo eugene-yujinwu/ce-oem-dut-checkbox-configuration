@@ -12,7 +12,7 @@ jobs:
   Update_default_manifest:
     name: loop the Branch, then compare and update the manifest with the default manifest.
     runs-on: ubuntu-latest
-    
+
     steps:
       - name: Checkout ce-oem-dut-checkbox-configuration
         uses: actions/checkout@v4
@@ -20,31 +20,85 @@ jobs:
           ref: main
       - name: copy default manifest to /tmp
         uses: actions/checkout@v4
-        run: |
-          cp ./pc/default/manifest.json /tmp
-      - name: Get branch manifest and compare it with the default manifest
-        run: |
-          branches=$(git branch -r | grep -E 'origin/[0-9]{6}-[0-9]{5}' | sed -E 's/origin\///')
+        with:
+          ref: main # Checkout the main branch to get the default manifest
 
-          DEFAULT_MANIFEST="./tmp/manifest.json"
+      - name: Store default manifest
+        run: |
+          # Copy the default manifest to a known, stable location for comparison
+          mkdir -p /tmp/default_manifests
+          cp ./pc/default/manifest.json /tmp/default_manifests/manifest.json
+
+      - name: Configure Git
+        run: |
+          git config user.name "GitHub Actions"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+      - name: Process and update manifests in other branches
+        env:
+          # Use GITHUB_TOKEN for pushing, ensure your repo has contents: write permissions
+          # or use a PAT if pushing to different repos or if GITHUB_TOKEN isn't sufficient.
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          DEFAULT_MANIFEST="/tmp/default_manifests/manifest.json"
+          # Get all remote branches matching the pattern
+          # Filter out the main branch if it matches the pattern
+          branches=$(git branch -r | grep -E 'origin/[0-9]{6}-[0-9]{5}$' | sed -E 's/origin\///' | grep -v '^main$')
+
+          if [ -z "$branches" ]; then
+            echo "No matching branches found to process."
+            exit 0
+          fi
 
           for branch in $branches; do
-              # echo "Processing branch: $branch"
+            echo "--- Processing branch: $branch ---"
 
-              git checkout -B "$branch-temp" "origin/$branch" >/dev/null
+            # Fetch and checkout the target branch
+            git fetch origin "$branch"
+            git checkout "$branch"
 
-              if [ -d "./pc/$branch" ]; then
-                  echo "$branch is pc device" 
-                  manifest_path="./pc/$branch/manifest.json"
-                  # cat $manifest_path
-                  if [ ! -f "$manifest_path" ]; then
-                      echo "create a manifest file with default manifest"
-                      cp $DEFAULT_MANIFEST ./pc/$branch
-                  else
-                      python3 ./utils/manifest_compare_update.py $DEFAULT_MANIFEST $manifest_path
-                  fi
+            if [ -d "./pc/$branch" ]; then
+              echo "$branch is a PC device branch."
+              manifest_path="./pc/$branch/manifest.json"
+              changes_made=false
+
+              if [ ! -f "$manifest_path" ]; then
+                echo "Manifest file not found in ./pc/$branch. Creating it with default manifest."
+                mkdir -p "$(dirname "$manifest_path")" # Ensure directory exists
+                cp "$DEFAULT_MANIFEST" "$manifest_path"
+                changes_made=true
+              else
+                echo "Comparing and updating manifest: $manifest_path"
+                # Ensure your Python script exits with a non-zero code if no changes are made
+                # or prints a specific message to indicate changes
+                python3 ./utils/manifest_compare_update.py "$DEFAULT_MANIFEST" "$manifest_path"
+                # You need a way to detect if the python script actually made changes.
+                # A simple way is to compare file hashes before and after, or check the script's exit code.
+                # For this example, let's assume the script prints 'CHANGES_MADE' if it modifies the file.
+                # Or you could rely on `git status` later.
+                if ! git diff --quiet "$manifest_path"; then
+                    echo "Changes detected in $manifest_path after running script."
+                    changes_made=true
+                else
+                    echo "No changes detected in $manifest_path after running script."
+                fi
               fi
-              #git add $manifest_path 
-              #git commit 
-              #git push $branch-temp back
+
+              if [ "$changes_made" = true ]; then
+                echo "Committing and pushing changes to $branch."
+                git add "$manifest_path"
+                git commit -m "chore: Update manifest.json with default from main branch"
+                # Push the changes. Force push might be needed if branch history diverged,
+                # but generally prefer rebase or merge for safer operations.
+                # Simple push assumes you're on the branch and can fast-forward or merge.
+                git push origin "$branch"
+              else
+                echo "No changes to commit for branch $branch."
+              fi
+            else
+              echo "Directory ./pc/$branch does not exist. Skipping branch."
+            fi
+            echo "--- Finished processing branch: $branch ---"
+            # After processing, go back to a detached HEAD or main to not affect next loop iteration directly
+            git checkout -
           done
