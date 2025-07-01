@@ -35,6 +35,8 @@
     "com.canonical.certification::has_led_wireless": true,
     "com.canonical.certification::has_line_in": true,
     "com.canonical.certification::has_line_out": true,
+    "com.canonical.certification::has_manitest": true,
+    "com.canonical.certification::has_manitest1": true,
     "com.canonical.certification::has_md_raid": true,
     "com.canonical.certification::has_sim_card": true,
     "com.canonical.certification::has_thunderbolt": true,
