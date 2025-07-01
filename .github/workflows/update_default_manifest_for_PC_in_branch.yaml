@@ -1,19 +1,14 @@
 name: Update the default manifest for PC machine in branch
 
 on:
-  push:
-    branches: [ main ]
   # push:
-  #   paths:
-  #     - './pc/default/manifest.json'  
-  #   branches:
-  #     - main
+  #   branches: [ main ]
+  push:
+    paths:
+      - './pc/default/manifest.json'  
+    branches:
+      - main
   workflow_dispatch:
-  
-# Add this permissions block here, at the top level of your workflow
-# permissions:
-#   contents: write # This grants write access to the repository contents
-
 
 jobs:
   Update_default_manifest:
@@ -27,12 +22,12 @@ jobs:
         with:
           ref: main
           fetch-depth: 0
-      - name: Store default manifest
+      - name: Store default manifest 
         run: |
           # Copy the default manifest to a known, stable location for comparison
           mkdir -p /tmp/default_manifests
           cp ./pc/default/manifest.json /tmp/default_manifests/manifest.json
-          cp ./utils/manifest_compare_update.py /tmp/default_manifests/manifest_compare_update.py
+          cp ./utils/manifest_key_updater.py /tmp/default_manifests/manifest_key_updater.py
       - name: Configure Git
         run: |
           git config user.name "GitHub Actions"
@@ -66,24 +61,22 @@ jobs:
             git fetch origin "$branch"
             git checkout "$branch"
 
+
             if [ -d "./pc/$branch" ]; then
               echo "$branch is a PC device device branch."
               manifest_path="./pc/$branch/manifest.json"
-              changes_made=false # Flag to track if actual changes occurred
+              changes_made=false
 
               if [ ! -f "$manifest_path" ]; then
                 echo "Manifest file not found in $manifest_path. Creating it with default manifest."
-                mkdir -p "$(dirname "$manifest_path")" # Ensure directory structure exists
+                mkdir -p "$(dirname "$manifest_path")"
                 cp "$DEFAULT_MANIFEST" "$manifest_path"
                 changes_made=true
               else
                 echo "Comparing and potentially updating manifest: $manifest_path"
-                # Execute Python script.
-                # If your Python script can indicate changes via exit code, use that.
-                # Otherwise, 'git diff --quiet' is a robust way to check for file changes.
-                python3 /tmp/default_manifests/manifest_compare_update.py "$DEFAULT_MANIFEST" "$manifest_path"
 
-                # Check if the file was modified after the Python script ran
+                python3 /tmp/default_manifests/manifest_key_updater.py "$DEFAULT_MANIFEST" "$manifest_path"
+
                 if ! git diff --quiet "$manifest_path"; then
                     echo "Changes detected in $manifest_path after running Python script."
                     changes_made=true
@@ -96,7 +89,6 @@ jobs:
               if [ "$changes_made" = true ]; then
                 echo "Committing and pushing changes to branch: $branch"
                 git add "$manifest_path"
-                # Check if there are actual changes staged to avoid committing an empty commit
                 if git diff --cached --quiet; then
                     echo "No actual changes to commit in $manifest_path, despite 'changes_made' flag. Skipping commit."
                 else
@@ -111,10 +103,9 @@ jobs:
                 echo "No changes to commit for branch $branch."
               fi
             else
-              echo "Directory ./pc/$branch does not exist. Skipping branch $branch."
+              echo "Directory ./pc/$branch does not exist. This is not a PC device, skipping branch $branch."
             fi
 
             echo "--- Finished processing branch: $branch ---"
-            # Return to the previous branch (or detached HEAD) for the next iteration
-            git checkout -
+            git checkout main
           done
