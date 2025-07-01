@@ -5,7 +5,7 @@ on:
   #   branches: [ main ]
   push:
     paths:
-      - './pc/default/manifest.json'  
+      - 'pc/default/manifest.json'  
     branches:
       - main
   workflow_dispatch:
