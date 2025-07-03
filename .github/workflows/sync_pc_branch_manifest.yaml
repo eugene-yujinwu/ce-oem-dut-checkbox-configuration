@@ -1,4 +1,4 @@
-name: Update the default manifest for PC machine in branch
+name: Update the manifest for PC in branch when default manifest changed
 
 on:
   # push:
@@ -12,7 +12,7 @@ on:
 
 jobs:
   Update_default_manifest:
-    name: loop the Branch, then compare and update the manifest with the default manifest.
+    name: loop the Branch, then compare and update the manifest for PC with the default manifest.
     runs-on: ubuntu-latest
     permissions:
       contents: write
@@ -75,6 +75,8 @@ jobs:
               else
                 echo "Comparing and potentially updating manifest: $manifest_path"
 
+                # Compare the manifest file in the branch with the default manifest and sync any new items to it.  
+                # If the branch's manifest file is not a valid JSON file, replace it with the default manifest. 
                 python3 /tmp/default_manifests/manifest_key_updater.py "$DEFAULT_MANIFEST" "$manifest_path"
 
                 if ! git diff --quiet "$manifest_path"; then
@@ -92,12 +94,13 @@ jobs:
                 if git diff --cached --quiet; then
                     echo "No actual changes to commit in $manifest_path, despite 'changes_made' flag. Skipping commit."
                 else
-                    git commit -m "chore: Update manifest.json with default from main branch"
+                    git commit -m "chore: Update manifest.json of $$branch with default manifest from main branch"
                     # Push changes. If permissions are an issue, this is where it will fail.
-                    if ! git push origin "$branch"; then
-                        echo "Error: Failed to push to branch $branch. Check repository permissions (e.g., 'contents: write') or branch protection rules."
-                        exit 1 # Exit with error if push fails
-                    fi
+                    git show HEAD
+                    # if ! git push origin "$branch"; then
+                    #     echo "Error: Failed to push to branch $branch."
+                    #     exit 1 # Exit with error if push fails
+                    # fi
                 fi
               else
                 echo "No changes to commit for branch $branch."
