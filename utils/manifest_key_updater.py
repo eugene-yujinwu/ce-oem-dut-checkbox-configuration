@@ -8,7 +8,7 @@ Usage: python manifest_key_updater.py <source.json> <target.json>
 """
 
 import json
-import sys
+import argparse
 
 def update_json(file1_path, file2_path):
     # Read the first JSON file (source)
@@ -68,13 +68,16 @@ def update_json(file1_path, file2_path):
     for key in added_keys:
         print(f"  - {key}")
 
+
+def main():
+    parser = argparse.ArgumentParser(description='Update manifest JSON keys')
+
+    parser.add_argument('source_JSON', type=str, help='Path to source JSON file')
+    parser.add_argument('target_JSON', type=str, help='Path to target JSON file')
+
+    args = parser.parse_args()
+
+    update_json(args.source_JSON, args.target_JSON)
+
 if __name__ == "__main__":
-    if len(sys.argv) != 3:
-        print("Usage: python manifest_key_updater.py <source_JSON> <target_JSON>")
-        print("Example: python manifest_key_updater.py default_manifest.json manifest.json")
-        sys.exit(1)
-
-    file1 = sys.argv[1]
-    file2 = sys.argv[2]
-
-    update_json(file1, file2)
+    main()
