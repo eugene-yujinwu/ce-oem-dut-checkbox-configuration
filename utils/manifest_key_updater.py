@@ -10,10 +10,11 @@ Usage: python manifest_key_updater.py <source.json> <target.json>
 import json
 import argparse
 
+
 def update_json(file1_path, file2_path):
     # Read the first JSON file (source)
     try:
-        with open(file1_path, 'r') as f1:
+        with open(file1_path, "r") as f1:
             data1 = json.load(f1)
     except FileNotFoundError:
         print(f"Error: Source file {file1_path} does not exist")
@@ -29,19 +30,25 @@ def update_json(file1_path, file2_path):
 
     # Handle the target file (file2)
     try:
-        with open(file2_path, 'r') as f2:
+        with open(file2_path, "r") as f2:
             data2 = json.load(f2)
 
             # Verify it's a dictionary
             if not isinstance(data2, dict):
-                print(f"Warning: Target file {file2_path} is not a dictionary - replacing with source file")
+                print(
+                    f"Warning: Target file {file2_path} is not a dictionary - replacing with source file"
+                )
                 raise json.JSONDecodeError("Not a dictionary", "", 0)
 
     except FileNotFoundError:
-        print(f"Warning: Target file {file2_path} does not exist - creating from source")
+        print(
+            f"Warning: Target file {file2_path} does not exist - creating from source"
+        )
         data2 = {}
     except json.JSONDecodeError:
-        print(f"Warning: Target file {file2_path} is not valid JSON - replacing with source")
+        print(
+            f"Warning: Target file {file2_path} is not valid JSON - replacing with source"
+        )
         data2 = {}
 
     # Compare keys and add missing ones
@@ -57,9 +64,9 @@ def update_json(file1_path, file2_path):
         return
 
     try:
-        with open(file2_path, 'w') as f2:
+        with open(file2_path, "w") as f2:
             json.dump(data2, f2, indent=4, sort_keys=True)
-            f2.write('\n')
+            f2.write("\n")
     except IOError:
         print(f"Error: Could not write to file {file2_path}")
         return
@@ -70,14 +77,15 @@ def update_json(file1_path, file2_path):
 
 
 def main():
-    parser = argparse.ArgumentParser(description='Update manifest JSON keys')
+    parser = argparse.ArgumentParser(description="Update manifest JSON keys")
 
-    parser.add_argument('source_JSON', type=str, help='Path to source JSON file')
-    parser.add_argument('target_JSON', type=str, help='Path to target JSON file')
+    parser.add_argument("source_JSON", type=str, help="Path to source JSON file")
+    parser.add_argument("target_JSON", type=str, help="Path to target JSON file")
 
     args = parser.parse_args()
 
     update_json(args.source_JSON, args.target_JSON)
+
 
 if __name__ == "__main__":
     main()
